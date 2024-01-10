@@ -1,0 +1,29 @@
+<!-- Обработка login regisration -->
+
+<script>
+    $( document ).ready(function() {
+        initPasswordInputs()
+        
+    });
+
+    function initPasswordInputs(){
+        $('[name="password"]').attr({'type':'password'})
+        $('[name="password_check"]').attr({'type':'password'})
+    }
+
+    function initMenu(){
+        if(!localStorage.email){
+
+        }
+    }
+
+    function renderLogin(){
+        $('.t978__link-inner.t978__link-inner_left:contains("Войти")').parent().parent().fadeOut()
+        $('.t978__link-inner.t978__link-inner_left:contains("Регистрация")').parent().parent().fadeOut()
+        $('.t978__link-inner.t978__link-inner_left:contains("Выход")').parent().parent().fadeIn()
+    }
+
+    function checkSendForm(name){
+        return $(`[data-tooltip-hook="#popup:${name}"] form`).hasClass('js-send-form-success')
+    }
+</script>
