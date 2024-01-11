@@ -1,4 +1,9 @@
 <!-- Обработка login regisration -->
+<style>
+    [data-tooltip-hook="#popup:login"] .js-successbox{
+        display:none!important
+    }
+</style>
 
 <script>
     const AJAX_OPTIONS = {
@@ -8,9 +13,79 @@
     const URL_IS_LOGIN = 'https://lktilda.ru/php/isLogget.php'
 
     $( document ).ready(function() {
+        renderLogOut()
         initPasswordInputs()
         initMenu()
+        setButtonsEvents()
+        checkAfterSendLogin()
     });
+
+
+
+
+    // ------------------ обработка события кликов ------------------------
+
+    function setButtonsEvents(){
+        $(`.t978__link-inner.t978__link-inner_left:contains("Войти")`).click(()=>{
+            let token = generateToken()
+            localStorage.token = token
+            $('[data-tooltip-hook="#popup:login"] [name="login_token"]').val(token)
+        })
+
+        $(`.t978__link-inner.t978__link-inner_left:contains("Выйти")`).click(()=>{
+            logout()
+        })
+
+        $('[data-tooltip-hook="#popup:registration"] .t-submit').click(function(event){
+            checkPasswords()
+        })
+
+        $('[data-tooltip-hook="#popup:login"] .t-submit').click(()=>{
+            localStorage.email = $('[data-tooltip-hook="#popup:login"] [name="email"]').val()
+            whaitResponseForm('login')
+        })
+
+    }
+
+    // ------------------ вспомогательные функции ------------------------
+
+    function hideMenuItem(content){
+        $(`.t978__link-inner.t978__link-inner_left:contains(${content})`).parent().parent().fadeOut()
+    }
+    function showMenuItem(content){
+        $(`.t978__link-inner.t978__link-inner_left:contains(${content})`).parent().parent().fadeIn()
+    }
+
+    function checkSendForm(name){
+        return $(`[data-tooltip-hook="#popup:${name}"] form`).hasClass('js-send-form-success')
+    }
+
+    function getIdPupap(name){
+        let id = $(`[data-tooltip-hook="#popup:${name}"]`).parent().parent().attr('id')
+        return id.split('rec')[1]
+    }
+
+    async function ajaxReq(url, options, content){
+        let response = await fetch(url,{
+            method: options.type,
+            headers: options.heders,
+            body: JSON.stringify(content)
+        })
+        return await response.json();
+    }
+
+    function generateToken(){
+        var rand = function() {
+            return Math.random().toString(36).substr(2); // remove `0.`
+        };
+
+        var token = function() {
+            return rand() + rand(); // to make it longer
+        };
+        return token()
+    }
+
+    // ------------------  функции рендренга ------------------------
 
     function initPasswordInputs(){
         $('[name="password"]').attr({'type':'password'})
@@ -39,15 +114,38 @@
         hideMenuItem("Выйти")
     }
 
-    function hideMenuItem(content){
-        $(`.t978__link-inner.t978__link-inner_left:contains(${content})`).parent().parent().fadeOut()
-    }
-    function showMenuItem(content){
-        $(`.t978__link-inner.t978__link-inner_left:contains(${content})`).parent().parent().fadeIn()
+    function checkPasswords(){
+        let password = $('[data-tooltip-hook="#popup:registration"] [name="password"]').val()
+        let password_check = $('[data-tooltip-hook="#popup:registration"] [name="password_check"]').val()
+        if(password!=password_check ){
+            $('[data-tooltip-hook="#popup:registration"] [name="password"]').parent().parent().addClass('js-error-control-box')
+            $('[data-tooltip-hook="#popup:registration"] [name="password_check"]').parent().parent().addClass('js-error-control-box')
+            $('[data-tooltip-hook="#popup:registration"] .js-rule-error-name').text('Пароли должны совподать')
+            $('[data-tooltip-hook="#popup:registration"] .js-rule-error-name').css({'display':'block'})
+            $('[data-tooltip-hook="#popup:registration"] .t-form__errorbox-wrapper').css({'display':'block'})
+            event.stopPropagation()
+        }
     }
 
-    function checkSendForm(name){
-        return $(`[data-tooltip-hook="#popup:${name}"] form`).hasClass('js-send-form-success')
+    // ------------------  функции сценария ------------------------
+
+    function reloadPageWithRerult(){
+        localStorage.afterSendLogin = true
+        location.reload();
+    }
+
+    function checkAfterSendLogin(){
+        if(!localStorage.afterSendLogin) return false
+        delete localStorage.afterSendLogin
+        isLogget().then((result)=>{
+            if(result){
+                t390_showPopup(getIdPupap('loginsuccess'))
+                renderLogin()
+            }else{
+                t390_showPopup(getIdPupap('denied'))
+                renderLogOut()
+            }
+        })      
     }
 
     async function isLogget(){
@@ -60,13 +158,21 @@
         return result
     }
 
-    async function ajaxReq(url, options, content){
-        let response = await fetch(url,{
-            method: options.type,
-            headers: options.heders,
-            body: JSON.stringify(content)
-        })
-        return await response.json();
+    function logout(){
+        delete localStorage.email
+        delete localStorage.token
+        renderLogOut()
     }
+
+    function whaitResponseForm(name){
+        let id_inteval = setInterval(()=>{
+            if( checkSendForm('login') ){
+                clearInterval(id_inteval)
+                $('.t-popup__block-close-button').click()
+                reloadPageWithRerult()
+            }
+        },300)
+    }
+
 </script>
 
