@@ -11,6 +11,7 @@
         headers: { 'Content-Type': 'application/json;charset=utf-8' },
     }
     const URL_IS_LOGIN = 'https://lktilda.ru/php/isLogget.php'
+    const URL_CHECK_EMAIL = 'https://lktilda.ru/php/isHasEmail.php'
 
     $( document ).ready(function() {
         renderLogOut()
@@ -36,9 +37,9 @@
             logout()
         })
 
-        $('[data-tooltip-hook="#popup:registration"] .t-submit').click(function(event){
-            if(!checkPasswords()) return false
-            checkEmail()
+        $('[data-tooltip-hook="#popup:registration"] .t-submit').click(async function(event){
+            if(!checkPasswords(event)) return false
+            if(!await checkEmail(event)) return false
         })
 
         $('[data-tooltip-hook="#popup:login"] .t-submit').click(()=>{
@@ -116,7 +117,7 @@
     }
 
     // ------------------  функции проверки полей ------------------------
-    function checkPasswords(){
+    function checkPasswords(event){
         let password = $('[data-tooltip-hook="#popup:registration"] [name="password"]').val()
         let password_check = $('[data-tooltip-hook="#popup:registration"] [name="password_check"]').val()
         if(password!=password_check ){
@@ -131,15 +132,17 @@
         return true
     }
 
-    function checkEmail(){
+    async function checkEmail(event){
+        event.stopPropagation()
         let email = $('[data-tooltip-hook="#popup:registration"] [name="email"]').val()
-        if(false){
+        let result = await ajaxReq(URL_CHECK_EMAIL, AJAX_OPTIONS, {email})
+        if(result ){
             $('[data-tooltip-hook="#popup:registration"] [name="email"]').parent().parent().addClass('js-error-control-box')
             $('[data-tooltip-hook="#popup:registration"] .js-rule-error-name').text(`${email} уже заорегестрирован`)
             $('[data-tooltip-hook="#popup:registration"] .js-rule-error-name').css({'display':'block'})
             $('[data-tooltip-hook="#popup:registration"] .t-form__errorbox-wrapper').css({'display':'block'})
-            event.stopPropagation()
         }
+        event.returnValue = true
         return true
     }
 
