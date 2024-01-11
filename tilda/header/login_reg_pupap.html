@@ -1,9 +1,15 @@
 <!-- Обработка login regisration -->
 
 <script>
+    const AJAX_OPTIONS = {
+        type: 'POST',
+        headers: { 'Content-Type': 'application/json;charset=utf-8' },
+    }
+    const URL_IS_LOGIN = 'https://lktilda.ru/php/isLogget.php'
+
     $( document ).ready(function() {
         initPasswordInputs()
-        
+        initMenu()
     });
 
     function initPasswordInputs(){
@@ -12,18 +18,55 @@
     }
 
     function initMenu(){
-        if(!localStorage.email){
-
-        }
+        isLogget().then((result)=>{
+            if(result){
+                renderLogin()
+            }else{
+                renderLogOut()
+            }
+        })
     }
 
     function renderLogin(){
-        $('.t978__link-inner.t978__link-inner_left:contains("Войти")').parent().parent().fadeOut()
-        $('.t978__link-inner.t978__link-inner_left:contains("Регистрация")').parent().parent().fadeOut()
-        $('.t978__link-inner.t978__link-inner_left:contains("Выход")').parent().parent().fadeIn()
+        hideMenuItem("Войти")
+        hideMenuItem("Регистрация")
+        showMenuItem("Выйти")
+    }
+
+    function renderLogOut(){
+        showMenuItem("Войти")
+        showMenuItem("Регистрация")
+        hideMenuItem("Выйти")
+    }
+
+    function hideMenuItem(content){
+        $(`.t978__link-inner.t978__link-inner_left:contains(${content})`).parent().parent().fadeOut()
+    }
+    function showMenuItem(content){
+        $(`.t978__link-inner.t978__link-inner_left:contains(${content})`).parent().parent().fadeIn()
     }
 
     function checkSendForm(name){
         return $(`[data-tooltip-hook="#popup:${name}"] form`).hasClass('js-send-form-success')
     }
+
+    async function isLogget(){
+        if(!localStorage.email||!localStorage.token) return false
+        let content = {
+            email: localStorage.email,
+            token: localStorage.token,
+        }
+        let result = await ajaxReq(URL_IS_LOGIN, AJAX_OPTIONS, content)
+        return result
+    }
+
+    async function ajaxReq(url, options, content){
+        let response = await fetch(url,{
+            method: options.type,
+            headers: options.heders,
+            body: JSON.stringify(content)
+        })
+        return await response.json();
+    }
 </script>
+
