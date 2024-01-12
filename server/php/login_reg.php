@@ -21,6 +21,9 @@
             $userId = $checkUser['id'];
             $sql = "UPDATE `users` SET `login_token` = '$login_token' WHERE `id` = '$userId'";
             $mysql -> query($sql);
+        }else{
+            $sql = "UPDATE `users` SET `reject_password` = '1' WHERE `email` = '$email'";
+            $mysql -> query($sql);           
         }
     }
 
