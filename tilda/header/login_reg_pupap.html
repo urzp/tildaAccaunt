@@ -13,6 +13,8 @@
     const URL_IS_LOGIN = 'https://lktilda.ru/php/isLogget.php'
     const URL_CHECK_EMAIL = 'https://lktilda.ru/php/isHasEmail.php'
 
+    let checkFelds = true
+
     $( document ).ready(function() {
         renderLogOut()
         initPasswordInputs()
@@ -38,6 +40,7 @@
         })
 
         $('[data-tooltip-hook="#popup:registration"] .t-submit').click(async function(event){
+            if(!checkFelds) return false
             if(!checkPasswords(event)) return false
             if(!await checkEmail(event)) return false
         })
@@ -141,9 +144,14 @@
             $('[data-tooltip-hook="#popup:registration"] .js-rule-error-name').text(`${email} уже заорегестрирован`)
             $('[data-tooltip-hook="#popup:registration"] .js-rule-error-name').css({'display':'block'})
             $('[data-tooltip-hook="#popup:registration"] .t-form__errorbox-wrapper').css({'display':'block'})
+        }else{
+            console.log('pass')
+            event.returnValue = true
+            checkFelds = false
+            $('[data-tooltip-hook="#popup:registration"] .t-submit').click()
+            return true
         }
-        event.returnValue = true
-        return true
+        
     }
 
     // ------------------  функции сценария ------------------------
