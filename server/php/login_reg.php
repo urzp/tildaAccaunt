@@ -19,10 +19,10 @@
         $checkUser = $checkUser -> fetch_assoc();
         if(isset($checkUser)){
             $userId = $checkUser['id'];
-            $sql = "UPDATE `users` SET `login_token` = '$login_token' WHERE `id` = '$userId'";
+            $sql = "UPDATE `users` SET `login_token` = '$login_token', `reject_password` = 'false' WHERE `id` = '$userId'";
             $mysql -> query($sql);
         }else{
-            $sql = "UPDATE `users` SET `reject_password` = '1' WHERE `email` = '$email'";
+            $sql = "UPDATE `users` SET `reject_password` = 'true' WHERE `email` = '$email'";
             $mysql -> query($sql);           
         }
     }
