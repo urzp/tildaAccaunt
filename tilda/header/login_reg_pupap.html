@@ -16,11 +16,10 @@
     let checkFelds = true
 
     $( document ).ready(function() {
-        renderLogOut()
+        renderHideAll()
         initPasswordInputs()
-        initMenu()
         setButtonsEvents()
-        checkAfterSendLogin()
+        checkAfterSendLogin(initMenu)
     });
 
 
@@ -119,6 +118,12 @@
         hideMenuItem("Выйти")
     }
 
+    function renderHideAll(){
+        hideMenuItem("Войти")
+        hideMenuItem("Регистрация")
+        hideMenuItem("Выйти")
+    }
+
     // ------------------  функции проверки полей ------------------------
     function checkPasswords(event){
         let password = $('[data-tooltip-hook="#popup:registration"] [name="password"]').val()
@@ -161,10 +166,13 @@
         location.reload();
     }
 
-    function checkAfterSendLogin(){
-        if(!localStorage.afterSendLogin) return false
+    function checkAfterSendLogin(callBack){
+        if(!localStorage.afterSendLogin){
+            callBack()
+            return false
+        } 
         delete localStorage.afterSendLogin
-        isLogget().then((result)=>{
+        isLogget(true).then((result)=>{
             if(result){
                 t390_showPopup(getIdPupap('loginsuccess'))
                 renderLogin()
@@ -175,11 +183,12 @@
         })      
     }
 
-    async function isLogget(){
+    async function isLogget(wait_for_update=false){
         if(!localStorage.email||!localStorage.token) return false
         let content = {
             email: localStorage.email,
             token: localStorage.token,
+            wait_for_update,
         }
         let result = await ajaxReq(URL_IS_LOGIN, AJAX_OPTIONS, content)
         return result

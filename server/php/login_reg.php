@@ -12,17 +12,16 @@
     }
 
     function login($email, $password, $login_token, $mysql){
-        $log = date('Y-m-d H:i:s') .':  '. $email.' '.$login_token;
-        file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);   
         $sql = "SELECT `id` FROM `users` WHERE `email` = '$email' && `password`='$password'";
         $checkUser = $mysql -> query($sql);
         $checkUser = $checkUser -> fetch_assoc();
+        $time = time();
         if(isset($checkUser)){
             $userId = $checkUser['id'];
-            $sql = "UPDATE `users` SET `login_token` = '$login_token', `reject_password` = 'false' WHERE `id` = '$userId'";
+            $sql = "UPDATE `users` SET `login_token` = '$login_token', `reject_password` = 'false', `time_login`='$time' WHERE `id` = '$userId'";
             $mysql -> query($sql);
         }else{
-            $sql = "UPDATE `users` SET `reject_password` = 'true' WHERE `email` = '$email'";
+            $sql = "UPDATE `users` SET `reject_password` = 'true', `time_login`='$time' WHERE `email` = '$email'";
             $mysql -> query($sql);           
         }
     }
