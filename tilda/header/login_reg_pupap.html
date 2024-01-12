@@ -11,7 +11,7 @@
         headers: { 'Content-Type': 'application/json;charset=utf-8' },
     }
     const URL_IS_LOGIN = 'https://lktilda.ru/php/isLogget.php'
-    const URL_IS_REJECT = 'https://lktilda.ru/php/isRejectLogin.php'
+    const URL_CHECK_EMAIL = 'https://lktilda.ru/php/isHasEmail.php'
 
     let checkFelds = true
 
@@ -69,6 +69,12 @@
         return id.split('rec')[1]
     }
 
+    function pupapTitle(pupapName, title, addTitle=false){
+        let text = $(`[data-tooltip-hook="#popup:${pupapName}"] .t390__title.t-heading.t-heading_lg`).text()
+        if(addTitle) title = text + title
+        $(`[data-tooltip-hook="#popup:${pupapName}"] .t390__title.t-heading.t-heading_lg`).text(title)
+    }
+
     async function ajaxReq(url, options, content){
         let response = await fetch(url,{
             method: options.type,
@@ -110,18 +116,21 @@
         hideMenuItem("Войти")
         hideMenuItem("Регистрация")
         showMenuItem("Выйти")
+        $('.uc-user_menu .email .tn-atom').text(localStorage.email)
     }
 
     function renderLogOut(){
         showMenuItem("Войти")
         showMenuItem("Регистрация")
         hideMenuItem("Выйти")
+        $('.uc-user_menu .email .tn-atom').text('')
     }
 
     function renderHideAll(){
         hideMenuItem("Войти")
         hideMenuItem("Регистрация")
         hideMenuItem("Выйти")
+        hideMenuItem("loader")
     }
 
     // ------------------  функции проверки полей ------------------------
@@ -172,11 +181,16 @@
             return false
         } 
         delete localStorage.afterSendLogin
+        setTimeout(()=>{$(`.t978__link-inner.t978__link-inner_left:contains('loader')`).click()},500)
+        
         isLogget(true).then((result)=>{
             if(result){
+                t390_closePopup(getIdPupap('loader'))
+                pupapTitle('loginsuccess', " " + localStorage.email, true)
                 t390_showPopup(getIdPupap('loginsuccess'))
                 renderLogin()
             }else{
+                t390_closePopup(getIdPupap('loader'))
                 t390_showPopup(getIdPupap('denied'))
                 renderLogOut()
             }
