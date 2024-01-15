@@ -12,6 +12,7 @@
     }
     const URL_IS_LOGIN = 'https://lktilda.ru/php/isLogget.php'
     const URL_CHECK_EMAIL = 'https://lktilda.ru/php/isHasEmail.php'
+    const URL_GET_BALANS = 'https://lktilda.ru/php/getBalans.php'
 
     let checkFelds = true
 
@@ -84,6 +85,20 @@
         return await response.json();
     }
 
+    async function getBalans(){
+        let content = {
+            email: localStorage.email,
+            token: localStorage.token,            
+        }
+        let result = await ajaxReq(URL_GET_BALANS, AJAX_OPTIONS, content)
+        console.log(result)
+        if(!result.success){
+            return 'баланс не определен'
+        }else{
+            return `${result.balans} р.`
+        }
+    }
+
     function generateToken(){
         var rand = function() {
             return Math.random().toString(36).substr(2); // remove `0.`
@@ -112,11 +127,12 @@
         })
     }
 
-    function renderLogin(){
+    async function renderLogin(){
         hideMenuItem("Войти")
         hideMenuItem("Регистрация")
         showMenuItem("Выйти")
         $('.uc-user_menu .email .tn-atom').text(localStorage.email)
+        $('.uc-user_menu .balans .tn-atom').text(await getBalans())
     }
 
     function renderLogOut(){
@@ -124,6 +140,7 @@
         showMenuItem("Регистрация")
         hideMenuItem("Выйти")
         $('.uc-user_menu .email .tn-atom').text('')
+        $('.uc-user_menu .balans .tn-atom').text('')
     }
 
     function renderHideAll(){
