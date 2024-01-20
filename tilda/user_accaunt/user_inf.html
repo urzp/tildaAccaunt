@@ -1,0 +1,32 @@
+<style>
+    .uc-incom, .uc-outcom{
+        display: none;
+    }
+</style>
+
+<script>
+    const URL_READ_USER = 'https://lktilda.ru/php/readUser.php'
+    let user
+
+    async function intUserPanel(){
+        user = await getUserInf()
+        fillFormUser(user)
+    }
+
+    async function getUserInf(){
+        let content = {
+            email: localStorage.email,
+            token: localStorage.token,            
+        }
+        
+        let result = await ajaxReq(URL_READ_USER, AJAX_OPTIONS, content)
+        if(!result.success){ return false }
+        return result.user
+    }
+
+    function fillFormUser(user){
+        $(`.userInf [name="email"]` ).val(user.email)
+        $(`.userInf [name="name"]` ).val(user.name)
+        $(`.userInf [name="user_id"]` ).val(user.id)
+    }
+</script>

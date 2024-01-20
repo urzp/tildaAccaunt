@@ -23,6 +23,7 @@
         setButtonsEvents()
         checkAfterSendLogin(initMenu)
         addButtonToSuccessMessage()
+        tryFunFunc(intUserPanel)
     });
 
 
@@ -142,6 +143,14 @@
             return rand() + rand(); // to make it longer
         };
         return token()
+    }
+
+    function tryFunFunc(f){
+        if(isset(f)){f()}
+    }
+
+    function isset(r) {
+        return typeof r !== 'undefined';
     }
 
     // ------------------  функции рендренга ------------------------
