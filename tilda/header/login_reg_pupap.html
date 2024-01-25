@@ -126,7 +126,6 @@
             token: localStorage.token,            
         }
         let result = await ajaxReq(URL_GET_BALANS, AJAX_OPTIONS, content)
-        console.log(result)
         if(!result.success){
             return 'баланс не определен'
         }else{

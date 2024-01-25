@@ -1,23 +1,40 @@
 <?php
-    function readUser($id, $email, $name, $token, $mysql  ){
-        $sql = "UPDATE`users` SET `email`='$email', `name`='$name' WHERE `id` = '$id' AND  && `login_token`='$token'";
-        $User = $mysql -> query($sql);
-        $User = $User -> fetch_assoc();
-
-        if(isset($User)){
-            $result = (object) [
-                'success' => true,
-                'user' => $User
-            ];
-        }else{
+    function updateUser($id, $email, $name, $token, $mysql  ){
+        $sql = "SELECT `id` FROM `users` WHERE `id` = '$id' && `login_token`='$token'";
+        $checkUser = $mysql -> query($sql);
+        $checkUser = $checkUser -> fetch_assoc();
+  
+        if(isset($checkUser)){
+            $sql = "UPDATE`users` SET `email`='$email', `name`='$name' WHERE `id` = '$id' && `login_token`='$token'";
+            $res = $mysql -> query($sql);
              $result = (object) [
+                'success' => true,
+            ];    
+        }else{
+            $result = (object) [
                 'success' => false,
-            ];           
+                'msg' => 'login'
+            ];       
         }
 
         $mysql->close();
         echo json_encode($result);
         exit();
+    }
+
+    function checkEmail($id, $email, $mysql){
+        $sql = "SELECT `id` FROM `users` WHERE `id` != '$id' && `email` = '$email'";
+        $checkUser = $mysql -> query($sql);
+        $checkUser = $checkUser -> fetch_assoc();
+        if(isset($checkUser)||!filter_var($email, FILTER_VALIDATE_EMAIL)){
+            $result = (object) [
+                'success' => false,
+                'msg' => 'email'
+            ];    
+            $mysql->close();
+            echo json_encode($result);
+            exit();        
+        }
     }
 
     header('Access-Control-Allow-Origin: *');
@@ -33,6 +50,8 @@
     $token = $post -> token;
     
     include 'db_mysql.php';
+    
 
-    readUser($id, $email, $name, $token, $mysql );
+    checkEmail($id, $email, $mysql);
+    updateUser($id, $email, $name, $token, $mysql );
 ?>

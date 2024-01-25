@@ -6,11 +6,13 @@
 
 <script>
     const URL_READ_USER = 'https://lktilda.ru/php/readUser.php'
+    const URL_UPDATE_USER = 'https://lktilda.ru/php/updateUser.php'
     let user
 
     async function intUserPanel(){
         user = await getUserInf()
-        fillFormUser(user)
+        await fillFormUser(user)
+        setButtons()
     }
 
     async function getUserInf(){
@@ -24,9 +26,67 @@
         return result.user
     }
 
-    function fillFormUser(user){
+    async function updateUser(){
+        let content = {
+            id:  $(`.userInf [name="user_id"]` ).val(),
+            email:  $(`.userInf [name="email"]` ).val(),
+            name:  $(`.userInf [name="name"]` ).val(),
+            token: localStorage.token,            
+        }    
+        let result = await ajaxReq(URL_UPDATE_USER, AJAX_OPTIONS, content)
+        return result
+    }
+
+    async function fillFormUser(user){
         $(`.userInf [name="email"]` ).val(user.email)
         $(`.userInf [name="name"]` ).val(user.name)
         $(`.userInf [name="user_id"]` ).val(user.id)
     }
+
+    function setButtons(){
+        $('.userInf .t-submit').click( function(event){
+            event.stopPropagation()
+        })
+
+        $('.saveUserInfBtn').click(async()=>{
+            resetErrors_Zform('userInf')
+            if(!checkEmpty_Zform('userInf','email')) return false
+            if(!checkEmail_Zform('userInf','email')) return false
+            if(!checkEmpty_Zform('userInf','name')) return false
+            let result = await updateUser()
+            console.log('result = ',result.msg)
+            if(!result.success&&result.msg=='email') setError_Zform('userInf','email', 'email занят')
+        })
+    }
+
+     // ------------------  функции проверки полей зероблоков------------------------
+
+    function resetErrors_Zform(nameForm){
+        $(`.${nameForm} .js-error-control-box`).removeClass('js-error-control-box')
+    }
+
+     function checkEmpty_Zform(nameForm, nameFeld){
+        if(!!$(`.${nameForm} [name="${nameFeld}"]`).val()) return true
+        setError_Zform(nameForm, nameFeld, 'Поле не должно быть пустым')
+        return false 
+     }
+
+     function checkEmail_Zform(nameForm, nameFeld){
+        if(cheEmail($(`.${nameForm} [name="${nameFeld}"]`).val())) return true
+        setError_Zform(nameForm, nameFeld, 'Неккоректный email')
+        return false 
+     }
+
+     function setError_Zform(nameForm, nameFeld, msg){
+        $(`.${nameForm} [name="${nameFeld}"]`).parent().parent().addClass('js-error-control-box')
+        $(`.${nameForm} [name="${nameFeld}"]`).parent().find('.t-input-error').text(msg)     
+     }
+
+     function cheEmail(email){
+    return String(email)
+        .toLowerCase()
+        .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        );
+    };
 </script>
