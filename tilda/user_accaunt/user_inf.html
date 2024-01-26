@@ -7,12 +7,14 @@
 <script>
     const URL_READ_USER = 'https://lktilda.ru/php/readUser.php'
     const URL_UPDATE_USER = 'https://lktilda.ru/php/updateUser.php'
+    const URL_UPDATE_PASSWORD = 'https://lktilda.ru/php/updatePassword.php'
     let user
 
     async function intUserPanel(){
         user = await getUserInf()
         await fillFormUser(user)
         setButtons()
+        initPassword_Zinputs()
     }
 
     async function getUserInf(){
@@ -24,6 +26,17 @@
         let result = await ajaxReq(URL_READ_USER, AJAX_OPTIONS, content)
         if(!result.success){ return false }
         return result.user
+    }
+
+    async function updatePassword(){
+        let content = {
+            id:  $(`.userInf [name="user_id"]` ).val(),
+            old_password:  $(`.password [name="old_password"]` ).val(),
+            new_password:  $(`.password [name="new_password"]` ).val(),
+            token: localStorage.token,            
+        }    
+        let result = await ajaxReq(URL_UPDATE_PASSWORD, AJAX_OPTIONS, content)
+        return result
     }
 
     async function updateUser(){
@@ -44,7 +57,7 @@
     }
 
     function setButtons(){
-        $('.userInf .t-submit').click( function(event){
+        $('.userInf .t-submit, password .t-submit').click( function(event){
             event.stopPropagation()
         })
 
@@ -61,9 +74,31 @@
                 t390_showPopup(getIdPupap('updatesuccsess'))
             } 
         })
+
+        $('.savePasswordBtn').click(async()=>{
+            resetErrors_Zform('password')
+            if(!checkEmpty_Zform('password','old_password')) return false
+            if(!checkEmpty_Zform('password','new_password')) return false
+            if(!checkEmpty_Zform('password','new_password_check')) return false
+            if(!checkPasswords_Zform('password', 'new_password', 'new_password_check')) return false
+            let result = await updatePassword()
+            if(!result.success&&result.msg=='password') setError_Zform('password','old_password', 'неверный пароль')
+        })
+    }
+
+    function setEvents(){
+        $( 'input' ).on( "focus", function() {
+            resetErrors_Zform('password')
+        });
     }
 
      // ------------------  функции проверки полей зероблоков------------------------
+
+     function initPassword_Zinputs(){
+        $('[name="old_password"]').attr({'type':'password'})
+        $('[name="new_password"]').attr({'type':'password'})
+        $('[name="new_password_check"]').attr({'type':'password'})
+     }
 
     function resetErrors_Zform(nameForm){
         $(`.${nameForm} .js-error-control-box`).removeClass('js-error-control-box')
@@ -72,6 +107,12 @@
      function checkEmpty_Zform(nameForm, nameFeld){
         if(!!$(`.${nameForm} [name="${nameFeld}"]`).val()) return true
         setError_Zform(nameForm, nameFeld, 'Поле не должно быть пустым')
+        return false 
+     }
+
+     function checkPasswords_Zform(nameForm, nameFeld_1, nameFeld_2){
+        if($(`.${nameForm} [name="${nameFeld_1}"]`).val()==$(`.${nameForm} [name="${nameFeld_2}"]`).val()) return true
+        setError_Zform(nameForm, nameFeld_1, 'Пароли не совпали')
         return false 
      }
 
