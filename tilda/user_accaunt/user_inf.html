@@ -54,8 +54,12 @@
             if(!checkEmail_Zform('userInf','email')) return false
             if(!checkEmpty_Zform('userInf','name')) return false
             let result = await updateUser()
-            console.log('result = ',result.msg)
             if(!result.success&&result.msg=='email') setError_Zform('userInf','email', 'email занят')
+            if(result.success){
+                localStorage.email = $(`.userInf [name="email"]`).val()
+                $('.uc-user_menu .email .tn-atom').text(localStorage.email)
+                t390_showPopup(getIdPupap('updatesuccsess'))
+            } 
         })
     }
 
