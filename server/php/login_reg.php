@@ -1,13 +1,18 @@
 <?php
     //---------------------------------------------------------------------
     function req_user($email, $password, $mysql){
+        
         if(checkEmail($email, $mysql)){return false;}
         $sql = "INSERT INTO `users` (`email`, `password` ) VALUES('$email','$password')";
         $mysql -> query($sql);
-        $mysql->close();
         $result = (object) [
             'success' => true,
         ];
+        $sql = "SELECT `id` FROM `users` WHERE `email` = '$email'";
+        $user = $mysql -> query($sql);
+        $user = $user -> fetch_assoc();
+        addTouserLog($user['id'], 'new user','true' ,'-' , $email , $mysql);
+        $mysql->close();
         return $result;
     }
 
@@ -40,6 +45,7 @@
     header('Access-Control-Allow-Origin: *');
     include 'db_mysql.php';
     include 'checkEmail.php';
+    include 'userLog.php';
 
     selectRequst($_POST, $mysql);
 
