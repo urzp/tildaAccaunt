@@ -5,16 +5,29 @@
 </style>
 
 <script>
+    const URL_MAIN_PAGE = 'http://project6453667.tilda.ws/page42584837.html'
     const URL_READ_USER = 'https://lktilda.ru/php/readUser.php'
     const URL_UPDATE_USER = 'https://lktilda.ru/php/updateUser.php'
     const URL_UPDATE_PASSWORD = 'https://lktilda.ru/php/updatePassword.php'
     let user
 
     async function intUserPanel(){
-        user = await getUserInf()
+        user = await loadUser()
         await fillFormUser(user)
+        fillBalans(user)
         setButtons()
         initPassword_Zinputs()
+    }
+
+    async function loadUser(){
+        let i=0
+        let reuslt = false
+        while (!reuslt&&i<3){
+            reuslt = await getUserInf()
+            i++;
+        }
+        if(!reuslt) window.location.replace(URL_MAIN_PAGE)
+        return reuslt
     }
 
     async function getUserInf(){
@@ -54,6 +67,10 @@
         $(`.userInf [name="email"]` ).val(user.email)
         $(`.userInf [name="name"]` ).val(user.name)
         $(`.userInf [name="user_id"]` ).val(user.id)
+    }
+
+    function fillBalans(user){
+        $('.balans .tn-atom').text(user.balans + ' p.')
     }
 
     function setButtons(){
