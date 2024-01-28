@@ -13,10 +13,12 @@
 
     async function intUserPanel(){
         user = await loadUser()
-        await fillFormUser(user)
         fillBalans(user)
         setButtons()
         initPassword_Zinputs()
+        await fillFormUser(user)
+        await fillFormCard(user)
+        $('.uc-incom').css({'display':'block'})
     }
 
     async function loadUser(){
@@ -67,8 +69,14 @@
         $(`.userInf [name="email"]` ).val(user.email)
         $(`.userInf [name="name"]` ).val(user.name)
         $(`.userInf [name="user_id"]` ).val(user.id)
+        
     }
 
+    async function fillFormCard(user){
+        $('.t706__orderform [name="id_user"]').val(user.id)
+        $('.t706__orderform [name="email"]').val(user.email)
+        $('.t706__cartwin-heading').text(`Ваш баланс: ${user.balans} р.`)
+    }
     function fillBalans(user){
         $('.balans .tn-atom').text(user.balans + ' p.')
     }
