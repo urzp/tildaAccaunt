@@ -157,7 +157,7 @@
 
     function intUserAccaunt(url_accaunt) {
         let accauntPage = url_accaunt.split('/').pop()
-        let currentPage = document.URL.split('/').pop()
+        let currentPage = document.URL.split('/').pop().split('#')[0]
         if(accauntPage==currentPage) intUserPanel()
     }
 

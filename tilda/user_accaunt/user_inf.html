@@ -2,6 +2,9 @@
     .uc-incom, .uc-outcom{
         display: none;
     }
+    .t-radio__control:has([value="cash"]){
+        display: none;
+    }
 </style>
 
 <script>
@@ -18,10 +21,10 @@
         fillBalans(user)
         setButtons()
         initPassword_Zinputs()
-        await fillFormUser(user)
+        whaitRendered('uc-user_data', ()=>{fillFormUser(user)}) 
         await fillFormCard(user)
         fillPaymentTabele(payments)
-        
+        showSuccsessPupap()
     }
 
     async function loadUser(){
@@ -118,6 +121,11 @@
         $( 'input' ).on( "focus", function() {
             resetErrors_Zform('password')
         });
+    }
+
+    function showSuccsessPupap(){
+        if(document.URL.split('/').pop().split('#').pop()!='paymentsuccsess') return false
+        t390_showPopup(getIdPupap('paymentsuccsess'))
     }
 
      // ------------------  функции проверки полей зероблоков------------------------
