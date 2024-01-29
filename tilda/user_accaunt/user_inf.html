@@ -5,6 +5,9 @@
     .t-radio__control:has([value="cash"]){
         display: none;
     }
+    .t706__form-bottom-text{
+        margin-bottom: 0!important;
+    }
 </style>
 
 <script>
@@ -25,6 +28,7 @@
         await fillFormCard(user)
         fillPaymentTabele(payments)
         showSuccsessPupap()
+        $('.t706__orderform [value="cash"]').parent().remove()
     }
 
     async function loadUser(){

@@ -6,9 +6,13 @@
     .t396__elem.email, .t396__elem.balans{
         cursor: pointer;
     }
+    .js-successbox{
+        display: none!important;
+    }
 </style>
 
 <script>
+    let balans
     const AJAX_OPTIONS = {
         type: 'POST',
         headers: { 'Content-Type': 'application/json;charset=utf-8' },
@@ -91,6 +95,17 @@
         $('.t396__elem.email, .t396__elem.balans').click(function(){
             window.location.replace(URL_ACCAUNT)
         })
+
+
+        let my_el = document.querySelector('.t706__cartwin-prodamount-wrap')
+        let observer = new MutationObserver( () => {
+            cardShowHideCachPayment()
+        });
+        observer.observe(my_el, {
+            childList: true, 
+            subtree: true, 
+            characterData: true 
+        });
 
     }
 
@@ -188,8 +203,9 @@
         hideMenuItem("Войти")
         hideMenuItem("Регистрация")
         showMenuItem("Выйти")
+        balans = await getBalans()
         $('.uc-user_menu .email .tn-atom').text(localStorage.email)
-        $('.uc-user_menu .balans .tn-atom').text(await getBalans())
+        $('.uc-user_menu .balans .tn-atom').text(balans)
     }
 
     function renderLogOut(){
@@ -198,6 +214,7 @@
         hideMenuItem("Выйти")
         $('.uc-user_menu .email .tn-atom').text('')
         $('.uc-user_menu .balans .tn-atom').text('')
+        $('.t706__orderform [value="cash"]').parent().remove()
     }
 
     function renderHideAll(){
@@ -217,6 +234,17 @@
             avtocomplitDelete()
         })
     }
+
+    function cardShowHideCachPayment(){
+        if(!balans){ $('.t706__orderform [value="cash"]').parent().fadeOut() ; return false }
+        let intBalans = Number( balans.split(' ')[0] );
+        if(tcart.amount>intBalans){ 
+            $('.t706__orderform [value="cash"]').parent().fadeOut()
+        }else{
+            $('.t706__orderform [value="cash"]').parent().fadeIn()
+        }
+    }
+
     // ------------------  функции проверки полей ------------------------
 
     function setInputError(nameForm, nameFeld, msg){
