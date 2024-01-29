@@ -1,8 +1,9 @@
 <div class='in_payment_table'>
     <div class="header">
         <div class="column_1 column"><div class="text">Дата Время</div></div>
-        <div class="column_2 column"><div class="text">ID перевода</div></div>
-        <div class="column_3 column"><div class="text">Сумма</div></div>
+        <div class="column_2 column"><div class="text">Платежная система</div></div>
+        <div class="column_3 column"><div class="text">ID перевода</div></div>
+        <div class="column_4 column"><div class="text">Сумма</div></div>
     </div>
 
 </div>
@@ -21,11 +22,11 @@
         color: #767676;
     }
 
-    .row .column_3 .text{
+    .row .column_4 .text{
         font-size: 24px;
     }
 
-    .row .column_3 .text span{
+    .row .column_4 .text span{
         font-size: 16px;
     }
 
@@ -38,7 +39,7 @@
         width: 200px;
     }
 
-    .column_3{
+    .column_4{
         margin-left: auto;
     }
 
@@ -56,35 +57,25 @@
         <div class="column_1 column"><div class="text"></div></div>
         <div class="column_2 column"><div class="text"></div></div>
         <div class="column_3 column"><div class="text"></div></div>
+        <div class="column_4 column"><div class="text"></div></div>
     </div>
     `
-    let data = [
-        {
-            datetime: '24.01.2023 10:05',
-            trnsaction: '1197765310',
-            sum: '150'
-        },
-        {
-            datetime: '24.01.2023 10:05',
-            trnsaction: '1197765310',
-            sum: '150'
-        }
-    ]
 
     function fillPaymentTabele(data){
-        console.log(data)
+        if(!data) return false
         data.forEach( (element, i) => {
             $('.in_payment_table').append(html_row)
             $('.row_').addClass(`row_${i}`).removeClass('row_')
             $(`.row_${i} .column_1 .text`).text(element.datetime)
-            $(`.row_${i} .column_2 .text`).text(element.trnsaction)
-            $(`.row_${i} .column_3 .text`).html(`${element.sum} <span> p.</span>`)
+            $(`.row_${i} .column_2 .text`).text(element.paymentsystem)
+            $(`.row_${i} .column_3 .text`).text(element.trnsaction)
+            $(`.row_${i} .column_4 .text`).html(`${element.sum} <span> p.</span>`)
         });
+        $('.uc-incom').css({'display':'block','opacity':'0.01'})
+        whaitRendered('uc-incom',function(){
+            ajastBG('in_paymentBG', 'in_payment_table', bottumGap)
+        })
         
-        setTimeout( ()=>{ 
-            $('.uc-incom').css({'display':'block'})
-            ajastBG('in_paymentBG', 'in_payment_table', bottumGap) 
-        }, 600)
     }
 
     function ajastBG(BGClassName, classNameTable, setBottumGap){
@@ -95,5 +86,15 @@
         $(`.${BGClassName}`).height(newHiegthBG)
         let newHiegthZero = $(`.${BGClassName}`).parents('.t396__artboard').height() + setBottumGap - gap
         $(`.${BGClassName}`).parents('.t396__artboard').height(newHiegthZero)
+        $('.uc-incom').animate({opacity:1.0},500)
+    }
+
+    function whaitRendered(classNameZBl, callBack){
+        let idInterval = setInterval(()=>{
+            let rendered = $(`.${classNameZBl} .t396__artboard`).hasClass('rendered')
+            if(!rendered) return false
+            clearInterval(idInterval)
+            callBack()
+        },300)
     }
 </script>
