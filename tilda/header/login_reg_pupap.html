@@ -3,6 +3,9 @@
     [data-tooltip-hook="#popup:login"] .js-successbox{
         display:none!important
     }
+    .t396__elem.email, .t396__elem.balans{
+        cursor: pointer;
+    }
 </style>
 
 <script>
@@ -14,6 +17,7 @@
     const URL_CHECK_EMAIL = 'https://lktilda.ru/php/isHasEmail.php'
     const URL_GET_BALANS = 'https://lktilda.ru/php/getBalans.php'
     const URL_NEW_PASSWORD = 'https://lktilda.ru/php/newPassword.php'
+    const URL_ACCAUNT = 'http://project6453667.tilda.ws/user_accaunt'
 
     let checkFelds = true
 
@@ -23,7 +27,7 @@
         setButtonsEvents()
         checkAfterSendLogin(initMenu)
         addButtonToSuccessMessage()
-        tryFunFunc(intUserPanel)
+        intUserAccaunt(URL_ACCAUNT)
     });
 
 
@@ -38,6 +42,7 @@
 
         $(`.t978__link-inner.t978__link-inner_left:contains("Выйти")`).click(()=>{
             logout()
+            window.location.replace(URL_MAIN_PAGE)
         })
 
         $('[data-tooltip-hook="#popup:registration"] .t-submit').click(async function(event){
@@ -81,6 +86,10 @@
                 t702_closePopup(getIdPupap('resetnewpassword'))
                 $(`.t978__link-inner.t978__link-inner_left:contains('Войти')`).click()
             }
+        })
+
+        $('.t396__elem.email, .t396__elem.balans').click(function(){
+            window.location.replace(URL_ACCAUNT)
         })
 
     }
@@ -146,8 +155,10 @@
         if(isset(f)){f()}
     }
 
-    function isset(r) {
-        return typeof r !== 'undefined';
+    function intUserAccaunt(url_accaunt) {
+        let accauntPage = url_accaunt.split('/').pop()
+        let currentPage = document.URL.split('/').pop()
+        if(accauntPage==currentPage) intUserPanel()
     }
 
     // ------------------  функции рендренга ------------------------

@@ -35,7 +35,7 @@
         justify-content: space-between;
     }
     .column{
-        width: 150px;
+        width: 200px;
     }
 
     .column_3{
@@ -72,6 +72,7 @@
     ]
 
     function fillPaymentTabele(data){
+        if(!data) return false
         data.forEach( (element, i) => {
             $('.in_payment_table').append(html_row)
             $('.row_').addClass(`row_${i}`).removeClass('row_')
@@ -79,8 +80,11 @@
             $(`.row_${i} .column_2 .text`).text(element.trnsaction)
             $(`.row_${i} .column_3 .text`).html(`${element.sum} <span> p.</span>`)
         });
+        $('.uc-incom').css({'display':'block','opacity':'0.01'})
+        whaitRendered('uc-incom',function(){
+            ajastBG('in_paymentBG', 'in_payment_table', bottumGap)
+        })
         
-        ajastBG('in_paymentBG', 'in_payment_table', bottumGap)
     }
 
     function ajastBG(BGClassName, classNameTable, setBottumGap){
@@ -91,5 +95,15 @@
         $(`.${BGClassName}`).height(newHiegthBG)
         let newHiegthZero = $(`.${BGClassName}`).parents('.t396__artboard').height() + setBottumGap - gap
         $(`.${BGClassName}`).parents('.t396__artboard').height(newHiegthZero)
+        $('.uc-incom').animate({opacity:1.0},500)
+    }
+
+    function whaitRendered(classNameZBl, callBack){
+        let idInterval = setInterval(()=>{
+            let rendered = $(`.${classNameZBl} .t396__artboard`).hasClass('rendered')
+            if(!rendered) return false
+            clearInterval(idInterval)
+            callBack()
+        },300)
     }
 </script>
