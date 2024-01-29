@@ -15,8 +15,10 @@ function balansUpdate($id, $newBalans, $mysql){
 function in_paymentRead($id_user, $mysql){
     $sql = "SELECT * FROM `in_payments` WHERE `id_user` = '$id_user'";
     $result = $mysql -> query($sql);
-    $result = $result -> fetch_assoc();
-    return $result;
+    while ($payment = $result->fetch_assoc()) {  
+        $payments[] = $payment;
+    }
+    return $payments;
 }
 
 ?>

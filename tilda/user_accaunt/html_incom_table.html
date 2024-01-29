@@ -35,7 +35,7 @@
         justify-content: space-between;
     }
     .column{
-        width: 150px;
+        width: 200px;
     }
 
     .column_3{
@@ -72,6 +72,7 @@
     ]
 
     function fillPaymentTabele(data){
+        console.log(data)
         data.forEach( (element, i) => {
             $('.in_payment_table').append(html_row)
             $('.row_').addClass(`row_${i}`).removeClass('row_')
@@ -80,7 +81,10 @@
             $(`.row_${i} .column_3 .text`).html(`${element.sum} <span> p.</span>`)
         });
         
-        ajastBG('in_paymentBG', 'in_payment_table', bottumGap)
+        setTimeout( ()=>{ 
+            $('.uc-incom').css({'display':'block'})
+            ajastBG('in_paymentBG', 'in_payment_table', bottumGap) 
+        }, 600)
     }
 
     function ajastBG(BGClassName, classNameTable, setBottumGap){

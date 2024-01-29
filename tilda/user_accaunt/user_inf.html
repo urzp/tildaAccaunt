@@ -9,16 +9,19 @@
     const URL_READ_USER = 'https://lktilda.ru/php/readUser.php'
     const URL_UPDATE_USER = 'https://lktilda.ru/php/updateUser.php'
     const URL_UPDATE_PASSWORD = 'https://lktilda.ru/php/updatePassword.php'
-    let user
+    let user, payments
 
     async function intUserPanel(){
-        user = await loadUser()
+        userinf = await loadUser()
+        user = await userinf.user
+        payments = await userinf.payments
         fillBalans(user)
         setButtons()
         initPassword_Zinputs()
         await fillFormUser(user)
         await fillFormCard(user)
-        $('.uc-incom').css({'display':'block'})
+        fillPaymentTabele(payments)
+        
     }
 
     async function loadUser(){
@@ -40,7 +43,7 @@
         
         let result = await ajaxReq(URL_READ_USER, AJAX_OPTIONS, content)
         if(!result.success){ return false }
-        return result.user
+        return result
     }
 
     async function updatePassword(){

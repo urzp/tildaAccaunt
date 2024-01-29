@@ -5,9 +5,11 @@
         $User = $User -> fetch_assoc();
 
         if(isset($User)){
+            $payments = in_paymentRead($User['id'], $mysql);
             $result = (object) [
                 'success' => true,
-                'user' => $User
+                'user' => $User,
+                'payments' => $payments
             ];
         }else{
              $result = (object) [
@@ -31,6 +33,7 @@
     $token = $post -> token;
     
     include 'db_mysql.php';
+    include 'balans_functions.php';
 
     readUser($email, $token, $mysql );
 ?>
