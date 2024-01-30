@@ -96,6 +96,21 @@
             window.location.replace(URL_ACCAUNT)
         })
 
+        sbBt_tcard = document.querySelector('.t706 .t-submit') 
+        let stopIntercept = false;       
+        sbBt_tcard.onclick = async function(event){  
+            if($('[name="paymentsystem"][value="cash"]').is(':checked')){
+                if(stopIntercept) return true
+                event.stopPropagation()
+                let balans = await getBalans()
+                balans = Number( balans.split(' ')[0] );
+                if(balans<tcart.amount){ console.log('no mony'); return false}
+                console.log('yes mony')
+                stopIntercept  = true
+                $('.t706 .t-submit').click()
+                stopIntercept  = false
+            }  
+        }
 
         let my_el = document.querySelector('.t706__cartwin-prodamount-wrap')
         let observer = new MutationObserver( () => {
@@ -178,6 +193,12 @@
 
     // ------------------  функции рендренга ------------------------
 
+    function fillFormsProductsCard(){
+        $('.t706__orderform [name="token"]').val(localStorage.token)
+        $('.t706__orderform [name="email_user"]').val(localStorage.email)
+
+    }
+
     function initPasswordInputs(){
         $('[name="password"]').attr({'type':'password'})
         $('[name="password_check"]').attr({'type':'password'})
@@ -206,6 +227,7 @@
         balans = await getBalans()
         $('.uc-user_menu .email .tn-atom').text(localStorage.email)
         $('.uc-user_menu .balans .tn-atom').text(balans)
+        fillFormsProductsCard()
     }
 
     function renderLogOut(){
@@ -239,6 +261,7 @@
         if(!balans){ $('.t706__orderform [value="cash"]').parent().fadeOut() ; return false }
         let intBalans = Number( balans.split(' ')[0] );
         if(tcart.amount>intBalans){ 
+            $($('[name="paymentsystem"]')[0]).prop("checked", true);
             $('.t706__orderform [value="cash"]').parent().fadeOut()
         }else{
             $('.t706__orderform [value="cash"]').parent().fadeIn()
@@ -297,7 +320,7 @@
             $('[data-tooltip-hook="#popup:registration"] .js-rule-error-name').css({'display':'block'})
             $('[data-tooltip-hook="#popup:registration"] .t-form__errorbox-wrapper').css({'display':'block'})
         }else{
-            console.log('pass')
+            //console.log('pass')
             event.returnValue = true
             checkFelds = false
             $('[data-tooltip-hook="#popup:registration"] .t-submit').click()
