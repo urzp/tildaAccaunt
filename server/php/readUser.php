@@ -6,10 +6,12 @@
 
         if(isset($User)){
             $payments = in_paymentRead($User['id'], $mysql);
+            $orders = out_paymentRead($User['id'], $mysql);
             $result = (object) [
                 'success' => true,
                 'user' => $User,
-                'payments' => $payments
+                'payments' => $payments,
+                'orders' => $orders
             ];
         }else{
              $result = (object) [

@@ -10,6 +10,10 @@
 
 
 <style>
+    .in_payment_table .header{
+        margin-bottom: 20px;
+    }
+
     .in_payment_table .text, .row .text{
         color: #9F9F9F;
         font-size: 16px;
@@ -33,18 +37,30 @@
     .in_payment_table .header, .in_payment_table .row{
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        justify-content: flex-start;
     }
-    .in_payment_table .column{
-        width: 200px;
+    .in_payment_table .column_1{
+        min-width: 150px;
     }
+
+    .in_payment_table .column_2{
+        min-width: 150px;
+        margin-left: 20px;
+    }
+
+    .in_payment_table .column_3{
+        min-width: 100px;
+        margin-left: 20px;
+    }
+
 
     .in_payment_table .column_4{
-        margin-left: auto;
+        margin-left: 20px;
+        width: 100%;
     }
 
-    .in_payment_table .column_3 .text{
-        text-align: center;
+    .in_payment_table .column_4 .text{
+        text-align: right;
     }
 
 </style>
@@ -52,12 +68,5 @@
 
 <script>
     let bottumGap = 50
-    let html_row = `
-    <div class="row row_">
-        <div class="column_1 column"><div class="text"></div></div>
-        <div class="column_2 column"><div class="text"></div></div>
-        <div class="column_3 column"><div class="text"></div></div>
-        <div class="column_4 column"><div class="text"></div></div>
-    </div>
-    `
+
 </script>

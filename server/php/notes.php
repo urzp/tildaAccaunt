@@ -67,5 +67,21 @@
             }
     '
     //$('[name="paymentsystem"][value="cash"]').is(':checked')
+
+
+    /*'{
+        "email":"ermak80_pass@mail.ru",
+        "id_user":"4",
+        "paymentsystem":"cash",
+        "payment":"
+        {\"orderid\":\"1863541175\",
+            \"products\":[\"\u041f\u043e\u043f\u043e\u043b\u043d\u0438\u0442\u044c \u0431\u0430\u043b\u0430\u043d\u0441=100\"],
+            \"amount\":\"100\"}",
+            "formid":"form697611663",
+            "formname":"Cart",
+            "api_k":"0234$567DAs"
+        }';
+
+    */
 ?>
 

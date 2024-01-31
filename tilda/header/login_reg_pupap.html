@@ -6,9 +6,9 @@
     .t396__elem.email, .t396__elem.balans{
         cursor: pointer;
     }
-    .js-successbox{
+    /* .js-successbox{
         display: none!important;
-    }
+    } */
 </style>
 
 <script>
@@ -227,6 +227,7 @@
         balans = await getBalans()
         $('.uc-user_menu .email .tn-atom').text(localStorage.email)
         $('.uc-user_menu .balans .tn-atom').text(balans)
+        $('[name="paymentsystem"][value="cash"]').parent().append(` ${balans}`)
         fillFormsProductsCard()
     }
 

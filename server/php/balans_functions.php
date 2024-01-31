@@ -21,4 +21,13 @@ function in_paymentRead($id_user, $mysql){
     return $payments;
 }
 
+function out_paymentRead($id_user, $mysql){
+    $sql = "SELECT * FROM `out_payments` WHERE `id_user` = '$id_user'";
+    $result = $mysql -> query($sql);
+    while ($payment = $result->fetch_assoc()) {  
+        $payments[] = $payment;
+    }
+    return $payments;
+}
+
 ?>
