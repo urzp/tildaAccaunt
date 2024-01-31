@@ -31,6 +31,7 @@
         $('.t706__orderform [value="cash"]').parent().remove()
     }
 
+    // ------------------  функции url запросов ------------------------
     async function loadUser(){
         let i=0
         let reuslt = false
@@ -53,6 +54,7 @@
         return result
     }
 
+    // ------------------  функции рендеринга и заполнения полей ------------------------
     async function updatePassword(){
         let content = {
             id:  $(`.userInf [name="user_id"]` ).val(),
@@ -90,7 +92,45 @@
     function fillBalans(user){
         $('.balans .tn-atom').text(user.balans + ' p.')
     }
+    // заполнение таплиц расходов приходов
+    function fillPaymentTabele(data){
+        if(!data) return false
+        data.forEach( (element, i) => {
+            $('.in_payment_table').append(html_row)
+            $('.in_payment_table .row_').addClass(`row_${i}`).removeClass('row_')
+            $(`.in_payment_table .row_${i} .column_1 .text`).text(element.datetime)
+            $(`.in_payment_table .row_${i} .column_2 .text`).text(element.paymentsystem)
+            $(`.in_payment_table .row_${i} .column_3 .text`).text(element.trnsaction)
+            $(`.in_payment_table .row_${i} .column_4 .text`).html(`${element.sum} <span> p.</span>`)
+        });
+        $('.uc-incom').css({'display':'block','opacity':'0.01'})
+        whaitRendered('uc-incom',function(){
+            ajastBG('in_paymentBG', 'in_payment_table', bottumGap)
+        })
+        
+    }
 
+    function ajastBG(BGClassName, classNameTable, setBottumGap){
+        let buttomBG = $(`.${BGClassName}`).offset().top + $(`.${BGClassName}`).height()
+        let buttomTable = $(`.${classNameTable}`).offset().top + $(`.${classNameTable}`).height()
+        let gap = buttomBG - buttomTable
+        let newHiegthBG = $(`.${BGClassName}`).height() + setBottumGap - gap
+        $(`.${BGClassName}`).height(newHiegthBG)
+        let newHiegthZero = $(`.${BGClassName}`).parents('.t396__artboard').height() + setBottumGap - gap
+        $(`.${BGClassName}`).parents('.t396__artboard').height(newHiegthZero)
+        $('.uc-incom').animate({opacity:1.0},500)
+    }
+
+    function whaitRendered(classNameZBl, callBack){
+        let idInterval = setInterval(()=>{
+            let rendered = $(`.${classNameZBl} .t396__artboard`).hasClass('rendered')
+            if(!rendered) return false
+            clearInterval(idInterval)
+            callBack()
+        },300)
+    }
+
+    // ------------------  функции обработки кликов и событий ------------------------
     function setButtons(){
         $('.userInf .t-submit, password .t-submit').click( function(event){
             event.stopPropagation()

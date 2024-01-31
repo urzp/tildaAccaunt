@@ -342,7 +342,7 @@
             return false
         } 
         delete localStorage.afterSendLogin
-        setTimeout(()=>{$(`.t978__link-inner.t978__link-inner_left:contains('loader')`).click()},500)
+        setTimeout(()=>{$(`.t978__link-inner.t978__link-inner_left:contains('loader')`).click()}, 200)
         
         isLogget(true).then((result)=>{
             if(result){

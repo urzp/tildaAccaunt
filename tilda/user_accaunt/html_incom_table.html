@@ -18,32 +18,32 @@
         font-weight: 400;
     }
 
-    .row .text{
+    .in_payment_table .row .text{
         color: #767676;
     }
 
-    .row .column_4 .text{
+    .in_payment_table .row .column_4 .text{
         font-size: 24px;
     }
 
-    .row .column_4 .text span{
+    .in_payment_table .row .column_4 .text span{
         font-size: 16px;
     }
 
-    .header, .row{
+    .in_payment_table .header, .in_payment_table .row{
         display: flex;
         align-items: center;
         justify-content: space-between;
     }
-    .column{
+    .in_payment_table .column{
         width: 200px;
     }
 
-    .column_4{
+    .in_payment_table .column_4{
         margin-left: auto;
     }
 
-    .column_3 .text{
+    .in_payment_table .column_3 .text{
         text-align: center;
     }
 
@@ -60,41 +60,4 @@
         <div class="column_4 column"><div class="text"></div></div>
     </div>
     `
-
-    function fillPaymentTabele(data){
-        if(!data) return false
-        data.forEach( (element, i) => {
-            $('.in_payment_table').append(html_row)
-            $('.row_').addClass(`row_${i}`).removeClass('row_')
-            $(`.row_${i} .column_1 .text`).text(element.datetime)
-            $(`.row_${i} .column_2 .text`).text(element.paymentsystem)
-            $(`.row_${i} .column_3 .text`).text(element.trnsaction)
-            $(`.row_${i} .column_4 .text`).html(`${element.sum} <span> p.</span>`)
-        });
-        $('.uc-incom').css({'display':'block','opacity':'0.01'})
-        whaitRendered('uc-incom',function(){
-            ajastBG('in_paymentBG', 'in_payment_table', bottumGap)
-        })
-        
-    }
-
-    function ajastBG(BGClassName, classNameTable, setBottumGap){
-        let buttomBG = $(`.${BGClassName}`).offset().top + $(`.${BGClassName}`).height()
-        let buttomTable = $(`.${classNameTable}`).offset().top + $(`.${classNameTable}`).height()
-        let gap = buttomBG - buttomTable
-        let newHiegthBG = $(`.${BGClassName}`).height() + setBottumGap - gap
-        $(`.${BGClassName}`).height(newHiegthBG)
-        let newHiegthZero = $(`.${BGClassName}`).parents('.t396__artboard').height() + setBottumGap - gap
-        $(`.${BGClassName}`).parents('.t396__artboard').height(newHiegthZero)
-        $('.uc-incom').animate({opacity:1.0},500)
-    }
-
-    function whaitRendered(classNameZBl, callBack){
-        let idInterval = setInterval(()=>{
-            let rendered = $(`.${classNameZBl} .t396__artboard`).hasClass('rendered')
-            if(!rendered) return false
-            clearInterval(idInterval)
-            callBack()
-        },300)
-    }
 </script>
