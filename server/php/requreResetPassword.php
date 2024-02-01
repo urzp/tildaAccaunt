@@ -21,9 +21,6 @@ if(!$check){
 
 $reset_password = rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9);
 
-$log = date('Y-m-d H:i:s') . ' reset_password '. $reset_password;
-file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
-
 $sql = "UPDATE`users` SET `resetpassword`='$reset_password ' WHERE `email`='$email'";
 $checkSession = $mysql -> query($sql);
 

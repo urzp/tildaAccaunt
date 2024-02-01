@@ -1,7 +1,0 @@
-2024-02-01 11:24:29 login_reg.php reg
-2024-02-01 11:24:29 INSERT INTO `user_log` (`id_user`, `action`, `succsess`, `old_data`, `new_data` ) VALUES('19','new user','true' , '-', 'ermak80_pass@mail.ru')
-2024-02-01 11:25:47 login_reg.php login
-2024-02-01 11:26:34 isLogget.php ermak80_pass@mail.ru reject password false time 1706775994-1706775947=47
-2024-02-01 11:26:36 isLogget.php ermak80_pass@mail.ru reject password false time 1706775996-1706775947=49
-2024-02-01 11:26:37 login_reg.php login
-2024-02-01 11:26:38 isLogget.php ermak80_pass@mail.ru reject password false time 1706775998-1706775997=1

@@ -19,9 +19,6 @@ function notePatment($id_user, $paymentsystem, $transaction, $sum, $oldBalans, $
 
 header('Access-Control-Allow-Origin: *');
 
-$log = date('Y-m-d H:i:s') . ' '.json_encode($_POST);
-file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
-
 $post_link = $_POST['post-link'];
 $post_email = $_POST['Email'];
 

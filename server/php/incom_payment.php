@@ -18,9 +18,6 @@ function notePatment($id_user, $paymentsystem, $trnsaction, $sum, $oldBalans, $n
 
 header('Access-Control-Allow-Origin: *');
 
-$log = date('Y-m-d H:i:s') . ' '.json_encode($_POST);
-file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
-
 $id_user = $_POST["id_user"];
 //$id_user = 4;
 //$payment = "{\"orderid\":\"2024788416\",\"products\":[\"\u041f\u043e\u043f\u043e\u043b\u043d\u0438\u0442\u044c \u0431\u0430\u043b\u0430\u043d\u0441=100\"],\"amount\":\"100\"}";
@@ -30,9 +27,6 @@ $payment = $_POST['payment'];
 $payment = json_decode(str_replace('\"', "",$payment), true);
 
 $api_key = $_POST['api_k'];
-
-$log = date('Y-m-d H:i:s') . ' '.$api_key;
-file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
 
 if($api_key != "0234$567DAs"){exit();}
 if($paymentsystem == 'cash'){exit();}
