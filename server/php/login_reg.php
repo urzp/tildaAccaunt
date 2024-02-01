@@ -36,7 +36,7 @@
         $email = $POST["email"];
         $login_token = $POST["login_token"];
         $password = $POST["password"];
-        $password = md5($password."wqrtvfd");
+        $password = md5($password._SECRET_);
         if($requst=='reg'){ req_user($email, $password, $mysql); sendRegEmail($email,$POST["password"]);}
         if($requst=='login'){ login($email, $password, $login_token, $mysql); }
     }

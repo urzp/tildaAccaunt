@@ -35,7 +35,7 @@ if(!$check){
     exit();
 }
 
-$password = md5($password."wqrtvfd");
+$password = md5($password._SECRET_);
 
 $sql = "UPDATE `users` SET `password` = '$password' WHERE `id` = '$user[id]' AND `email`='$email'";
 $mysql -> query($sql);
