@@ -39,6 +39,7 @@ $token = $post -> token;
 $wait_for_update = $post -> wait_for_update;
 
 include 'db_mysql.php';
+include 'support_functions.php';
 
 if($wait_for_update!='1'){
     checkLogin($email, $token, $mysql );
@@ -46,9 +47,9 @@ if($wait_for_update!='1'){
     $i = 1;
     while ($i <= 5):
         $checkReject = checkReject($email, $mysql);
-        $log = date('Y-m-d H:i:s') . ' time '.time().'-'.$checkReject['time_login'].'='.time() - $checkReject['time_login'];
-        file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
-        if($checkReject['reject_password'] != ''&& time() - $checkReject['time_login'] < 30){ 
+        $text_log = $email.' reject password '.$checkReject['reject_password'].' time '.time().'-'.$checkReject['time_login'].'='.(time() - $checkReject['time_login']);
+        push_log($text_log, basename(__FILE__));
+        if($checkReject['reject_password'] != '' && time() - $checkReject['time_login'] < 30){ 
             resetCheckLogin($email, $mysql);
             checkLogin($email, $token, $mysql );
         }

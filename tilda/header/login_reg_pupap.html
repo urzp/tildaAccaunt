@@ -52,10 +52,12 @@
         $('[data-tooltip-hook="#popup:registration"] .t-submit').click(async function(event){
             if(!checkFelds) return false
             if(!checkPasswords(event)) return false
-            if(!await checkEmail(event)) return false
+            if(!await checkEmail(event, 'registration', 'уже зарегестрирован')) return false
         })
 
-        $('[data-tooltip-hook="#popup:login"] .t-submit').click(()=>{
+        $('[data-tooltip-hook="#popup:login"] .t-submit').click(async function(event){
+            if(!checkFelds) return false
+            if(!await checkEmail(event, 'login', 'не найден', true)) return false
             localStorage.email = $('[data-tooltip-hook="#popup:login"] [name="email"]').val()
             callBack = ()=>{
                 $('.t-popup__block-close-button').click()
@@ -311,24 +313,26 @@
         return true
     }
 
-    async function checkEmail(event){
+    async function checkEmail(event, namePupap, msg, inverse = false){
         event.stopPropagation()
-        let email = $('[data-tooltip-hook="#popup:registration"] [name="email"]').val()
+        let email = $(`[data-tooltip-hook="#popup:${namePupap}"] [name="email"]`).val()
         let result = await ajaxReq(URL_CHECK_EMAIL, AJAX_OPTIONS, {email})
+        inverse?result = !result:result
         if(result ){
-            $('[data-tooltip-hook="#popup:registration"] [name="email"]').parent().parent().addClass('js-error-control-box')
-            $('[data-tooltip-hook="#popup:registration"] .js-rule-error-name').text(`${email} уже заорегестрирован`)
-            $('[data-tooltip-hook="#popup:registration"] .js-rule-error-name').css({'display':'block'})
-            $('[data-tooltip-hook="#popup:registration"] .t-form__errorbox-wrapper').css({'display':'block'})
+            $(`[data-tooltip-hook="#popup:${namePupap}"] [name="email"]`).parent().parent().addClass('js-error-control-box')
+            $(`[data-tooltip-hook="#popup:${namePupap}"] .js-rule-error-name`).text(`${email} ${msg}`)
+            $(`[data-tooltip-hook="#popup:${namePupap}"] .js-rule-error-name`).css({'display':'block'})
+            $(`[data-tooltip-hook="#popup:${namePupap}"] .t-form__errorbox-wrapper`).css({'display':'block'})
         }else{
             //console.log('pass')
             event.returnValue = true
             checkFelds = false
-            $('[data-tooltip-hook="#popup:registration"] .t-submit').click()
+            $(`[data-tooltip-hook="#popup:${namePupap}"] .t-submit`).click()
             return true
         }
         
     }
+
 
     // ------------------  функции сценария ------------------------
 

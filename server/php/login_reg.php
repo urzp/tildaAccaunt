@@ -46,6 +46,9 @@
     include 'db_mysql.php';
     include 'checkEmail.php';
     include 'userLog.php';
+    include 'support_functions.php';
+    
+    push_log($_POST["requst"], basename(__FILE__));
 
     selectRequst($_POST, $mysql);
 
