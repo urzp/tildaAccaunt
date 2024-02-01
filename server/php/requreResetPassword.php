@@ -21,6 +21,9 @@ if(!$check){
 
 $reset_password = rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9);
 
+$log = date('Y-m-d H:i:s') . ' reset_password '. $reset_password;
+file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
+
 $sql = "UPDATE`users` SET `resetpassword`='$reset_password ' WHERE `email`='$email'";
 $checkSession = $mysql -> query($sql);
 
@@ -32,7 +35,7 @@ $subject = "Сброс пароля";
 $message = " <p>Код для сброса пароля</p> </br> <b>$reset_password</b>";
 
 $headers  = "Content-type: text/html; charset=utf-8 \r\n"; 
-$headers .= "From:<support@smmnakrutka.ru>\r\n"; 
+//$headers .= "From:<noreply@unverified.beget.ru>\r\n"; 
 $headers .= "Reply-To: reply-to@example.com\r\n"; 
 
 mail($to, $subject, $message, $headers); 

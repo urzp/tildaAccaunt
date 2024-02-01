@@ -37,7 +37,7 @@
         $login_token = $POST["login_token"];
         $password = $POST["password"];
         $password = md5($password."wqrtvfd");
-        if($requst=='reg'){ req_user($email, $password, $mysql); }
+        if($requst=='reg'){ req_user($email, $password, $mysql); sendRegEmail($email,$POST["password"]);}
         if($requst=='login'){ login($email, $password, $login_token, $mysql); }
     }
     //---------------------------------------------------------------------
@@ -47,6 +47,7 @@
     include 'checkEmail.php';
     include 'userLog.php';
     include 'support_functions.php';
+    include 'sendEmail.php';
     
     push_log($_POST["requst"], basename(__FILE__));
 

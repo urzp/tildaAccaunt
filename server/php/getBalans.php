@@ -14,6 +14,7 @@ $post = json_decode($post);
 $email = $post-> email;
 $token = $post -> token;
 
+
 if(!checkToken($email, $token, $mysql)){
     $result = (object) [
 		'success' => false,
