@@ -3,6 +3,7 @@
 header('Access-Control-Allow-Origin: *');
 include 'config.php';
 include 'checkEmail.php';
+include 'sendEmail.php';
 
 $email = $_POST["email"];
 
@@ -24,18 +25,7 @@ $reset_password = rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9).rand(0,9).ra
 $sql = "UPDATE`users` SET `resetpassword`='$reset_password ' WHERE `email`='$email'";
 $checkSession = $mysql -> query($sql);
 
-$to  = "$email" ; 
-//$to .= "mail2@example.com>"; 
-
-$subject = "Сброс пароля"; 
-
-$message = " <p>Код для сброса пароля</p> </br> <b>$reset_password</b>";
-
-$headers  = "Content-type: text/html; charset=utf-8 \r\n"; 
-//$headers .= "From:<noreply@unverified.beget.ru>\r\n";  
-$headers .= "Reply-To: reply-to@example.com\r\n"; 
-
-mail($to, $subject, $message, $headers); 
+sendResetPasswordEmail($email, $reset_password);
 
 $result = (object) [
 	'success' => true,
