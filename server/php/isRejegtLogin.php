@@ -11,7 +11,7 @@ $post = json_decode($post);
 
 $email = $post-> email;
 
-include 'db_mysql.php';
+include 'config.php';
 
 $sql = "SELECT `reject_password` FROM `users` WHERE `email` = '$email'";
 $checkUser = $mysql -> query($sql);

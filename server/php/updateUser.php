@@ -59,7 +59,7 @@
     $name = $post-> name;
     $token = $post -> token;
     
-    include 'db_mysql.php';
+    include 'config.php';
     include 'userLog.php';
     
 

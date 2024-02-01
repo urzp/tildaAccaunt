@@ -38,7 +38,7 @@ $email = $post-> email;
 $token = $post -> token;
 $wait_for_update = $post -> wait_for_update;
 
-include 'db_mysql.php';
+include 'config.php';
 include 'support_functions.php';
 
 if($wait_for_update!='1'){

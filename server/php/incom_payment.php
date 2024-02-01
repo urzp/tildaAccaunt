@@ -35,7 +35,7 @@ $transaction = $payment['orderid'];
 $sum = $payment['amount'];
 
 
-include 'db_mysql.php';
+include 'config.php';
 include 'balans_functions.php';
 
 $user = getUser($id_user, $mysql);

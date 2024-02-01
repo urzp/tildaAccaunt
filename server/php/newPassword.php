@@ -19,7 +19,7 @@ if($code==''||$email==''||$password==''){
     exit();
 }
 
-include 'db_mysql.php';
+include 'config.php';
 
 $sql = "SELECT `id` FROM `users` WHERE `resetpassword`='$code'";
 $user = $mysql -> query($sql);

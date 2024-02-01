@@ -1,6 +1,6 @@
 <?php
 
-include 'db_mysql.php';
+include 'config.php';
 include 'support_functions.php';
 include 'balans_functions.php';
 

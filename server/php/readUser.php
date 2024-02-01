@@ -34,7 +34,7 @@
     $email = $post-> email;
     $token = $post -> token;
     
-    include 'db_mysql.php';
+    include 'config.php';
     include 'balans_functions.php';
 
     readUser($email, $token, $mysql );

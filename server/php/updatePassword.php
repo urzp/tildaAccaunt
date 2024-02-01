@@ -83,7 +83,7 @@ passwordValid($new_password);
 $old_password = md5($old_password."wqrtvfd");
 $new_password = md5($new_password."wqrtvfd");
 
-include 'db_mysql.php';
+include 'config.php';
 include 'userLog.php';
 
 checkToken($id, $token, $mysql);

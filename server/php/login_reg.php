@@ -43,7 +43,7 @@
     //---------------------------------------------------------------------
 
     header('Access-Control-Allow-Origin: *');
-    include 'db_mysql.php';
+    include 'config.php';
     include 'checkEmail.php';
     include 'userLog.php';
     include 'support_functions.php';

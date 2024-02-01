@@ -44,7 +44,7 @@ $sum = $payment['amount'];
 $products = $payment['products'][0];
 
 
-include 'db_mysql.php';
+include 'config.php';
 include 'balans_functions.php';
 
 $user = checkUser($email_user, $token, $mysql);

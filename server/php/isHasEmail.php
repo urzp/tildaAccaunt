@@ -11,7 +11,7 @@ $post = json_decode($post);
 
 $email = $post-> email;
 
-include 'db_mysql.php';
+include 'config.php';
 include 'checkEmail.php';
 
 $result = checkEmail($email, $mysql);
