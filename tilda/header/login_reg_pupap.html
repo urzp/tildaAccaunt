@@ -9,6 +9,15 @@
     /* .js-successbox{
         display: none!important;
     } */
+    [data-tooltip-hook="#popup:loader"] .t-width_6{
+        max-width: 240px!important;
+        border-radius: 20px!important;
+    }
+
+    [data-tooltip-hook="#popup:loader"] .t-width_6 img{
+        border-radius: 20px!important;
+    }
+    
 </style>
 
 <script>
@@ -351,6 +360,7 @@
         delete localStorage.afterSendLogin
         setTimeout(()=>{
             $(`.t978__link-inner.t978__link-inner_left:contains('loader')`).click()
+
             let id_interv = setInterval(()=>{
                 if(closeLoader){
                     t390_closePopup(getIdPupap('loader'))
