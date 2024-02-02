@@ -51,7 +51,7 @@
     async function getUserInf(){
         let content = {
             email: localStorage.email,
-            token: localStorage.token,            
+            token: localStorage.user_token,            
         }
         
         let result = await ajaxReq(URL_READ_USER, AJAX_OPTIONS, content)
@@ -65,7 +65,7 @@
             id:  $(`.userInf [name="user_id"]` ).val(),
             old_password:  $(`.password [name="old_password"]` ).val(),
             new_password:  $(`.password [name="new_password"]` ).val(),
-            token: localStorage.token,            
+            token: localStorage.user_token,            
         }    
         let result = await ajaxReq(URL_UPDATE_PASSWORD, AJAX_OPTIONS, content)
         return result
@@ -76,7 +76,7 @@
             id:  $(`.userInf [name="user_id"]` ).val(),
             email:  $(`.userInf [name="email"]` ).val(),
             name:  $(`.userInf [name="name"]` ).val(),
-            token: localStorage.token,            
+            token: localStorage.user_token,            
         }    
         let result = await ajaxReq(URL_UPDATE_USER, AJAX_OPTIONS, content)
         return result
