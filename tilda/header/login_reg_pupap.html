@@ -13,6 +13,7 @@
 
 <script>
     let balans
+    let closeLoader = false
     const AJAX_OPTIONS = {
         type: 'POST',
         headers: { 'Content-Type': 'application/json;charset=utf-8' },
@@ -347,18 +348,33 @@
             return false
         } 
         delete localStorage.afterSendLogin
-        setTimeout(()=>{$(`.t978__link-inner.t978__link-inner_left:contains('loader')`).click()}, 200)
+        setTimeout(()=>{
+            $(`.t978__link-inner.t978__link-inner_left:contains('loader')`).click()
+            let id_interv = setInterval(()=>{
+                if(closeLoader){
+                    t390_closePopup(getIdPupap('loader'))
+                    clearInterval(id_interv)
+                    closeLoader = false;
+                    //console.log('action closeLoader')
+                }
+            }, 200)
+
+        }, 200)
         
         isLogget(true).then((result)=>{
             if(result){
-                t390_closePopup(getIdPupap('loader'))
                 pupapTitle('loginsuccess', " " + localStorage.email, true)
                 t390_showPopup(getIdPupap('loginsuccess'))
                 renderLogin()
+                localStorage.logget = true;
+                closeLoader = true; 
+                //console.log('closeLoader = ', closeLoader)
             }else{
-                t390_closePopup(getIdPupap('loader'))
                 t390_showPopup(getIdPupap('denied'))
                 renderLogOut()
+                localStorage.logget = false;
+                closeLoader = true;
+                //console.log('closeLoader = ', closeLoader)
             }
         })      
     }
