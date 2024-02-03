@@ -92,10 +92,10 @@
     async function fillFormCard(user){
         $('.t706__orderform [name="id_user"]').val(user.id)
         $('.t706__orderform [name="email"]').val(user.email)
-        $('.t706__cartwin-heading').text(`Ваш баланс: ${user.balans} р.`)
+        $('.t706__cartwin-heading').text(`Ваш баланс: ${user.balans} ₽`)
     }
     function fillBalans(user){
-        $('.balans .tn-atom').text(user.balans + ' p.')
+        $('.balans .tn-atom').text(user.balans + ' ₽')
     }
     //****** заполнение таплиц расходов приходов ***
     function fillIn_PaymentTb(data){
@@ -109,7 +109,7 @@
                     <div class="column_1 column"><div class="text">${element.datetime}</div></div>
                     <div class="column_2 column"><div class="text">${element.paymentsystem}</div></div>
                     <div class="column_3 column"><div class="text">${element.trnsaction}</div></div>
-                    <div class="column_4 column"><div class="text">${element.sum} <span> p.</span></div></div>
+                    <div class="column_4 column"><div class="text">${element.sum} <span> ₽</span></div></div>
                 </div>`
             $(`.${cssTable}`).append(html_row)
         })
@@ -131,9 +131,14 @@
                     <div class="column_1 column"><div class="text">${element.datetime}</div></div>
                     <div class="column_2 column"><div class="text">${element.paymentsystem}</div></div>
                     <div class="column_3 column"><div class="text">${element.trnsaction}</div></div>
-                    <div class="column_4 column"><div class="text">${element.products.split('=')[0]}</div></div>
+                    <div class="column_4 column">
+                        <div class="text">
+                            <div class='order_name'>${element.products.split('=')[0]}</div>
+                            <div class='order_link'><a href="${element.form_link}">${element.form_link}</a></div>
+                        </div>
+                    </div>
                     <div class="column_5 column"><div class="text">${element.quantity}</div></div>
-                    <div class="column_6 column"><div class="text">${element.sum} <span> p.</span></div></div>
+                    <div class="column_6 column"><div class="text">${element.sum} <span> ₽</span></div></div>
                 </div>`
             $(`.${cssTable}`).append(html_row)
         })
