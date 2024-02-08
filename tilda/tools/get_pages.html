@@ -1,0 +1,15 @@
+<script>
+
+let result = [];
+
+$('.td-page.td-page-page ').each( function(){
+    let title = $(this).find('.td-page__td-title-span').text()
+    let url = $(this).find('.td-page__td-url  span').text()
+    result.push({title,url})   
+})  
+
+let resultJSON = JSON.stringify(result)
+
+console.log(resultJSON)
+
+</script>
