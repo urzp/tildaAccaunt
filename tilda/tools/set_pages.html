@@ -1,0 +1,77 @@
+<script>
+
+function delete_word(word='Copy of '){
+    let text = $('.td-page__td-title-change textarea').text()
+    if (text.indexOf(word) == 0){
+        text = text.split(word)[1];
+        $('.td-page__td-title-change textarea').text(text)
+    }
+}
+
+function runScr(min=0, max=100){
+    $('.td-page__td-title .td-page__td-title-edit').each( async function(index){
+        if(index<min) return false
+        if(index>max) return false
+        setTimeout( ()=>{
+            console.log(index)
+            $(this).click()
+            delete_word()
+            setTimeout(()=>{
+                $('.td-page__td-title-submit').click()
+            }, 800)
+        }, 2000*(index-min) )
+        
+    })
+}
+
+</script>
+
+
+<script>
+//-------------------------------------------------------------------------------
+
+function setUrl(data, el){
+    let title =  $(el).find('.td-page__td-title .td-page__td-title-span').text()
+    let url = ''
+    data.forEach(d_el => {
+        if(d_el.title == title){
+            url = d_el.url
+        }
+    }); 
+    if(!url){ console.log('not find', title); return false}
+    $('.td-page__td-title-change textarea').text(url)
+}
+
+
+function runScrUrls(data, min=0, max=100){
+    if (!data) return false
+    data = JSON.parse(data)
+    $('.td-page.td-page-page.td-page_').each( async function(index){
+        if(index<min) return false
+        if(index>max) return false
+        setTimeout( ()=>{
+            console.log(index)
+            $(this).find('.td-page__td-title-edit').click()
+            setUrl(data, this)
+            setTimeout(()=>{
+                $('.td-page__td-title-submit').click()
+            }, 800)
+        }, 2500*(index-min))
+    })
+}
+
+</script>
+
+
+<script>
+
+$('.pe-menuitems-item-td-link input[type="text"]').each(function(){
+    let word = 'https://smmnakrutka.ru/'
+    let url = $(this).val()
+    if (url.indexOf(word) == 0){
+        url = url.split(word)[1];
+        $(this).val(url)
+    }
+})
+
+</script>
