@@ -1,5 +1,9 @@
 <?php
 
+include 'config.php';
+include 'balans_functions.php';
+include 'support_functions.php';
+
 function checkUser($email, $token, $mysql ){
     $sql = "SELECT `id`, `name`, `email`, balans FROM `users` WHERE `email` = '$email' && `login_token`='$token'";
     $checkUser = $mysql -> query($sql);
@@ -18,6 +22,8 @@ function notePatment($id_user, $paymentsystem, $transaction, $sum, $oldBalans, $
 
 
 header('Access-Control-Allow-Origin: *');
+
+push_log(json_encode($_POST), basename(__FILE__));
 
 $post_link = $_POST['post-link'];
 $post_email = $_POST['Email'];
@@ -42,10 +48,6 @@ $payment = json_decode(str_replace('\"', "",$payment), true);
 $transaction = $payment['orderid'];
 $sum = $payment['amount'];
 $products = $payment['products'][0];
-
-
-include 'config.php';
-include 'balans_functions.php';
 
 $user = checkUser($email_user, $token, $mysql);
 

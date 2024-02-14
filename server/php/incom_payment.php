@@ -17,6 +17,10 @@ function notePatment($id_user, $paymentsystem, $trnsaction, $sum, $oldBalans, $n
 
 
 header('Access-Control-Allow-Origin: *');
+include 'config.php';
+include 'balans_functions.php';
+include 'support_functions.php';
+
 push_log(json_encode($_POST), basename(__FILE__));
 
 $id_user = $_POST["id_user"];
@@ -36,9 +40,7 @@ $transaction = $payment['orderid'];
 $sum = $payment['amount'];
 
 
-include 'config.php';
-include 'balans_functions.php';
-include 'support_functions.php';
+
 
 $user = getUser($id_user, $mysql);
 

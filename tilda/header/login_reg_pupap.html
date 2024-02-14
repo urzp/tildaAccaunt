@@ -27,10 +27,10 @@
         type: 'POST',
         headers: { 'Content-Type': 'application/json;charset=utf-8' },
     }
-    const URL_IS_LOGIN = 'https://lktilda.ru/php/isLogget.php'
-    const URL_CHECK_EMAIL = 'https://lktilda.ru/php/isHasEmail.php'
-    const URL_GET_BALANS = 'https://lktilda.ru/php/getBalans.php'
-    const URL_NEW_PASSWORD = 'https://lktilda.ru/php/newPassword.php'
+    const URL_IS_LOGIN = 'https://smmbackmy.ru/php/isLogget.php'
+    const URL_CHECK_EMAIL = 'https://smmbackmy.ru/php/isHasEmail.php'
+    const URL_GET_BALANS = 'https://smmbackmy.ru/php/getBalans.php'
+    const URL_NEW_PASSWORD = 'https://smmbackmy.ru/php/newPassword.php'
     const URL_ACCAUNT = `http://${document.URL.split('/')[2]}/user_accaunt`
 
     let checkFelds = true
@@ -207,8 +207,10 @@
     // ------------------  функции рендренга ------------------------
 
     function fillFormsProductsCard(){
-        $('.t706__orderform [name="token"]').val(localStorage.user_token)
-        $('.t706__orderform [name="email_user"]').val(localStorage.email)
+        //$('.t706__orderform [name="token"]').val(localStorage.user_token)
+        //$('.t706__orderform [name="email_user"]').val(localStorage.email)
+        $('.t706__orderform form').append(`<input type="hidden" name="token" value="${localStorage.user_token}">`)
+        $('.t706__orderform form').append(`<input type="hidden" name="email_user" value="${localStorage.email}">`)
 
     }
 
