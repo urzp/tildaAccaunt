@@ -1,5 +1,6 @@
 <?php
-$connection = mysqli_connect('localhost','ermak8nk_lktilda','CZ*VT0zC','ermak8nk_lktilda');
+//$connection = mysqli_connect('localhost','ermak8nk_lktilda','CZ*VT0zC','ermak8nk_lktilda');
+$connection = mysqli_connect('mysql','root','parolik9182123','main_database');
 $tables = array();
 $result = mysqli_query($connection,"SHOW TABLES");
 while($row = mysqli_fetch_row($result)){

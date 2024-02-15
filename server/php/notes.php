@@ -2,7 +2,7 @@
     //https://lktilda.ru/php/login_reg.php
     //https://lktilda.ru/php/outcom_payment.php
     //https://lktilda.ru/damp.php
-
+    //https://scryptdlyasmm.site/exportDB.php
     $log = date('Y-m-d H:i:s') . ' '.json_encode($checkUser);
     file_put_contents(__DIR__ . '/log.txt', $log . PHP_EOL, FILE_APPEND);
 
