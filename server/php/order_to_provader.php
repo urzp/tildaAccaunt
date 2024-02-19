@@ -4,14 +4,11 @@ include 'support_functions.php';
 push_log(json_encode($_POST), basename(__FILE__));
 
 $prodavec_id = $_POST['prodavec_id'];
-$sql = "SELECT `name`, `api_key` FROM `postavshik` WHERE  `id` = ?";
-$base_res = $mysql->prepare($sql);
-$base_res->execute([$prodavec_id]);
-$arr = [];
-while($row = $base_res->fetch()){
-    $arr[] = $row;
-};
+$sql = "SELECT `name`, `api_key` FROM `postavshik` WHERE  `id_old` = '$prodavec_id'";
+$api_key_prov = $mysql -> query($sql);
+$api_key_prov = $api_key_prov -> fetch_assoc();
+$api_key_prov = $api_key_prov['api_key'];
 
-push_log($arr[0]["api_key"], basename(__FILE__));
+push_log($api_key_prov, basename(__FILE__));
 
 ?>
