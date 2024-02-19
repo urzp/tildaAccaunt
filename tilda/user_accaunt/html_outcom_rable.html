@@ -77,6 +77,7 @@
 
     .out_payment_table .column_5{
         min-width: 50px;
+        text-align: center;
     }
 
     .out_payment_table .column_6{
@@ -86,6 +87,41 @@
 
     .out_payment_table .column_6 .text{
         text-align: right;
+    }
+
+    @media (max-width: 1199.98px) {
+        .out_payment_table .header, .out_payment_table .row{
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .out_payment_table .column_4{
+            order:1;
+            margin-left: 0px;
+            margin-top: -15px;
+            margin-bottom: 20px;
+        }
+    }
+
+    @media (max-width: 959.98px) {
+        .out_payment_table .row{
+            margin-bottom: 20px;
+        }
+        .out_payment_table .column_6{
+            order: 2;
+        }
+        .out_payment_table .column_4{
+            width: 75%;
+            margin-left: 0px;
+            margin-top: 0px;
+            margin-bottom: 0px;
+        }
+        .out_payment_table .column_4 .order_link{
+            line-height: normal;
+        }
+        .out_payment_table .column_4, .out_payment_table .column_6{
+            margin-top: -15px;
+        }   
     }
 
 </style>

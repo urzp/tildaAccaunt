@@ -3,8 +3,9 @@
     [data-tooltip-hook="#popup:login"] .js-successbox{
         display:none!important
     }
-    .t396__elem.email, .t396__elem.balans{
+    .uc-user_menu .t396__elem.email, .uc-user_menu .t396__elem.balans{
         cursor: pointer;
+        opacity: 0.001;
     }
     /* .js-successbox{
         display: none!important;
@@ -242,6 +243,9 @@
         balans = await getBalans()
         $('.uc-user_menu .email .tn-atom').text(localStorage.email)
         $('.uc-user_menu .balans .tn-atom').text(balans)
+        $('.t967__additional-descr strong').text(balans)
+        $('.uc-user_menu .email').animate({opacity:1.0},500)
+        $('.uc-user_menu .balans').animate({opacity:1.0},500)
         $('[name="paymentsystem"][value="cash"]').parent().append(` ${balans}`)
         fillFormsProductsCard()
     }
