@@ -63,6 +63,41 @@
         text-align: right;
     }
 
+    @media (max-width: 639.98px) {
+        .in_payment_table .header, .in_payment_table .row{
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }      
+
+        .in_payment_table .row{
+            margin-bottom: 20px;
+        }
+
+        .in_payment_table .column_2{
+            min-width: 160px;
+            text-align: right;
+        }
+        
+        .in_payment_table .column_3{
+            margin-left: 0px;
+        } 
+
+        .in_payment_table .column_4{
+            width: 50%;
+        } 
+    }
+
+    @media (max-width: 479.98px) {
+        .in_payment_table .column_1{
+            min-width: 140px;
+        }
+        .in_payment_table .column_2{
+            min-width: 120px 
+        }
+    }
+
 </style>
 
 
