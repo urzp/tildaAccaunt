@@ -13,11 +13,13 @@ function checkUser($email, $token, $mysql ){
     exit();
 }
 
-function notePatment($id_user, $paymentsystem, $transaction, $sum, $oldBalans, $newBalans, $products, $quantity, $post_email, $post_link, $mysql){
+function notePatment($id_user, $paymentsystem, $transaction, $sum, $oldBalans, $newBalans, $products, $quantity, $post_email, $post_link, $prov_result, $mysql){
+    $status = $prov_result -> status;
+    $message = $prov_result -> message;
     $sql = "INSERT INTO `out_payments` 
-    (`id_user`,`paymentsystem` ,`trnsaction`, `sum`, `oldBalans`, `newBalans`, `products`, `quantity`, `form_email`, `form_link` ) 
+    (`id_user`,`paymentsystem` ,`trnsaction`, `sum`, `oldBalans`, `newBalans`, `products`, `quantity`, `form_email`, `form_link`, `provader_status`, `provader_msg` ) 
     VALUES
-    ('$id_user','$paymentsystem','$transaction', '$sum', '$oldBalans', '$newBalans','$products' ,'$quantity', '$post_email', '$post_link')";
+    ('$id_user','$paymentsystem','$transaction', '$sum', '$oldBalans', '$newBalans','$products' ,'$quantity', '$post_email', '$post_link', '$status' , '$message')";
     $mysql -> query($sql);
 }
 
@@ -48,11 +50,14 @@ if($paymentsystem == 'cash'){
     if($newBalan < 0){ exit();}
     $data = getDataProv($_POST, $mysql);
     $result = sendOrderProvader($data);
-    push_log( json_encode($result), basename(__FILE__));
+    if($result-> status == 'false'){ $newBalans = $oldBalans; }
 }else{
     $newBalans = $oldBalans;
+    $data = getDataProv($_POST, $mysql);
+    $result = sendOrderProvader($data);
 }
+push_log( json_encode($result), basename(__FILE__));
 balansUpdate($user['id'], $newBalans, $mysql);
-notePatment($user['id'], $paymentsystem, $transaction, $sum, $oldBalans, $newBalans, $products, $quantity, $post_email, $post_link,  $mysql);
+notePatment($user['id'], $paymentsystem, $transaction, $sum, $oldBalans, $newBalans, $products, $quantity, $post_email, $post_link, $result,  $mysql);
 
 ?>

@@ -48,7 +48,7 @@ function sendOrderProvader($data_prov){
     curl_close($curl);
 
     if(isset($errMes)) {
-        $result =  "Error: " . $errMes;
+        $result = (object) ["status" => "false", "message" => $errMes];
     } else {
         $result = (object) ["status" => "success", "message" => $res];
     }
