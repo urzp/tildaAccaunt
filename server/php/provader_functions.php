@@ -50,7 +50,13 @@ function sendOrderProvader($data_prov){
     if(isset($errMes)) {
         $result = (object) ["status" => "false", "message" => $errMes];
     } else {
-        $result = (object) ["status" => "success", "message" => $res];
+        $res_msg = json_decode($res,true);
+        if(isset($res_msg['Error'])){
+            $result = (object) ["status" => "false", "message" => $res];
+        }else{
+            $result = (object) ["status" => "success", "message" => $res];
+        }
+        
     }
 
     return $result;

@@ -28,6 +28,8 @@ header('Access-Control-Allow-Origin: *');
 
 push_log(json_encode($_POST), basename(__FILE__));
 
+if($_POST["api_k"]!=_APY_KEY_){ exit(); }
+
 $post_link = $_POST['post-link'];
 $post_email = $_POST['Email'];
 
@@ -41,6 +43,13 @@ $payment = json_decode(str_replace('\"', "",$payment), true);
 $transaction = $payment['orderid'];
 $sum = $payment['amount'];
 $products = $payment['products'][0];
+
+if(!isset($_POST["token"])||!isset($_POST["email_user"])){
+    $data = getDataProv($_POST, $mysql);
+    $result = sendOrderProvader($data);
+    notePatment(null, $paymentsystem, $transaction, $sum, 0, 0, $products, $quantity, $post_email, $post_link, $result,  $mysql);
+    exit();
+}
 
 $user = checkUser($email_user, $token, $mysql);
 
