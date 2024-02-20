@@ -116,7 +116,7 @@
   
         $(`.${classNameZB}`).css({'display':'block','opacity':'0.01'})
         whaitRendered(classNameZB, function(){
-            ajastBG(classNameZB, BGClassName, cssTable, bottumGap)
+           ajastBG(classNameZB, BGClassName, cssTable, bottumGap)
         })
     }
 
@@ -165,7 +165,7 @@
             let rendered = $(`.${classNameZBl} .t396__artboard`).hasClass('rendered')
             if(!rendered) return false
             clearInterval(idInterval)
-            callBack()
+            setTimeout(callBack, 500) 
         },300)
     }
 
