@@ -245,8 +245,11 @@
         balans = await getBalans()
         let email_balans = `${localStorage.email} <strong style="margin-left: 30px;">${balans}</strong>`
         //$('.uc-user_menu .email .tn-atom').text(localStorage.email)
+        
         $('.uc-user_menu .balans .tn-atom').html(email_balans)
         $('.t967__additional-descr strong').html(email_balans)
+        $('.t967__additional-descr').css({'cursor':'pointer'})
+        $('.t967__additional-descr').attr({'onclick':`location.href='${URL_ACCAUNT}'`})
         $('.t282__logo img').attr({'src':URL_LOGO})
         $('.uc-user_menu .email').animate({opacity:1.0},500)
         $('.uc-user_menu .balans').animate({opacity:1.0},500)
