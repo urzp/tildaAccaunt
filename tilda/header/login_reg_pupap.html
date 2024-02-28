@@ -28,6 +28,7 @@
         type: 'POST',
         headers: { 'Content-Type': 'application/json;charset=utf-8' },
     }
+    const URL_MAIN_PAGE = 'http://project8540948.tilda.ws/'
     const URL_LOGO = 'https://static.tildacdn.com/tild6132-6139-4366-b666-643364353930/horizontal_on_white_.png'
     const URL_IS_LOGIN = 'https://smmbackmy.ru/php/isLogget.php'
     const URL_CHECK_EMAIL = 'https://smmbackmy.ru/php/isHasEmail.php'
@@ -242,9 +243,10 @@
         hideMenuItem("Регистрация")
         showMenuItem("Выйти")
         balans = await getBalans()
-        $('.uc-user_menu .email .tn-atom').text(localStorage.email)
-        $('.uc-user_menu .balans .tn-atom').text(balans)
-        $('.t967__additional-descr strong').text(balans)
+        let email_balans = `${localStorage.email} <strong style="margin-left: 30px;">${balans}</strong>`
+        //$('.uc-user_menu .email .tn-atom').text(localStorage.email)
+        $('.uc-user_menu .balans .tn-atom').html(email_balans)
+        $('.t967__additional-descr strong').html(email_balans)
         $('.t282__logo img').attr({'src':URL_LOGO})
         $('.uc-user_menu .email').animate({opacity:1.0},500)
         $('.uc-user_menu .balans').animate({opacity:1.0},500)
@@ -256,6 +258,7 @@
         showMenuItem("Войти")
         showMenuItem("Регистрация")
         hideMenuItem("Выйти")
+        hideMenuItem("Регистрация")
         $('.uc-user_menu .email .tn-atom').text('')
         $('.uc-user_menu .balans .tn-atom').text('')
         $('.t706__orderform [value="cash"]').parent().remove()
