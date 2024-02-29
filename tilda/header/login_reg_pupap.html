@@ -35,6 +35,7 @@
     const URL_GET_BALANS = 'https://smmbackmy.ru/php/getBalans.php'
     const URL_NEW_PASSWORD = 'https://smmbackmy.ru/php/newPassword.php'
     const URL_ACCAUNT = `http://${document.URL.split('/')[2]}/user_accaunt`
+    const URLS_ACCAUNT = ['user_accaunt','balance','orders','personal']
 
     let checkFelds = true
 
@@ -44,7 +45,7 @@
         setButtonsEvents()
         checkAfterSendLogin(initMenu)
         addButtonToSuccessMessage()
-        intUserAccaunt(URL_ACCAUNT)
+        intUserAccaunt(URLS_ACCAUNT)
     });
 
 
@@ -107,9 +108,9 @@
             }
         })
 
-        $('.t396__elem.email, .t396__elem.balans').click(function(){
-            window.location.replace(URL_ACCAUNT)
-        })
+        // $('.t396__elem.email, .t396__elem.balans').click(function(){
+        //     window.location.replace(URL_ACCAUNT)
+        // })
 
         sbBt_tcard = document.querySelector('.t706 .t-submit') 
         let stopIntercept = false;       
@@ -201,10 +202,9 @@
         if(isset(f)){f()}
     }
 
-    function intUserAccaunt(url_accaunt) {
-        let accauntPage = url_accaunt.split('/').pop()
+    function intUserAccaunt(urls_accaunt) {
         let currentPage = document.URL.split('/').pop().split('#')[0]
-        if(accauntPage==currentPage) intUserPanel()
+        if( urls_accaunt.indexOf( currentPage ) != -1 ) intUserPanel()
     }
 
     // ------------------  функции рендренга ------------------------
@@ -242,26 +242,32 @@
         hideMenuItem("Войти")
         hideMenuItem("Регистрация")
         showMenuItem("Выйти")
+        showMenuItem("Настройки профиля")
+        showMenuItem("Пополнение счета")
+        showMenuItem("История заказов")
         balans = await getBalans()
-        let email_balans = `${localStorage.email} <strong style="margin-left: 30px;">${balans}</strong>`
+        let email_balans = `<strong onclick="location.href='${URL_ACCAUNT}/personal'">${localStorage.email}</strong> <strong onclick="location.href='${URL_ACCAUNT}/balance'" style="margin-left: 30px;">${balans}</strong>`
         //$('.uc-user_menu .email .tn-atom').text(localStorage.email)
         
         $('.uc-user_menu .balans .tn-atom').html(email_balans)
         $('.t967__additional-descr strong').html(email_balans)
         $('.t967__additional-descr').css({'cursor':'pointer'})
-        $('.t967__additional-descr').attr({'onclick':`location.href='${URL_ACCAUNT}'`})
+        //$('.t967__additional-descr').attr({'onclick':`location.href='${URL_ACCAUNT}/personal'`})
         $('.t282__logo img').attr({'src':URL_LOGO})
         $('.uc-user_menu .email').animate({opacity:1.0},500)
         $('.uc-user_menu .balans').animate({opacity:1.0},500)
         $('[name="paymentsystem"][value="cash"]').parent().append(` ${balans}`)
         fillFormsProductsCard()
+        $('.t706__orderform [name="paymentsystem"]:not([value="cash"])').parent().remove()
     }
 
     function renderLogOut(){
         showMenuItem("Войти")
         showMenuItem("Регистрация")
         hideMenuItem("Выйти")
-        hideMenuItem("Регистрация")
+        hideMenuItem("Настройки профиля")
+        hideMenuItem("Пополнение счета")
+        hideMenuItem("История заказов")
         $('.uc-user_menu .email .tn-atom').text('')
         $('.uc-user_menu .balans .tn-atom').text('')
         $('.t706__orderform [value="cash"]').parent().remove()
@@ -291,8 +297,16 @@
         if(tcart.amount>intBalans){ 
             $($('[name="paymentsystem"]')[0]).prop("checked", true);
             $('.t706__orderform [value="cash"]').parent().fadeOut()
+            $('.t706__orderform .t-input-group_pm .t-input-title').text('Пополните баланс для оплаты')
+            $('.t706__orderform .t-input-group_pm .t-input-title').attr({'onclick':`location.href='${URL_ACCAUNT}/balance'`})
+            $('.t706__orderform .t-input-group_pm .t-input-title').css({'cursor':'pointer'})
+            $('.t706__orderform .t-form__submit').css({'opacity':'0.4'})
+            $('.t706__orderform .t-form__submit button').css({'cursor':'auto'})
         }else{
             $('.t706__orderform [value="cash"]').parent().fadeIn()
+            $('.t706__orderform .t-input-group_pm .t-input-title').text('Способ оплаты')
+            $('.t706__orderform .t-form__submit').css({'opacity':'1.0'})
+            $('.t706__orderform .t-form__submit button').css({'cursor':'pointer'})
         }
     }
 
