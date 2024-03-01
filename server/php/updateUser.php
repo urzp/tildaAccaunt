@@ -1,5 +1,5 @@
 <?php
-    function updateUser($id, $email, $name, $token, $mysql  ){
+    function updateUser($id, $email, $name, $phone, $token, $mysql  ){
         $sql = "SELECT `id`, `email`, `name` FROM `users` WHERE `id` = '$id' && `login_token`='$token'";
         $checkUser = $mysql -> query($sql);
         $checkUser = $checkUser -> fetch_assoc();
@@ -8,7 +8,7 @@
         $newData = "email: ".$email.', name: '. $name ;
         
         if(isset($checkUser)){
-            $sql = "UPDATE`users` SET `email`='$email', `name`='$name' WHERE `id` = '$id' && `login_token`='$token'";
+            $sql = "UPDATE`users` SET `email`='$email', `name`='$name', `phone`='$phone' WHERE `id` = '$id' && `login_token`='$token'";
             $mysql -> query($sql);
             addTouserLog($id, 'update user unformation','true' ,$oldData ,$newData , $mysql);
             $result = (object) [
@@ -58,11 +58,12 @@
     $email = $post-> email;
     $name = $post-> name;
     $token = $post -> token;
+    $phone = $post -> phone;
     
     include 'config.php';
     include 'userLog.php';
     
 
     checkEmail($id, $email, $mysql);
-    updateUser($id, $email, $name, $token, $mysql );
+    updateUser($id, $email, $name, $phone, $token, $mysql );
 ?>

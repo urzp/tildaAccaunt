@@ -81,6 +81,7 @@
             id:  $(`.userInf [name="user_id"]` ).val(),
             email:  $(`.userInf [name="email"]` ).val(),
             name:  $(`.userInf [name="name"]` ).val(),
+            phone:  $(`.userInf [name="phone"]` ).val(),
             token: localStorage.user_token,            
         }    
         let result = await ajaxReq(URL_UPDATE_USER, AJAX_OPTIONS, content)
@@ -91,7 +92,11 @@
         $(`.userInf [name="email"]` ).val(user.email)
         $(`.userInf [name="name"]` ).val(user.name)
         $(`.userInf [name="user_id"]` ).val(user.id)
-        
+        if(!!user.phone){
+            let phone = user.phone.split(' ')[1] + ' ' + user.phone.split(' ')[2]
+            $(`.userInf [type="tel"]` ).val(phone)
+            $(`.userInf [name="phone"]` ).val(user.phone)
+        }
     }
 
     async function fillFormCard(user){
@@ -172,7 +177,7 @@
             let rendered = $(`.${classNameZBl} .t396__artboard`).hasClass('rendered')
             if(!rendered) return false
             clearInterval(idInterval)
-            setTimeout(callBack, 500) 
+            setTimeout(callBack, 800) 
         },300)
     }
 

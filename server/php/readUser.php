@@ -1,6 +1,6 @@
 <?php
     function readUser($email, $token, $mysql ){
-        $sql = "SELECT `id`, `name`, `email`, `balans` FROM `users` WHERE `email` = '$email' && `login_token`='$token'";
+        $sql = "SELECT `id`, `name`, `email`, `phone`, `balans` FROM `users` WHERE `email` = '$email' && `login_token`='$token'";
         $User = $mysql -> query($sql);
         $User = $User -> fetch_assoc();
 
