@@ -63,6 +63,23 @@
             window.location.replace(URL_MAIN_PAGE)
         })
 
+        // для мобильного меню (так как элементы меню динамичны  и обновляются при открытии)
+
+        $(`.t282__menu__link:contains("меню")`).click( ()=>{
+            setTimeout(()=>{
+                $(`.t282__menu__item .t978__link-inner_left:contains("Войти")`).click(()=>{
+                    let token = generateToken()
+                    localStorage.user_token = token
+                    $('[data-tooltip-hook="#popup:login"] [name="login_token"]').val(token)
+                })
+
+                $(`.t282__menu__item .t978__link-inner_left:contains("Выйти")`).click(()=>{
+                    logout()
+                    window.location.replace(URL_MAIN_PAGE)
+                })
+            },800)
+        })
+
         $('[data-tooltip-hook="#popup:registration"] .t-submit').click(async function(event){
             if(!checkFelds) return false
             if(!checkPasswords(event)) return false
@@ -187,7 +204,6 @@
     }
 
     function generateToken(){
-        console.log('generate token')
         var rand = function() {
             return Math.random().toString(36).substr(2); // remove `0.`
         };
@@ -251,6 +267,7 @@
         
         $('.uc-user_menu .balans .tn-atom').html(email_balans)
         $('.t967__additional-descr strong').html(email_balans)
+        $('.t967__additional-descr, .t282__logo__content').css({'opacity':'1.0'})
         $('.t967__additional-descr').css({'cursor':'pointer'})
         //$('.t967__additional-descr').attr({'onclick':`location.href='${URL_ACCAUNT}/personal'`})
         $('.t282__logo img').attr({'src':URL_LOGO})
@@ -258,7 +275,8 @@
         $('.uc-user_menu .balans').animate({opacity:1.0},500)
         $('[name="paymentsystem"][value="cash"]').parent().append(` ${balans}`)
         fillFormsProductsCard()
-        $('.t706__orderform [name="paymentsystem"]:not([value="cash"])').parent().remove()
+        let currentPage = document.URL.split('/').pop().split('#')[0]
+        if(currentPage!='balance') $('.t706__orderform [name="paymentsystem"]:not([value="cash"])').parent().remove()  
     }
 
     function renderLogOut(){
@@ -271,6 +289,7 @@
         $('.uc-user_menu .email .tn-atom').text('')
         $('.uc-user_menu .balans .tn-atom').text('')
         $('.t706__orderform [value="cash"]').parent().remove()
+        $('.t967__additional-descr, .t282__logo__content').css({'opacity':'1.0'})
     }
 
     function renderHideAll(){
@@ -294,7 +313,8 @@
     function cardShowHideCachPayment(){
         if(!balans){ $('.t706__orderform [value="cash"]').parent().fadeOut() ; return false }
         let intBalans = Number( balans.split(' ')[0] );
-        if(tcart.amount>intBalans){ 
+        let currentPage = document.URL.split('/').pop().split('#')[0]
+        if(tcart.amount>intBalans&&currentPage!='balance'){ 
             $($('[name="paymentsystem"]')[0]).prop("checked", true);
             $('.t706__orderform [value="cash"]').parent().fadeOut()
             $('.t706__orderform .t-input-group_pm .t-input-title').text('Пополните баланс для оплаты')
