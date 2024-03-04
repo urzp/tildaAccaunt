@@ -127,7 +127,9 @@
   
         $(`.${classNameZB}`).css({'display':'block','opacity':'0.01'})
         whaitRendered(classNameZB, function(){
-           ajastBG(classNameZB, BGClassName, cssTable, bottumGap)
+            setInterval(()=>{
+                ajastBG(classNameZB, BGClassName, cssTable, bottumGap)
+            },800)
         })
     }
 
@@ -157,7 +159,9 @@
   
         $(`.${classNameZB}`).css({'display':'block','opacity':'0.01'})
         whaitRendered(classNameZB, function(){
-            ajastBG(classNameZB, BGClassName, cssTable, bottumGap)
+            setInterval(()=>{
+                ajastBG(classNameZB, BGClassName, cssTable, bottumGap)
+            },800)
         })
     }
 
