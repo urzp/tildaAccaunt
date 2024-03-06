@@ -23,10 +23,22 @@ function notePatment($id_user, $paymentsystem, $transaction, $sum, $oldBalans, $
     $mysql -> query($sql);
 }
 
+function notePatmentNotUser( $paymentsystem, $transaction, $sum, $products, $quantity, $email, $link, $prov_result, $mysql){
+    //$status = $prov_result -> status;
+    //$message = $prov_result -> message;
+    $status = 'none';
+    $message = 'none';
+    $sql = "INSERT INTO `orders` 
+    (`transaction`, `paymentsystem`, `products` , `quantity`, `sum`, `email`, `link`, `provader_status`, `provader_msg` ) 
+    VALUES
+    ('$transaction', '$paymentsystem', '$products' ,'$quantity', '$sum', '$email', '$link', '$status', '$message')";
+    $mysql -> query($sql);
+}
+
 
 header('Access-Control-Allow-Origin: *');
 
-push_log(json_encode($_POST), basename(__FILE__));
+//push_log(json_encode($_POST), basename(__FILE__), 'order_log');
 
 if($_POST["api_k"]!=_APY_KEY_){ exit(); }
 
@@ -44,10 +56,13 @@ $transaction = $payment['orderid'];
 $sum = $payment['amount'];
 $products = $payment['products'][0];
 
+if(!isset($payment)){exit();}
+
 if(!isset($_POST["token"])||!isset($_POST["email_user"])){
-    $data = getDataProv($_POST, $mysql);
-    $result = sendOrderProvader($data);
-    notePatment(null, $paymentsystem, $transaction, $sum, 0, 0, $products, $quantity, $post_email, $post_link, $result,  $mysql);
+    //$data = getDataProv($_POST, $mysql);
+    //$result = sendOrderProvader($data);
+    $result = '';
+    notePatmentNotUser( $paymentsystem, $transaction, $sum, $products, $quantity, $post_email, $post_link, $result, $mysql);
     exit();
 }
 
