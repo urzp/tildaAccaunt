@@ -13,25 +13,25 @@ function checkUser($email, $token, $mysql ){
     exit();
 }
 
-function notePatment($id_user, $paymentsystem, $transaction, $sum, $oldBalans, $newBalans, $products, $quantity, $post_email, $post_link, $prov_result, $mysql){
+function notePatment($id_user, $paymentsystem, $transaction, $sum, $oldBalans, $newBalans, $products, $quantity, $post_email, $post_link, $id_provider, $prov_result, $mysql){
     $status = $prov_result -> status;
     $message = $prov_result -> message;
     $sql = "INSERT INTO `out_payments` 
-    (`id_user`,`paymentsystem` ,`trnsaction`, `sum`, `oldBalans`, `newBalans`, `products`, `quantity`, `form_email`, `form_link`, `provader_status`, `provader_msg` ) 
+    (`id_user`,`paymentsystem` ,`trnsaction`, `sum`, `oldBalans`, `newBalans`, `products`, `quantity`, `form_email`, `form_link`, `id_provider` , `provader_status`, `provader_msg` ) 
     VALUES
-    ('$id_user','$paymentsystem','$transaction', '$sum', '$oldBalans', '$newBalans','$products' ,'$quantity', '$post_email', '$post_link', '$status' , '$message')";
+    ('$id_user','$paymentsystem','$transaction', '$sum', '$oldBalans', '$newBalans','$products' ,'$quantity', '$post_email', '$post_link', '$id_provider' , '$status' , '$message')";
     $mysql -> query($sql);
 }
 
-function notePatmentNotUser( $paymentsystem, $transaction, $sum, $products, $quantity, $email, $link, $prov_result, $mysql){
-    //$status = $prov_result -> status;
-    //$message = $prov_result -> message;
-    $status = 'none';
-    $message = 'none';
+function notePatmentNotUser( $paymentsystem, $transaction, $sum, $products, $quantity, $email, $link, $id_provider, $prov_result, $mysql){
+    $status = $prov_result -> status;//--
+    $message = $prov_result -> message;//--
+    //$status = 'none';
+    //$message = 'none';
     $sql = "INSERT INTO `orders` 
-    (`transaction`, `paymentsystem`, `products` , `quantity`, `sum`, `email`, `link`, `provader_status`, `provader_msg` ) 
+    (`transaction`, `paymentsystem`, `products` , `quantity`, `sum`, `email`, `link`, `id_provider` , `provader_status`, `provader_msg` ) 
     VALUES
-    ('$transaction', '$paymentsystem', '$products' ,'$quantity', '$sum', '$email', '$link', '$status', '$message')";
+    ('$transaction', '$paymentsystem', '$products' ,'$quantity', '$sum', '$email', '$link', '$id_provider' ,'$status', '$message')";
     $mysql -> query($sql);
 }
 
@@ -55,14 +55,16 @@ $payment = json_decode(str_replace('\"', "",$payment), true);
 $transaction = $payment['orderid'];
 $sum = $payment['amount'];
 $products = $payment['products'][0];
+$id_provader = $_POST['prodavec_id'];
 
 if(!isset($payment)){exit();}
 
 if(!isset($_POST["token"])||!isset($_POST["email_user"])){
-    //$data = getDataProv($_POST, $mysql);
-    //$result = sendOrderProvader($data);
-    $result = '';
-    notePatmentNotUser( $paymentsystem, $transaction, $sum, $products, $quantity, $post_email, $post_link, $result, $mysql);
+    $data = getDataProv($_POST, $mysql);//---
+    $result = sendOrderProvader($data);//---
+    //$result = '';
+    
+    notePatmentNotUser( $paymentsystem, $transaction, $sum, $products, $quantity, $post_email, $post_link, $id_provader, $result, $mysql);
     exit();
 }
 
@@ -82,6 +84,6 @@ if($paymentsystem == 'cash'){
 }
 push_log( json_encode($result), basename(__FILE__));
 balansUpdate($user['id'], $newBalans, $mysql);
-notePatment($user['id'], $paymentsystem, $transaction, $sum, $oldBalans, $newBalans, $products, $quantity, $post_email, $post_link, $result,  $mysql);
+notePatment($user['id'], $paymentsystem, $transaction, $sum, $oldBalans, $newBalans, $products, $quantity, $post_email, $post_link, $id_provader, $result,  $mysql);
 
 ?>
