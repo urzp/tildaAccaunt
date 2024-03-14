@@ -275,6 +275,7 @@
         $('.uc-user_menu .balans').animate({opacity:1.0},500)
         $('[name="paymentsystem"][value="cash"]').parent().append(` ${balans}`)
         fillFormsProductsCard()
+        $('input[value="cash"]').click()
         let currentPage = document.URL.split('/').pop().split('#')[0]
         if(currentPage!='balance') $('.t706__orderform [name="paymentsystem"]:not([value="cash"])').parent().remove()  
     }
