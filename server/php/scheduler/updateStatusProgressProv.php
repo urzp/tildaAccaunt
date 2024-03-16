@@ -64,9 +64,9 @@ function provReqStatus($id_provider, $id_order_prov){
     return $msq_result;
 }
 
-function updateOrderNote($id, $status, $remains){
+function updateOrderNote($id, $status, $remains, $start_count){
     global $mysql;
-    $sql = "UPDATE `orders` SET `progress_status`='$status', `progress_remains`='$remains' WHERE `id` = '$id' ";
+    $sql = "UPDATE `orders` SET `progress_status`='$status', `progress_remains`='$remains',`start_count`= '$start_count' WHERE `id` = '$id' ";
     $mysql -> query($sql);
 }
 
@@ -74,7 +74,7 @@ $orders = getOrders();
 
 foreach ($orders as $item) {
     $result = provReqStatus($item['id_provider'], $item['id_order_prov']);
-    updateOrderNote($item['id'],$result['status'],$result['remains']);
+    updateOrderNote($item['id'],$result['status'],$result['remains'], $result['start_count']);
     //echo "id ".$item['id']." status ".$result['status'].'<br>';
 }
 
