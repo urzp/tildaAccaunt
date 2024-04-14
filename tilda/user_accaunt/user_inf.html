@@ -30,13 +30,13 @@
         user = await userinf.user
         payments = await userinf.payments
         orders = await userinf.orders
-        if(cu_page=='balance'||cu_page=='user_accaunt') fillBalans(user)
+        if(cu_page=='balance'||cu_page=='user_accaunt'||cu_page=='profile') fillBalans(user)
         setButtons()
-        if(cu_page=='personal'||cu_page=='user_accaunt') initPassword_Zinputs()
-        if(cu_page=='personal'||cu_page=='user_accaunt') whaitRendered('uc-user_data', ()=>{fillFormUser(user)}) 
+        if(cu_page=='personal'||cu_page=='user_accaunt'||cu_page=='profile') initPassword_Zinputs()
+        if(cu_page=='personal'||cu_page=='user_accaunt'||cu_page=='profile') whaitRendered('uc-user_data', ()=>{fillFormUser(user)}) 
         await fillFormCard(user)
-        if(cu_page=='balance'||cu_page=='user_accaunt') fillIn_PaymentTb(payments)
-        if(cu_page=='orders'||cu_page=='user_accaunt') fillOut_PaymentTb(orders)
+        if(cu_page=='balance'||cu_page=='user_accaunt'||cu_page=='profile') fillIn_PaymentTb(payments)
+        if(cu_page=='orders'||cu_page=='user_accaunt'||cu_page=='profile') fillOut_PaymentTb(orders)
         showSuccsessPupap()
         $('.t706__orderform [value="cash"]').parent().remove()
     }
@@ -88,7 +88,14 @@
         return result
     }
 
+    function fillUserData(user){
+        $('.data_user_email .tn-atom').text(user.email)
+        $('.data_user_name .tn-atom').text(user.name)
+        $('.data_user_phone .tn-atom').text(user.phone)
+    }
+
     async function fillFormUser(user){
+        fillUserData(user)
         $(`.userInf [name="email"]` ).val(user.email)
         $(`.userInf [name="name"]` ).val(user.name)
         $(`.userInf [name="user_id"]` ).val(user.id)

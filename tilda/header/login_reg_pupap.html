@@ -28,18 +28,20 @@
         type: 'POST',
         headers: { 'Content-Type': 'application/json;charset=utf-8' },
     }
+    const sucsessOrderMsg = 'Спасибо за покупку. Ваш заказ в работе. </br>ВАЖНО! Пожалуйста, дождитесь выполнения данного заказа прежде, чем делать повторный заказ этой услуги на эту же ссылку </br>(иначе возможны сбои в заказе, извините).'
     const URL_MAIN_PAGE = 'http://project8540948.tilda.ws/'
     const URL_LOGO = 'https://static.tildacdn.com/tild6132-6139-4366-b666-643364353930/horizontal_on_white_.png'
     const URL_IS_LOGIN = 'https://smmbackmy.ru/php/isLogget.php'
     const URL_CHECK_EMAIL = 'https://smmbackmy.ru/php/isHasEmail.php'
     const URL_GET_BALANS = 'https://smmbackmy.ru/php/getBalans.php'
     const URL_NEW_PASSWORD = 'https://smmbackmy.ru/php/newPassword.php'
-    const URL_ACCAUNT = `http://${document.URL.split('/')[2]}/user_accaunt`
-    const URLS_ACCAUNT = ['user_accaunt','balance','orders','personal']
+    const URL_ACCAUNT = `http://${document.URL.split('/')[2]}/profile`
+    const URLS_ACCAUNT = ['user_accaunt','balance','orders','personal','profile']
 
     let checkFelds = true
 
     $( document ).ready(function() {
+        renderSuccsessOrderMessage()
         renderHideAll()
         initPasswordInputs()
         setButtonsEvents()
@@ -274,6 +276,9 @@
         $('.uc-user_menu .email').animate({opacity:1.0},500)
         $('.uc-user_menu .balans').animate({opacity:1.0},500)
         $('[name="paymentsystem"][value="cash"]').parent().append(` ${balans}`)
+        $('.t706__orderform [name="Email"]').val(localStorage.email)
+        $('.t706__orderform .t-input-group.t-input-group_em').fadeOut()
+        $('.t706__orderform .t-input-group.t-input-group_pm').fadeOut()
         fillFormsProductsCard()
         $('input[value="cash"]').click()
         let currentPage = document.URL.split('/').pop().split('#')[0]
@@ -298,6 +303,15 @@
         hideMenuItem("Регистрация")
         hideMenuItem("Выйти")
         hideMenuItem("loader")
+    }
+
+    function renderSuccsessOrderMessage(){
+        let id_timer = setInterval(()=>{
+            if($('.js-successbox.t-form__successbox:contains("Оплата выполнена")').length > 0){
+                clearInterval(id_timer)
+                $('.js-successbox.t-form__successbox:contains("Оплата выполнена")').html(sucsessOrderMsg)
+            }
+        },300)
     }
 
     function addButtonToSuccessMessage(){
