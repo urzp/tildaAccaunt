@@ -97,7 +97,7 @@
 
     async function fillFormUser(user){
         fillUserData(user)
-        $(`.userInf [name="email"]` ).val(user.email)
+        $(`.userInf [name="old_email"]` ).val(user.email)
         $(`.userInf [name="name"]` ).val(user.name)
         $(`.userInf [name="user_id"]` ).val(user.id)
         if(!!user.phone){
@@ -203,7 +203,9 @@
             resetErrors_Zform('userInf')
             if(!checkEmpty_Zform('userInf','email')) return false
             if(!checkEmail_Zform('userInf','email')) return false
-            if(!checkEmpty_Zform('userInf','name')) return false
+            if(!checkEmpty_Zform('userInf','check_email')) return false
+            //if(!checkEmpty_Zform('userInf','name')) return false
+            if(!checkBetweenFelds_Zform('userInf', 'email', 'check_email', 'Emails не совпадают')) return false
             let result = await updateUser()
             if(!result.success&&result.msg=='email') setError_Zform('userInf','email', 'email занят')
             if(result.success){
@@ -218,7 +220,7 @@
             if(!checkEmpty_Zform('password','old_password')) return false
             if(!checkEmpty_Zform('password','new_password')) return false
             if(!checkEmpty_Zform('password','new_password_check')) return false
-            if(!checkPasswords_Zform('password', 'new_password', 'new_password_check')) return false
+            if(!checkBetweenFelds_Zform('password', 'new_password', 'new_password_check')) return false
             let result = await updatePassword()
             if(!result.success&&result.msg=='password'){ 
                 setError_Zform('password','old_password', 'неверный пароль') 
@@ -257,9 +259,10 @@
         return false 
      }
 
-     function checkPasswords_Zform(nameForm, nameFeld_1, nameFeld_2){
+     function checkBetweenFelds_Zform(nameForm, nameFeld_1, nameFeld_2, err_msg = 'Пароли не совпали'){
         if($(`.${nameForm} [name="${nameFeld_1}"]`).val()==$(`.${nameForm} [name="${nameFeld_2}"]`).val()) return true
-        setError_Zform(nameForm, nameFeld_1, 'Пароли не совпали')
+        setError_Zform(nameForm, nameFeld_1, err_msg)
+        setError_Zform(nameForm, nameFeld_2, err_msg)
         return false 
      }
 
