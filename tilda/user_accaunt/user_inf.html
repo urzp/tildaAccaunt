@@ -11,9 +11,10 @@
     .js-successbox{
         display: none!important;
     }
-    .uc-balance_lb, .uc-no_orders{
+/*    .uc-balance_lb, .uc-no_orders{
         opacity:0.01;
     }
+*/
 </style>
 
 <script>
@@ -116,8 +117,8 @@
     }
     //****** заполнение таплиц расходов приходов ***
     function fillIn_PaymentTb(data){
-        if(!data){ $('.uc-balance_lb').css({'opacity':'1.0'}); return false }
-        $('.uc-balance_lb').fadeOut()
+        //if(!data){ $('.uc-balance_lb').css({'opacity':'1.0'}); return false }
+        //$('.uc-balance_lb').fadeOut()
         let cssTable = 'in_payment_table'
         let classNameZB = 'uc-incom'
         let BGClassName = 'in_paymentBG'  
