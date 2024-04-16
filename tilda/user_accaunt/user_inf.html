@@ -97,7 +97,7 @@
 
     async function fillFormUser(user){
         fillUserData(user)
-        $(`.userInf [name="old_email"]` ).val(user.email)
+        $(`.userInf [name="old_old_email"]` ).val(user.email)
         $(`.userInf [name="name"]` ).val(user.name)
         $(`.userInf [name="user_id"]` ).val(user.id)
         if(!!user.phone){
@@ -204,7 +204,7 @@
             if(!checkEmpty_Zform('userInf','email')) return false
             if(!checkEmail_Zform('userInf','email')) return false
             if(!checkEmpty_Zform('userInf','check_email')) return false
-            if(!checkEmpty_Zform('userInf','name')) return false
+            //if(!checkEmpty_Zform('userInf','name')) return false
             if(!checkBetweenFelds_Zform('userInf', 'email', 'check_email', 'Emails не совпадают')) return false
             let result = await updateUser()
             if(!result.success&&result.msg=='email') setError_Zform('userInf','email', 'email занят')
