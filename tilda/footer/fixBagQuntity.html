@@ -1,0 +1,35 @@
+<!-- Исправление проблемы с отправкой поля quntity  -->
+
+<script>
+    $(document).ready(function(){
+        fixQuntity()
+    })
+
+    function fixQuntity(){
+        awaitElement(".t706__orderform form", addFild)
+        awaitElement(".t706__product-quantity", bindFilds)
+    }
+
+    function awaitElement(jquery_selctor, callback){
+        let id_timer = setInterval(()=>{
+            if($(jquery_selctor).length>0){
+                clearInterval(id_timer)
+                callback()
+            }
+        },300)      
+    }
+
+    function addFild(){
+        let html_fild = `<input type="hidden" name="quantity" value="">`
+        $(".t706__orderform form").append(html_fild)
+        //console.log('add fild');
+    }
+
+    function bindFilds(){
+        //console.log('bind')
+        $(`.t706__orderform form [name="quantity"]`).val($('.t706__product-quantity').text())
+        $('.t706__product-quantity').on('DOMSubtreeModified', function(){
+            $(`.t706__orderform form [name="quantity"]`).val($('.t706__product-quantity').text())
+        })
+    }
+</script>
