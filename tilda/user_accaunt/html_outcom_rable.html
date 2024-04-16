@@ -72,7 +72,20 @@
 
     .out_payment_table .column_4{
         width: 100%;
+        max-width: 450px;
         margin-left: 20px;
+    }
+
+    .out_payment_table .column_4 .text{
+        max-width: inherit;
+    }
+
+    .out_payment_table .order_link a{
+        display: block!important;
+        width: inherit!important;
+        white-space: nowrap!important;
+        overflow: hidden!important;
+        text-overflow: ellipsis!important;
     }
 
     .out_payment_table .column_5{
@@ -136,6 +149,9 @@
             margin-left: 0px;
         }
 
+        .out_payment_table .column_4{
+            max-width: 300px;
+        }
 
         .out_payment_table .column_5{
             margin-top: -10px;
