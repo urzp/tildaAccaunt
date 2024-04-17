@@ -1,0 +1,21 @@
+<script>
+
+
+function addAttrDefHight(el_css_selector, width_point){
+    let width_current = $(el_css_selector).css('width')
+    $(el_css_selector).css({'width':'300px'})
+    let h_text = $(el_css_selector).height()
+    attr_name  = `data-field-hight-res-${width_point}-value`
+    $(el_css_selector).attr({attr_name: h_text})
+    $(el_css_selector).css({'width':width_current})  
+}
+
+function getDefWidth(el_css_selector, width_point){
+    let widthunits = $(el_css_selector).attr(`data-field-widthunits-res-${width_point}-value`)
+    let width = Number($(el_css_selector).attr(`data-field-width-res-${width_point}-value`))
+    if (widthunits == '%'){
+        width =  Number( width_point ) * width/100
+    }
+    return width
+}
+</script>

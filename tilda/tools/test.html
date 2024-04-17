@@ -1,0 +1,52 @@
+<div class="zero_div_block">
+    <div class="header">
+
+    </div>
+    <div class="text_1">
+
+    </div>
+    <div class="text_2">
+
+    </div>
+    <div class="text_3">
+        
+    </div>
+    <div class="img" style="width: 100px;">
+        
+    </div>
+</div>
+
+<style>
+    .zero_div_block div {
+        position: static;
+    }
+    .zero_div_block>div>div{
+        width: 100%!important;
+    }
+</style>
+
+<script>
+    function moveAll(){
+        moveAllText('el_text_', '.zero_div_block .text_')
+        moveElement('.el_header', '.zero_div_block .header')
+        moveElement('.img_1', '.zero_div_block .img')
+    }
+
+    function moveAllText(el_class, into_block_selector){
+        let i=1
+        while ( $(`.${el_class}${i}`).length > 0 ){
+            
+            moveElement(`.${el_class}${i}`,`${into_block_selector}${i}`)
+            i++
+        }
+    }
+    function moveElement(el_selector, move_to_selector){
+        if($(el_selector).length<1||$(move_to_selector).length<1) return false
+        $(el_selector).clone().appendTo(move_to_selector).addClass('cloned')
+        $(`${el_selector}:not(.cloned)`).remove()
+        $('.cloned').removeClass('cloned')
+    }
+</script>
+
+
+
