@@ -1,13 +1,25 @@
 <script>
 
 
+function setAllDefHight(css_selector_zero_block, width_point){
+    $(`${css_selector_zero_block} .tn-elem`).each(function(){
+        if( $(this).attr(`data-field-widthunits-res-${width_point}-value`) == '%' ){
+            if( $(this).attr('data-elem-type') == 'text' || $(this).attr('data-elem-type') == 'image'  ){
+                let css_selsctor = '.' + $(this).attr('class').replace(/\ /g,'.')
+                console.log( css_selsctor )
+                addAttrDefHight(css_selsctor, width_point)
+            }
+        }
+    })
+}
+
 function addAttrDefHight(el_css_selector, width_point){
     let width_current = $(el_css_selector).css('width')
     let def_width = getDefWidth(el_css_selector, width_point)
     $(el_css_selector).css({'width':'300px'})
     let h_text = $(el_css_selector).height()
     attr_name  = `data-field-hight-res-${width_point}-value`
-    $(el_css_selector).attr({attr_name: h_text})
+    $(el_css_selector).attr({[attr_name]: h_text})
     $(el_css_selector).css({'width':width_current})  
 }
 
