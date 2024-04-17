@@ -3,6 +3,7 @@
 
 function addAttrDefHight(el_css_selector, width_point){
     let width_current = $(el_css_selector).css('width')
+    let def_width = getDefWidth(el_css_selector, width_point)
     $(el_css_selector).css({'width':'300px'})
     let h_text = $(el_css_selector).height()
     attr_name  = `data-field-hight-res-${width_point}-value`
