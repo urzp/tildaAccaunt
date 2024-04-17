@@ -1,12 +1,48 @@
 <script>
 
+function ajastTop(css_sel_zero_block, elements){
+    elements.forEach(async (element) => {
+        await $(` [data-elem-id="${element.id}"] `).css({'top':element.newTop})
+    });
+    let height_zero_block = Number($(`${css_sel_zero_block} .t396__artboard`).attr('data-artboard-proxy-min-height'))
+    height_zero_block = height_zero_block - elements[elements.length-1].ajastTop
+    $(`${css_sel_zero_block} .t396__artboard`).css({'height':`${height_zero_block}px`})
+}
+
+function list_tn_elem(css_selector_zero_block, width_point){
+    let list = []
+    let ajastTop = 0
+    $(`${css_selector_zero_block} .tn-elem`).each(function(){
+      let top = $(this).attr(`data-field-top-res-${width_point}-value`)
+      let newTop = top - ajastTop
+      let diff_hieght = Number($(this).attr(`data-field-hight-res-${width_point}-value`)) - $(this).height()
+      diff_hieght = !diff_hieght? 0: diff_hieght
+       let el = {
+        id: $(this).attr('data-elem-id'),
+        top,
+        diff_hieght,
+        ajastTop,
+        newTop, 
+       }
+       if(diff_hieght > 0) ajastTop = ajastTop + diff_hieght
+       list.push(el)
+    })
+    list.sort(sort_top)
+    return list
+}
+
+function sort_top(a,b){
+    if(Number(a.top)>Number(b.top)) return 1
+    if(Number(a.top)>Number(b.top)) return 0
+    if(Number(a.top)<Number(b.top)) return -1
+}
 
 function setAllDefHight(css_selector_zero_block, width_point){
     $(`${css_selector_zero_block} .tn-elem`).each(function(){
         if( $(this).attr(`data-field-widthunits-res-${width_point}-value`) == '%' ){
             if( $(this).attr('data-elem-type') == 'text' || $(this).attr('data-elem-type') == 'image'  ){
                 let css_selsctor = '.' + $(this).attr('class').replace(/\ /g,'.')
-                console.log( css_selsctor )
+                //console.log( css_selsctor )
                 addAttrDefHight(css_selsctor, width_point)
             }
         }
@@ -31,4 +67,20 @@ function getDefWidth(el_css_selector, width_point){
     }
     return width
 }
+
+async function ajastBlock(css_sel_zero_block){        
+    await setAllDefHight(css_sel_zero_block,320)
+    elements = await list_tn_elem(css_sel_zero_block,320)
+    ajastTop(css_sel_zero_block, elements)
+}
+
+
+let id_timer = setInterval( async ()=>{
+    if(!$(`#rec736052773 .t396__artboard`).hasClass('rendered')) return false
+        clearInterval(id_timer)
+        console.log('ready')
+        setTimeout( ()=>{ ajastBlock('#rec736052773') }, 1500)
+}, 300)
+
+
 </script>
