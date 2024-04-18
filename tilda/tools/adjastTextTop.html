@@ -1,5 +1,22 @@
 <script>
 
+function checkReady(css_selector_zero_block, width_point){
+    let result = true
+    $(`${css_selector_zero_block} .tn-elem`).each(function(){
+        let id = $(this).attr(`data-elem-id`)
+        let width = $(this).attr(`data-field-width-res-${width_point}-value`)
+        width = !width ?   $(this).attr(`data-field-width-value`) : width 
+        let width_current = $(this).css('width').split('px')[0]
+        let widthunits = $(this).attr(`data-field-widthunits-res-${width_point}-value`)
+        if (widthunits == '%'){
+            width = Math.round( $(window).width() * width/100 )
+        }
+        console.log (id, width, width_current, Number(width) != Number(width_current))
+        if( Number(width) != Number(width_current) ) result = false
+    })
+    return result
+}
+
 function ajastTop(css_sel_zero_block, elements){
     elements.forEach(async (element) => {
         await $(` [data-elem-id="${element.id}"] `).css({'top':element.newTop})
@@ -20,6 +37,7 @@ function list_tn_elem(css_selector_zero_block, width_point){
        let el = {
         id: $(this).attr('data-elem-id'),
         top,
+        top_current:$(this).css('top'),
         diff_hieght,
         ajastTop,
         newTop, 
@@ -74,13 +92,22 @@ async function ajastBlock(css_sel_zero_block){
     ajastTop(css_sel_zero_block, elements)
 }
 
+//setTimeout( ()=>{ ajastBlock('#rec736052773') }, 2500)
 
-let id_timer = setInterval( async ()=>{
-    if(!$(`#rec736052773 .t396__artboard`).hasClass('rendered')) return false
-        clearInterval(id_timer)
-        console.log('ready')
-        setTimeout( ()=>{ ajastBlock('#rec736052773') }, 1500)
-}, 300)
-
+// let id_timer = setInterval( ()=>{
+//     if(!checkReady('#rec736052773', 320)) return false
+//         clearInterval(id_timer)
+//         ajastBlock('#rec736052773')
+//         //setTimeout( ()=>{ ajastBlock('#rec736052773') }, 1500)
+// }, 300)
+let i_test = 0
+let id_timer = setInterval( ()=>{
+    i_test++;
+    let top = $('.tn-elem__7360527731713336746303').css('top')
+    let width = $('.tn-elem__7360527731713336746303').css('width')
+    let left = $('.tn-elem__7360527731713336746303').css('left')
+    console.log(i_test, top, width, left)
+    if(i_test>100) clearInterval(id_timer)
+},10)
 
 </script>
