@@ -57,7 +57,11 @@ function sendOrderProvader($data_prov){
             if (str_contains($res, 'error')) {
                 $result = (object) ["status" => "false", "message" => $res];
             }else{
-                $result = (object) ["status" => "success", "message" => $res];
+                if(str_contains($res, 'order')){
+                    $result = (object) ["status" => "success", "message" => $res];
+                }else{
+                    $result = (object) ["status" => "false", "message" => $res];
+                }
             }
         }
         
