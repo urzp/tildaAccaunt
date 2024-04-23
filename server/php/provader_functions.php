@@ -25,7 +25,7 @@ function getDataProv($POST, $mysql){
         $expiry = new DateTime('now');
         $expiry->modify('+3 month');
         $expiry= $expiry->format('d/m/Y');
-        $data = ['key' => $api_key_prov, 'action' => 'add', 'service' => $_POST['service'], 'username' => $_POST['post-link'],  'min' => $_POST['quantity'], 'max' => $_POST['quantity'], 'posts' => $_POST['new_posts'], 'old_posts' => $_POST['old_posts'], 'expiry' => $expiry ];
+        $data = ['key' => $api_key_prov, 'action' => 'add', 'service' => $_POST['service'], 'link' => $_POST['post-link'], 'username' => $_POST['post-link'], 'quantity' => $_POST['quantity'], 'min' => $_POST['quantity'], 'max' => $_POST['quantity'], 'posts' => $_POST['new_posts'], 'old_posts' => $_POST['old_posts'], 'expiry' => $expiry ];
         push_log( json_encode($data), basename(__FILE__), 'test_provader_post_log');
     } else{
         echo "default";
