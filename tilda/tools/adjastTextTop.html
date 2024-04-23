@@ -100,14 +100,27 @@ async function ajastBlock(css_sel_zero_block){
 //         ajastBlock('#rec736052773')
 //         //setTimeout( ()=>{ ajastBlock('#rec736052773') }, 1500)
 // }, 300)
+
+
+// let i_test = 0
+// let id_timer = setInterval( ()=>{
+//     i_test++;
+//     let top = $('.tn-elem__7360527731713336746303').css('top')
+//     let width = $('.tn-elem__7360527731713336746303').css('width')
+//     let left = $('.tn-elem__7360527731713336746303').css('left')
+//     console.log(i_test, top, width, left)
+//     if(i_test>100) clearInterval(id_timer)
+// },10)
+
+
 let i_test = 0
 let id_timer = setInterval( ()=>{
     i_test++;
-    let top = $('.tn-elem__7360527731713336746303').css('top')
-    let width = $('.tn-elem__7360527731713336746303').css('width')
-    let left = $('.tn-elem__7360527731713336746303').css('left')
-    console.log(i_test, top, width, left)
-    if(i_test>100) clearInterval(id_timer)
-},10)
+    ajastBlock('#rec736052773')
+    if(i_test>10) clearInterval(id_timer)
+},300)
+
+
+
 
 </script>
