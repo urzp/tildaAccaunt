@@ -20,6 +20,13 @@ function getDataProv($POST, $mysql){
     } else if($_POST['type'] == "poll"){
         echo "poll";
         $data = ['key' => $api_key_prov, 'action' => 'add', 'service' => $_POST['service'], 'link' => $_POST['post-link'],  'quantity' => $_POST['quantity'], 'answer_number' => $_POST['answer_number']];
+    } else if($_POST['type'] == "posts"){
+        echo "posts";
+        $expiry = new DateTime('now');
+        $expiry->modify('+3 month');
+        $expiry= $expiry->format('d/m/Y');
+        $data = ['key' => $api_key_prov, 'action' => 'add', 'service' => $_POST['service'], 'link' => $_POST['post-link'], 'username' => $_POST['post-link'], 'quantity' => $_POST['quantity'], 'min' => $_POST['quantity'], 'max' => $_POST['quantity'], 'posts' => $_POST['new_posts'], 'old_posts' => $_POST['old_posts'], 'expiry' => $expiry ];
+        push_log( json_encode($data), basename(__FILE__), 'test_provader_post_log');
     } else{
         echo "default";
         $data = ['key' => $api_key_prov, 'action' => 'add', 'service' => $_POST['service'], 'link' => $_POST['post-link'], 'quantity' => $_POST['quantity']];
@@ -57,7 +64,11 @@ function sendOrderProvader($data_prov){
             if (str_contains($res, 'error')) {
                 $result = (object) ["status" => "false", "message" => $res];
             }else{
-                $result = (object) ["status" => "success", "message" => $res];
+                if(str_contains($res, 'order')){
+                    $result = (object) ["status" => "success", "message" => $res];
+                }else{
+                    $result = (object) ["status" => "false", "message" => $res];
+                }
             }
         }
         

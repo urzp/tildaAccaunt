@@ -1,0 +1,76 @@
+<script> 
+    $(document).ready(function() {
+        //ловим новый заказ
+        $(function() {
+            $(".t706__orderform .t-submit").on("click", function(e) {
+                    $(".t706__orderform form").each(function (e) {
+                        $(this).append(`<input type="hidden" name="quantity" value="${document.querySelector('.t706__product-quantity').innerHTML}">`)
+                    }); 
+            })
+        });
+        
+        //добавляем в форму скрытый инпут
+        $(function () 
+        { $(".t706__orderform form").each(function () 
+        {   $(this).append('<input type="hidden" name="service" value="">')
+            $(this).append(`<input type="hidden" name="prodavec_id" value="">`)
+            $(this).append(`<input type="hidden" name="type" value="posts" />`)
+            $(this).append(`<input type="hidden" name="old_posts" value="" />`)
+            $(this).append(`<input type="hidden" name="new_posts" value="" />`)
+        }); 
+        }); 
+        //задаем id каждой карточке
+        $(function () 
+        { 
+            //здесь вместо еденичек вам надо подставить айди соответсвующего сервиса 
+            //числа от 1 до 16 это порядковые номера карточек читая слева направо
+            //после того как добавили все, нажмите сохранить и закрыть, а потом опубликовать
+            //если хотите добавить карточку нужно записать также номер в кавычках, двоеточие и айди нужного сервиса, но перед этим добавить это карточку на страницу 
+            // значения [4721, 30, 5, 0]   [id_servis, id_postavshik, old_posts,new_posts] 
+            let array = {
+                "1" :  [4, 35, 0, 0],
+                "2" :  [4721, 30, 5, 0],
+                "3" :  [4721, 30, 10, 0],
+                "4" :  [4721, 30, 50, 0],
+                "5" :  [4721, 30, 100, 0],
+                "6" :  [4721, 30, 0, 5],
+                "7" :  [4721, 30, 0, 10],
+                "8" :  [4721, 30, 0, 20],
+                "9" :  [4721, 30, 0, 50],
+                "10" : [4721, 30, 0, 100],
+                "11" :  [1, 1, 1, 1],
+                "12" :  [1, 1, 1, 1],
+                "13" :  [1, 1, 1, 1],
+                "14" :  [1, 1, 1, 1],
+                "15" :  [1, 1, 1, 1],
+                "16" :  [1, 1, 1, 1],
+            }
+            k = 1
+            $(".t1070__col").each(function () {
+                $(this).attr("id", array[`${k}`][0])
+                $(this).attr("pr_id", array[`${k}`][1])
+                $(this).attr("old_posts", array[`${k}`][2])
+                $(this).attr("new_posts", array[`${k}`][3])
+                k+=1
+            })
+        });
+        //по клику отлавливаем событие и задаем инпуту нужный ID 
+        $(function () 
+        { $(".t1070__col a").each(function () 
+        {     this.onclick = () => 
+            {   
+                let id = event.target.closest(".t1070__col").getAttribute("id")
+                document.querySelector('input[name="service"]').setAttribute("value", id) 
+                let pr_id = event.target.closest(".t1070__col").getAttribute("pr_id")
+                document.querySelector('input[name="prodavec_id"]').setAttribute("value", pr_id) 
+                let old_posts = event.target.closest(".t1070__col").getAttribute("old_posts")
+                document.querySelector('input[name="old_posts"]').setAttribute("value", old_posts) 
+                let new_posts = event.target.closest(".t1070__col").getAttribute("new_posts")
+                document.querySelector('input[name="new_posts"]').setAttribute("value", new_posts) 
+            }   
+        }); 
+        }); 
+       
+    })
+        
+    </script>

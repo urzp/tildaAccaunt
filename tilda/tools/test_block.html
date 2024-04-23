@@ -1,0 +1,33 @@
+<script>
+
+
+waiteReadyTildaZero(3, callBakReady )
+
+function callBakReady(){
+    console.log('ready')
+    ajastBlock('#rec736052773')
+}
+
+function waiteReadyTildaZero(tilda_changes, callback ){
+    let count_changes = 0
+    let i = 0
+    let top_block_def = Number($('.img_test').css('top').split('px')[0])
+    $('.img_test').css({'top':top_block_def - 1})
+    let id_timer = setInterval(()=>{
+        i++
+        top_block = Number($('.img_test').css('top').split('px')[0])
+        console.log(i, top_block )
+        if(i > 200) clearInterval(id_timer)
+        if( (top_block_def - 1) != top_block){
+            count_changes++
+            $('.img_test').css({'top':top_block - 1})
+            console.log('change')
+            if(count_changes==tilda_changes){
+                callback()
+                clearInterval(id_timer)
+            }
+        }
+    }, 10)
+}
+
+</script>

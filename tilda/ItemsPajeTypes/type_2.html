@@ -1,0 +1,117 @@
+<script> 
+    $(document).ready(function() {
+        $(function() {
+            $(".t706__orderform form button.t-submit").addClass("disabled")
+            $(".t706__orderform form .t-form__submit").addClass("cursor")
+           
+        })
+        
+    //ловим новый заказ
+        $(function() {
+            $(".t706__orderform form .t-form__submit").on("click", function(e) {
+                let cur_unreal_count = Number(document.querySelector('.t706__product-quantity').innerHTML);
+                let real_coms = document.querySelector("textarea[name='comments']").value.split("\n")
+                let cur_real_count = real_coms.length
+                console.log({"sending this coms string" : document.querySelector("textarea[name='comments']").value, "sending this coms" : real_coms, "length" : real_coms.length})
+                if(cur_unreal_count > cur_real_count){
+                    while(cur_unreal_count != cur_real_count){
+                        document.querySelector(".t706__product-minus").click()
+                        cur_unreal_count-=1
+                    }
+                }
+                else if(cur_unreal_count < cur_real_count){
+                     while(cur_unreal_count != cur_real_count){
+                        document.querySelector(".t706__product-plus").click()
+                        cur_unreal_count+=1
+                    }   
+                }
+                let idx_to_erase = []
+                for(idx in real_coms){
+                    if(real_coms[idx].trim() === ""){
+                        idx_to_erase.push(idx)
+                    }
+                }
+                let dif = 0
+                console.log({"to erase" : idx_to_erase})
+                for(let i = 0; i < idx_to_erase.length; i++){
+                    real_coms.splice(idx_to_erase[i] - dif, 1)
+                    dif += 1
+                    console.log({"erasing.." : idx_to_erase[i]})
+                }
+                console.log({"after_erasing" : real_coms})
+                document.querySelector("textarea[name='comments']").value = real_coms.join("\n")
+                $(".t706__orderform form .t-submit").removeClass("disabled")
+                document.querySelector(".t706__orderform form .t-submit").click()
+                $(".t706__orderform form .t-submit").addClass("disabled")
+    
+            })
+        });
+        
+        document.querySelector("textarea[name='comments']").addEventListener("input", function(){
+            let cur_unreal_count = Number(document.querySelector('.t706__product-quantity').innerHTML);
+            let cur_real_count = document.querySelector("textarea[name='comments']").value.split("\n").length
+            if(cur_unreal_count > cur_real_count){
+                while(cur_unreal_count != cur_real_count){
+                    document.querySelector(".t706__product-minus").click()
+                    cur_unreal_count-=1
+                }
+            }
+            else if(cur_unreal_count < cur_real_count){
+                 while(cur_unreal_count != cur_real_count){
+                    document.querySelector(".t706__product-plus").click()
+                    cur_unreal_count+=1
+                }   
+            }
+        });
+        
+        //добавляем в форму скрытый инпут
+        $(function () 
+        { $(".t706__orderform form").each(function () 
+        { $(this).append('<input type="hidden" name="service" value="">')
+            $(this).append(`<input type="hidden" name="prodavec_id" value="">`)
+            $(this).append(`<input type="hidden" name="type" value="comments" />`)
+        }); 
+        }); 
+        //задаем id каждой карточке
+        $(function () 
+        { 
+            //здесь вместо еденичек вам надо подставить айди соответсвующего сервиса 
+            //числа от 1 до 16 это порядковые номера карточек читая слева направо
+            //после того как добавили все, нажмите сохранить и закрыть, а потом опубликовать
+            //если хотите добавить карточку нужно записать также номер в кавычках, двоеточие и айди нужного сервиса, но перед этим добавить это карточку на страницу 
+            let array = {
+                "1" :  [8187, 9] /*например: 561*/,
+                "2" :  [1942, 7],
+                "3" :  [1, 7],
+                "4" :  [1, 7]
+            }
+            k = 1
+            $(".t1070__col").each(function () {
+                $(this).attr("id", array[`${k}`][0])
+                $(this).attr("pr_id", array[`${k}`][1])
+                k+=1
+            })
+        });
+        //по клику отлавливаем событие и задаем инпуту нужный ID 
+        $(function () 
+        { $(".t1070__col a").each(function () 
+        {     this.onclick = (event) => 
+            {   
+                let id = event.target.closest(".t1070__col").getAttribute("id")
+                document.querySelector('input[name="service"]').setAttribute("value", id) 
+                let pr_id = event.target.closest(".t1070__col").getAttribute("pr_id")
+                document.querySelector('input[name="prodavec_id"]').setAttribute("value", pr_id)
+            }   
+        }); 
+        }); 
+    });
+    </script>
+    <style>
+        .disabled{
+            pointer-events: none;
+        }
+        .cursor{
+            cursor:pointer;
+        }
+    
+    </style>
