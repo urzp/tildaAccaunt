@@ -1,5 +1,5 @@
 <?php
-    //parser.php
+    //https://lktilda.ru//parce/test.php
 
     // echo file_get_contents('http://project8540948.tilda.ws/instagram-podpishiki')
 
@@ -31,7 +31,16 @@
 
     $pq = phpQuery::newDocument($html);
 
-    echo $pq->find('.t123 script')[1]->text();   
+    $sctipt = $pq->find('.t123 script')[0]->text();   
+    $f_begin   = 'let array = {';
+    $f_end   = 'k = 1';
+    $pos_beg = strpos($sctipt, $f_begin)+14;
+    $pos_end = strpos($sctipt, $f_end) - $pos_beg - 2;
+    echo $pos_beg;
+    echo '<br/>'; 
+    echo $pos_end;
+    echo '<br/>'; 
+    echo substr($sctipt, $pos_beg, $pos_end);
     echo '<br/>'; 
 
     foreach ($pq->find('.t1070__col') as $item){
