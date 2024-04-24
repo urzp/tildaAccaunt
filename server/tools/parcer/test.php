@@ -31,8 +31,30 @@
 
     $pq = phpQuery::newDocument($html);
 
-    $title = pq('.t-card__title')->getDocument();
+    echo $pq->find('.t123 script')[1]->text();   
+    echo '<br/>'; 
 
-    var_dump($title);
+    foreach ($pq->find('.t1070__col') as $item){
+        $item = pq($item);
+        $id_servis = $item->find('.t1070__col')->attr('id');
+        $icon = $item->find('.t1070__img')->attr('src');
+        $title = $item->find('.t-card__title div')->text();
+        $description = $item->find('.t-card__descr')->text();
+        $price = $item->find('.t1070__price')->text();
+
+        echo $icon;
+        echo '<br/>';
+        echo $title;
+        echo '<br/>';
+        echo $description;
+        echo '<br/>';
+        echo $price;
+        echo '<br/>';
+        echo $id_servis;
+        echo '<br/>';
+        echo '<br/>';
+    }
+
+    
 
 ?>
