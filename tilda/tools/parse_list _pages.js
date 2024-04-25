@@ -20,6 +20,6 @@ async function ajaxReq(url, options, content){
     return await response.json();
 }
 
-const URL_GET_BALANS = 'https://smmbackmy.ru/php/listPageWrite.php'
+const URL_GET_BALANS = 'https://smmbackmy.ru/php/tools/listPageWrite.php'
 const AJAX_OPTIONS = { type: 'POST', headers: { 'Content-Type': 'application/json;charset=utf-8' }, }
 let result = await ajaxReq(URL_GET_BALANS, AJAX_OPTIONS, data)
