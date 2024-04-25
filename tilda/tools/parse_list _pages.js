@@ -1,7 +1,7 @@
 let data = []
 
 $('.td-project-pages-list .td-page__table').each(function(){
-    let link =  $(this).find('.td-page__td-url a').text().split('/')[1] 
+    let link =  $(this).find('.td-page__td-url a').text().slice(1)
     let title = $(this).find('.td-page__td-title .td-page__td-title-span').text()
     data.push({
         link,
