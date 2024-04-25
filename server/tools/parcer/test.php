@@ -1,5 +1,5 @@
 <?php
-    //https://lktilda.ru//parce/test.php
+    //https://smmbakparse.ru/php/test.php
 
     // echo file_get_contents('http://project8540948.tilda.ws/instagram-podpishiki')
 
