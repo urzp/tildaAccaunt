@@ -36,13 +36,26 @@
     $f_end   = 'k = 1';
     $pos_beg = strpos($sctipt, $f_begin)+14;
     $pos_end = strpos($sctipt, $f_end) - $pos_beg - 2;
-    echo $pos_beg;
-    echo '<br/>'; 
-    echo $pos_end;
-    echo '<br/>'; 
-    echo substr($sctipt, $pos_beg, $pos_end);
-    echo '<br/>'; 
+    $str =  substr($sctipt, $pos_beg, $pos_end);
+    $str = str_replace('}','',$str);
 
+    $arr = explode("],", $str);
+    $arr_servis = [];
+
+    $i = 0;
+    foreach($arr as $item){
+        $item = explode('" : ', $item)[1];
+        $item = str_replace('[','',$item);
+        $item = str_replace(']','',$item);
+        $item = explode(', ', $item);
+        if($item[0]!= '1'){
+            $arr_servis[$i] = $item;
+            $i++;
+        }  
+    }
+
+    $result  = [];
+    $i=0;
     foreach ($pq->find('.t1070__col') as $item){
         $item = pq($item);
         $id_servis = $item->find('.t1070__col')->attr('id');
@@ -51,15 +64,23 @@
         $description = $item->find('.t-card__descr')->text();
         $price = $item->find('.t1070__price')->text();
 
-        echo $icon;
+        $result[$i] = array(
+            'icon' => $icon,
+            'title' => $title,
+            'description' => $description,
+            'price' => $price,
+            'id_provider' => $arr_servist[$i][1],
+            'id_servis' => $arr_servis[$i][0],
+        );
+        $i++;
+    }
+
+    foreach($result as $item){
+        echo $item['icon'];
         echo '<br/>';
-        echo $title;
+        echo $item['title'];
         echo '<br/>';
-        echo $description;
-        echo '<br/>';
-        echo $price;
-        echo '<br/>';
-        echo $id_servis;
+        echo $item['price'];
         echo '<br/>';
         echo '<br/>';
     }
