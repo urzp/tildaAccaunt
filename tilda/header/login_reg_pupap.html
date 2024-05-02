@@ -86,6 +86,7 @@
             if(!checkFelds) return false
             if(!checkPasswords(event)) return false
             if(!await checkEmail(event, 'registration', 'уже зарегестрирован')) return false
+            localStorage.afterSendLogin = true
         })
 
         $('[data-tooltip-hook="#popup:login"] .t-submit').click(async function(event){
@@ -401,6 +402,13 @@
             //console.log('pass')
             event.returnValue = true
             checkFelds = false
+            let token = generateToken()
+            if(namePupap=='registration'){
+                let token = generateToken()
+                localStorage.user_token = token
+                localStorage.email = $('[data-tooltip-hook="#popup:login"] [name="email"]').val()
+                $('[data-tooltip-hook="#popup:registration"] [name="login_token"]').val(token)
+            }
             $(`[data-tooltip-hook="#popup:${namePupap}"] .t-submit`).click()
             return true
         }

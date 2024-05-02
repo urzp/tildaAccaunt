@@ -1,9 +1,9 @@
 <?php
     //---------------------------------------------------------------------
-    function req_user($email, $password, $mysql){
+    function req_user($email, $password, $login_token, $mysql){
         
-        if(checkEmail($email, $mysql)){return false;}
-        $sql = "INSERT INTO `users` (`email`, `password` ) VALUES('$email','$password')";
+        if(checkEmail($email, $mysql)){return false;} //проверка занят email
+        $sql = "INSERT INTO `users` (`email`, `password`, `login_token` ) VALUES('$email','$password', '$login_token')";
         $mysql -> query($sql);
         $result = (object) [
             'success' => true,
@@ -37,7 +37,7 @@
         $login_token = $POST["login_token"];
         $password = $POST["password"];
         $password = md5($password._SECRET_);
-        if($requst=='reg'){ req_user($email, $password, $mysql); sendRegEmail($email,$POST["password"]);}
+        if($requst=='reg'){ req_user($email, $password, $login_token, $mysql); login($email, $password, $login_token, $mysql); sendRegEmail($email,$POST["password"]);}
         if($requst=='login'){ login($email, $password, $login_token, $mysql); }
     }
     //---------------------------------------------------------------------
@@ -49,7 +49,7 @@
     include 'support_functions.php';
     include 'sendEmail.php';
     
-    push_log($_POST["requst"], basename(__FILE__));
+    push_log(json_encode($_POST), basename(__FILE__));
 
     selectRequst($_POST, $mysql);
 
