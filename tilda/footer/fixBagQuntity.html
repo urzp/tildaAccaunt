@@ -1,13 +1,18 @@
 <!-- Исправление проблемы с отправкой поля quntity  -->
 
 <script>
+    let card_data
+    let URL_UPDATE_PAGES = 'https://smmbakparse.ru/php/getCards.php'
+
     $(document).ready(function(){
         fixQuntity()
     })
 
-    function fixQuntity(){
+    async function fixQuntity(){
         awaitElement(".t706__orderform form", addFild)
         awaitElement(".t706__product-quantity", bindFilds)
+        data = {id_page: $('#allrecords').attr('data-tilda-page-id') }
+        card_data = await ajaxReq(URL_UPDATE_PAGES, AJAX_OPTIONS, data)
     }
 
     function awaitElement(jquery_selctor, callback){
@@ -21,6 +26,12 @@
 
     function addFild(){
         let html_fild = `<input type="hidden" name="quantity" value="">`
+        $(".t706__orderform form").append(html_fild)
+        html_fild = `<input type="hidden" name="service" value="">`
+        $(".t706__orderform form").append(html_fild)
+        html_fild = `<input type="hidden" name="prodavec_id" value="">`
+        $(".t706__orderform form").append(html_fild)
+        html_fild = `<input type="hidden" name="type" value="">`
         $(".t706__orderform form").append(html_fild)
         //console.log('add fild');
     }

@@ -14,6 +14,7 @@ function noteCauntCatdsPage($id_page, $countCatds){
 
 function noteCardProduct($id_page, $url, $card, $i_card){
     global $mysql;
+    $type = $card['type'];
     $id_provider = $card['id_provider']; 
     $id_servis = $card['id_servis'];
     $img = $card['icon'];
@@ -21,6 +22,7 @@ function noteCardProduct($id_page, $url, $card, $i_card){
     $description = $card['description'];
     $price = $card['price'];
     $currency = $card['currency'];
+    $update_script_data = $card['update_script_data'];
 
     $sql="SELECT `id` FROM `cardsProduct` WHERE `id_page`='$id_page' AND `number_in_page`='$i_card'";
     $result = $mysql -> query($sql);
@@ -28,14 +30,18 @@ function noteCardProduct($id_page, $url, $card, $i_card){
 
     if(isset($result)){
         //update
-        $sql = "UPDATE `cardsProduct` SET `id_provider`='$id_provider', `id_servis`='$id_servis', `img`='$img', `title`='$title', `description`='$description', `price`='$price', `currency`= '$currency' WHERE `id_page`='$id_page' AND `number_in_page`='$i_card'";
+        if($id_provider!=''){
+            $sql = "UPDATE `cardsProduct` SET `type`='$type', `id_provider`='$id_provider', `id_servis`='$id_servis', `img`='$img', `title`='$title', `description`='$description', `price`='$price', `currency`= '$currency' WHERE `id_page`='$id_page' AND `number_in_page`='$i_card'";
+        }else{
+            $sql = "UPDATE `cardsProduct` SET `type`='$type', `img`='$img', `title`='$title', `description`='$description', `price`='$price', `currency`= '$currency' WHERE `id_page`='$id_page' AND `number_in_page`='$i_card'"; 
+        }
         $mysql -> query($sql);
     }else{
         //new
         $sql = "INSERT INTO `cardsProduct` 
-        (`id_page`,`number_in_page` , `id_provider`, `id_servis`, `url`, `img`, `title`, `description`, `price`, `currency`) 
+        (`id_page`,`number_in_page` ,`type`, `id_provider`, `id_servis`, `url`, `img`, `title`, `description`, `price`, `currency`) 
         VALUES
-        ('$id_page', '$i_card', '$id_provider', '$id_servis', '$url', '$img', '$title', '$description', '$price', '$currency' )";
+        ('$id_page', '$i_card','$type' , '$id_provider', '$id_servis', '$url', '$img', '$title', '$description', '$price', '$currency' )";
         $mysql -> query($sql);
     }
 }

@@ -53,7 +53,20 @@ function pesePage($homeUrl, $page_url){
         return []; 
     };
 
-    $sctipt = $pq->find('.t123 script')[0]->text();   
+    $sctipt = $pq->find('.t123 script')[0]->text();  
+
+    $type = '';
+    $str = $sctipt;
+    $f_begin = 'name="type" value="';
+    $f_end = '"';
+    $pos_beg = strpos($str, $f_begin);
+    if($pos_beg > 0){
+        $pos_beg = $pos_beg + strlen($f_begin);
+        $str  = substr($str, $pos_beg);
+        $pos_end = strpos($str, $f_end );
+        $type  = substr($str, 0, $pos_end);
+    }
+    
     $f_begin   = 'let array = {';
     $f_end   = 'k = 1';
     $pos_beg = strpos($sctipt, $f_begin)+14;
@@ -93,6 +106,7 @@ function pesePage($homeUrl, $page_url){
             'title' => $title,
             'description' => $description,
             'price' => $price,
+            'type' => $type,
             'id_provider' => $arr_servis[$i][1],
             'id_servis' => $arr_servis[$i][0],
             'currency' => $currency,
