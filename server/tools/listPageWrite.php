@@ -1,5 +1,5 @@
 <?php
-include '../config.php';
+include 'config.php';
 
 header('Access-Control-Allow-Origin: *');
 header("Content-Type: application/json");
@@ -42,6 +42,7 @@ if(!isset($pages)){ send_response(false, 'No one page');}
 $sql = "DELETE FROM `pages`";
 $mysql -> query($sql);
 
+$i=0;
 foreach($pages as $item){
     $id = $item -> id;
     $folder_id = $item -> folderid;
@@ -49,6 +50,7 @@ foreach($pages as $item){
     $title = $item -> title;
     $img = $item -> img;
     notePageTable($id, $folder_id, $url, $title, $img);
+    $i++;
 }
 
 $sql = "DELETE FROM `folders`";
@@ -60,7 +62,7 @@ foreach($folders as $item){
     noteFolderTable($id, $name);
 }
 
-send_response(true);
+send_response(true, "успешно загружено ".$i." страниц");
 
 ?>
 
