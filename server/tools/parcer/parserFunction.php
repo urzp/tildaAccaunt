@@ -37,9 +37,6 @@ function pesePage($homeUrl, $page_url){
     );
 
     $url = $homeUrl.$page_url;
-    
-    echo $url.'<br/>';
-
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_COOKIEFILE, __DIR__ . '/cookie.txt');
     curl_setopt($ch, CURLOPT_COOKIEJAR, __DIR__ . '/cookie.txt');
@@ -50,16 +47,10 @@ function pesePage($homeUrl, $page_url){
     curl_setopt($ch, CURLOPT_HEADER, false);
     $html = curl_exec($ch);
     curl_close($ch);
-
-    
-    echo 'ready';
     $pq = phpQuery::newDocument($html);
-    
-    
     
     if(!isset($pq->find('.t1070__col')[0])){ 
         return []; 
-        
     };
 
     $sctipt = $pq->find('.t123 script')[0]->text();   
