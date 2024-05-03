@@ -53,6 +53,10 @@
                 document.querySelector('input[name="prodavec_id"]').setAttribute("value", pr_id) 
                 let type = event.target.closest(".t1070__col").getAttribute("type")
                 document.querySelector('input[name="type"]').setAttribute("value", type) 
+                if(type=='comments'){
+                    bindCommentsImput()
+                    renderCommentTypeCard()
+                }
             }   
         }); 
     }
@@ -67,7 +71,8 @@
 
     function bindCommentsImput(){
         $("textarea[name='comments']").bind('input propertychange', function(){
-            let n_comments = $("textarea[name='comments']").val().split("\n").length
+            let n_comments = $("textarea[name='comments']").val().split("\n").filter(item => item != '').length
+            if(n_comments==0) n_comments = 1
             setProductQuantity(n_comments)
         })
     }
@@ -77,10 +82,24 @@
         prod_ref.quantity = quntity
         prod_ref.amount = quntity * prod_ref.price
         $('.t706__product-quantity').text(quntity)
+        $('.quntity-title span').text(quntity)
         $('.t706__cartwin-prodamount-price').text(prod_ref.amount)
         tcart__updateTotalProductsinCartObj()
         tcart__reDrawCartIcon()
         tcart__reDrawTotal()
         tcart__saveLocalObj()
+    }
+
+    function renderCommentTypeCard(){
+        let id_itv = setInterval(()=>{
+            clearInterval(id_itv)
+            $('.t706__product-plusminus').attr({'rended':true})
+            $('.t706__product-plusminus').css({'display':'none'})
+            $('.t706__product-amount').css({'display':'none'})
+            $('.t706__product-del-wrapper').css({'display':'none'})
+            if($('.quntity-title').length > 0 ) return false 
+            $('.t706__minimal').after( "<div class='t706__minimal quntity-title' >За <span>1</span> коментарий(ев)</div>" )
+        },100)
+
     }
 </script>
