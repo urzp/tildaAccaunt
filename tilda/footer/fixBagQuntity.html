@@ -13,6 +13,7 @@
         awaitElement(".t706__product-quantity", bindFilds)
         data = {id_page: $('#allrecords').attr('data-tilda-page-id') }
         card_data = await ajaxReq(URL_UPDATE_PAGES, AJAX_OPTIONS, data)
+        bindCards()
     }
 
     function awaitElement(jquery_selctor, callback){
@@ -34,6 +35,22 @@
         html_fild = `<input type="hidden" name="type" value="">`
         $(".t706__orderform form").append(html_fild)
         //console.log('add fild');
+    }
+
+    function bindCards(){
+        $(".t1070__col").each(function (i) {
+            let card = card_data.data[i]
+            $(this).attr("id", card.id_servis)
+            $(this).attr("pr_id", card.id_provider)
+        })
+        $(".t1070__col a").each(function () {     
+            this.onclick = () =>{   
+                let id = event.target.closest(".t1070__col").getAttribute("id")
+                document.querySelector('input[name="service"]').setAttribute("value", id) 
+                let pr_id = event.target.closest(".t1070__col").getAttribute("pr_id")
+                document.querySelector('input[name="prodavec_id"]').setAttribute("value", pr_id) 
+            }   
+        }); 
     }
 
     function bindFilds(){

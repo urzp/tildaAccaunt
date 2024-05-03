@@ -406,7 +406,7 @@
             if(namePupap=='registration'){
                 let token = generateToken()
                 localStorage.user_token = token
-                localStorage.email = $('[data-tooltip-hook="#popup:login"] [name="email"]').val()
+                localStorage.email = $('[data-tooltip-hook="#popup:registration"] [name="email"]').val()
                 $('[data-tooltip-hook="#popup:registration"] [name="login_token"]').val(token)
             }
             $(`[data-tooltip-hook="#popup:${namePupap}"] .t-submit`).click()
