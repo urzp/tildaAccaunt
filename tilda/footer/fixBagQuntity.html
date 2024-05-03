@@ -9,7 +9,7 @@
     })
 
     async function fixQuntity(){
-        awaitElement(".t706__orderform form", addFild)
+        awaitElement(".t706__orderform form", addAllFild)
         awaitElement(".t706__product-quantity", bindFilds)
         data = {id_page: $('#allrecords').attr('data-tilda-page-id') }
         card_data = await ajaxReq(URL_UPDATE_PAGES, AJAX_OPTIONS, data)
@@ -25,16 +25,17 @@
         },300)      
     }
 
-    function addFild(){
-        let html_fild = `<input type="hidden" name="quantity" value="">`
+    function addAllFild(){
+        addFild('quantity')
+        addFild('service')
+        addFild('prodavec_id')
+        addFild('type')
+    }
+
+    function addFild(name){
+        if( $(`input[name="${name}"]`).length >0 ) return false
+        let html_fild = `<input type="hidden" name="${name}" value="">`
         $(".t706__orderform form").append(html_fild)
-        html_fild = `<input type="hidden" name="service" value="">`
-        $(".t706__orderform form").append(html_fild)
-        html_fild = `<input type="hidden" name="prodavec_id" value="">`
-        $(".t706__orderform form").append(html_fild)
-        html_fild = `<input type="hidden" name="type" value="">`
-        $(".t706__orderform form").append(html_fild)
-        //console.log('add fild');
     }
 
     function bindCards(){
@@ -42,6 +43,7 @@
             let card = card_data.data[i]
             $(this).attr("id", card.id_servis)
             $(this).attr("pr_id", card.id_provider)
+            $(this).attr("type", card.type)
         })
         $(".t1070__col a").each(function () {     
             this.onclick = () =>{   
@@ -49,6 +51,8 @@
                 document.querySelector('input[name="service"]').setAttribute("value", id) 
                 let pr_id = event.target.closest(".t1070__col").getAttribute("pr_id")
                 document.querySelector('input[name="prodavec_id"]').setAttribute("value", pr_id) 
+                let type = event.target.closest(".t1070__col").getAttribute("type")
+                document.querySelector('input[name="type"]').setAttribute("value", type) 
             }   
         }); 
     }
@@ -59,5 +63,24 @@
         $('.t706__product-quantity').on('DOMSubtreeModified', function(){
             $(`.t706__orderform form [name="quantity"]`).val($('.t706__product-quantity').text())
         })
+    }
+
+    function bindCommentsImput(){
+        $("textarea[name='comments']").bind('input propertychange', function(){
+            let n_comments = $("textarea[name='comments']").val().split("\n").length
+            setProductQuantity(n_comments)
+        })
+    }
+
+    function setProductQuantity(quntity){
+        let prod_ref = tcart.products[0]
+        prod_ref.quantity = quntity
+        prod_ref.amount = quntity * prod_ref.price
+        $('.t706__product-quantity').text(quntity)
+        $('.t706__cartwin-prodamount-price').text(prod_ref.amount)
+        tcart__updateTotalProductsinCartObj()
+        tcart__reDrawCartIcon()
+        tcart__reDrawTotal()
+        tcart__saveLocalObj()
     }
 </script>
