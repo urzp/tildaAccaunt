@@ -12,6 +12,21 @@ function noteCauntCatdsPage($id_page, $countCatds){
     $mysql -> query($sql);    
 }
 
+function noteCauntCatdsFolder(){
+    global $mysql;
+    $sql="SELECT * FROM `folders`";
+    $folders = $mysql -> query($sql);
+    foreach($folders as $item){
+        $id_folder = $item['id'];
+        $sql="SELECT SUM(`cards`) FROM `pages` WHERE `folder_id` = '$id_folder'";
+        $countCards = $mysql -> query($sql);
+        $countCards = $countCards -> fetch_assoc();
+        $countCards = $countCards['SUM(`cards`)'];
+        $sql="UPDATE`folders` SET `cards`='$countCards' WHERE `id` = '$id_folder'";
+        $mysql -> query($sql);
+    }
+}
+
 function noteCardProduct($id_page, $url, $card, $i_card){
     global $mysql;
     $type = $card['type'];
@@ -59,7 +74,7 @@ $pages = $mysql -> query($sql);
 $i=0;
 $count = 0;
 foreach($pages as $item){
-    //if($i>=0 && $i<4){
+    //if($i>=0 && $i<1){
     $result =  pesePage($mainURL, $item['url']);
     noteCauntCatdsPage( $item['id'], count($result));
     $id_page = $item['id'];
@@ -81,11 +96,14 @@ foreach($pages as $item){
     $i_card = 0;
 };
 
+noteCauntCatdsFolder();
+
 $msg = "обновлено ".$count." карточек услуг";
 
 $result = (object) [
     'success' => $success,
     'msg' => $msg,
+    'data' => $countCards,
 ];    
 echo json_encode($result);
 
