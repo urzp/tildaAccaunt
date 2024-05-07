@@ -109,6 +109,7 @@ function pesePage($homeUrl, $page_url){
             'icon' => $icon,
             'title' => $title,
             'description' => $description,
+            'price_title' => $price_title,
             'price' => $price,
             'type' => $type,
             'id_provider' => $arr_servis[$i][1],
