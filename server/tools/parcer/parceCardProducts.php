@@ -12,6 +12,14 @@ function noteCauntCatdsPage($id_page, $countCatds){
     $mysql -> query($sql);    
 }
 
+function notePageInf($id_page, $inf){
+    global $mysql;
+    $title = $inf['page_title'];
+    $descr = $inf['page_discription'];
+    $sql = "UPDATE`pages` SET `titile_in_page`='$title', `descr_in_page`='$descr' WHERE `id` = '$id_page'";
+    $mysql -> query($sql);       
+}
+
 function noteCauntCatdsFolder(){
     global $mysql;
     $sql="SELECT * FROM `folders`";
@@ -77,6 +85,7 @@ foreach($pages as $item){
     //if($i>=0 && $i<1){
     $result =  pesePage($mainURL, $item['url']);
     noteCauntCatdsPage( $item['id'], count($result));
+    notePageInf($item['id'], $result[0]);
     $id_page = $item['id'];
     $url = $item['url'];
     if(count($result)>0){

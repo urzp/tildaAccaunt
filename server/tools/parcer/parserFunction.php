@@ -92,6 +92,8 @@ function pesePage($homeUrl, $page_url){
 
     $result  = [];
     $i=0;
+    $page_title = $pq->find('.t050 .t050__title')->text();
+    $page_discription = $pq->find('.t050 .t050__descr')->text();
     foreach ($pq->find('.t1070__col') as $item){
         $item = pq($item);
         $icon = $item->find('.t1070__img')->attr('src');
@@ -102,6 +104,8 @@ function pesePage($homeUrl, $page_url){
         $price =  str_replace(',', '.', $price);
         $currency = selectCurrency($price_title);
         $result[$i] = array(
+            'page_title' => $page_title,
+            'page_discription' => $page_discription,
             'icon' => $icon,
             'title' => $title,
             'description' => $description,
