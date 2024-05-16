@@ -65,6 +65,7 @@ if(!isset($_POST["token"])||!isset($_POST["email_user"])){
     //$result = '';
     
     notePatmentNotUser( $paymentsystem, $transaction, $sum, $products, $quantity, $post_email, $post_link, $id_provader, $result, $mysql);
+    echo json_encode($result);
     exit();
 }
 
