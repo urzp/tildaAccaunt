@@ -23,16 +23,17 @@ function notePatment($id_user, $paymentsystem, $transaction, $sum, $oldBalans, $
     $mysql -> query($sql);
 }
 
-function notePatmentNotUser( $paymentsystem, $transaction, $sum, $products, $quantity, $email, $link, $id_provider, $prov_result, $mysql){
+function notePatmentNotUser( $paymentsystem, $transaction, $sum, $cardsProduct_id, $products, $quantity, $email, $link, $id_provider, $prov_result, $mysql){
     $status = $prov_result -> status;//--
     $message = $prov_result -> message;//--
     //$status = 'none';
     //$message = 'none';
     $sql = "INSERT INTO `orders` 
-    (`transaction`, `paymentsystem`, `products` , `quantity`, `sum`, `email`, `link`, `id_provider` , `provader_status`, `provader_msg` ) 
+    (`transaction`, `paymentsystem`, `cardsProduct_id` ,`products` , `quantity`, `sum`, `email`, `link`, `id_provider` , `provader_status`, `provader_msg` ) 
     VALUES
-    ('$transaction', '$paymentsystem', '$products' ,'$quantity', '$sum', '$email', '$link', '$id_provider' ,'$status', '$message')";
+    ('$transaction', '$paymentsystem', '$cardsProduct_id' , '$products' ,'$quantity', '$sum', '$email', '$link', '$id_provider' ,'$status', '$message')";
     $mysql -> query($sql);
+    
 }
 
 
@@ -65,7 +66,7 @@ if(!isset($_POST["token"])||!isset($_POST["email_user"])){
     $result = sendOrderProvader($data);//---
     //$result = '';
     
-    notePatmentNotUser( $paymentsystem, $transaction, $sum, $products, $quantity, $post_email, $post_link, $id_provader, $result, $mysql);
+    notePatmentNotUser( $paymentsystem, $transaction, $sum, $cardsProduct_id, $products, $quantity, $post_email, $post_link, $id_provader, $result, $mysql);
     echo json_encode($result);
     exit();
 }
