@@ -13,13 +13,13 @@ function checkUser($email, $token, $mysql ){
     exit();
 }
 
-function notePatment($id_user, $paymentsystem, $transaction, $sum, $oldBalans, $newBalans, $products, $quantity, $post_email, $post_link, $id_provider, $prov_result, $mysql){
+function notePatment($id_user, $paymentsystem, $transaction, $sum, $oldBalans, $newBalans, $cardsProduct_id , $products, $quantity, $post_email, $post_link, $id_provider, $prov_result, $mysql){
     $status = $prov_result -> status;
     $message = $prov_result -> message;
     $sql = "INSERT INTO `out_payments` 
-    (`id_user`,`paymentsystem` ,`trnsaction`, `sum`, `oldBalans`, `newBalans`, `products`, `quantity`, `form_email`, `form_link`, `id_provider` , `provader_status`, `provader_msg` ) 
+    (`id_user`,`paymentsystem` ,`trnsaction`, `sum`, `oldBalans`, `newBalans`, `cardsProduct_id` ,`products`, `quantity`, `form_email`, `form_link`, `id_provider` , `provader_status`, `provader_msg` ) 
     VALUES
-    ('$id_user','$paymentsystem','$transaction', '$sum', '$oldBalans', '$newBalans','$products' ,'$quantity', '$post_email', '$post_link', '$id_provider' , '$status' , '$message')";
+    ('$id_user','$paymentsystem','$transaction', '$sum', '$oldBalans', '$newBalans', '$cardsProduct_id' ,'$products' ,'$quantity', '$post_email', '$post_link', '$id_provider' , '$status' , '$message')";
     $mysql -> query($sql);
 }
 
@@ -56,6 +56,7 @@ $transaction = $payment['orderid'];
 $sum = $payment['amount'];
 $products = $payment['products'][0];
 $id_provader = $_POST['prodavec_id'];
+$cardsProduct_id = $_POST['cardsProduct_id'];
 
 if(!isset($payment)){exit();}
 
@@ -85,6 +86,6 @@ if($paymentsystem == 'cash'){
 }
 push_log( json_encode($result), basename(__FILE__));
 balansUpdate($user['id'], $newBalans, $mysql);
-notePatment($user['id'], $paymentsystem, $transaction, $sum, $oldBalans, $newBalans, $products, $quantity, $post_email, $post_link, $id_provader, $result,  $mysql);
+notePatment($user['id'], $paymentsystem, $transaction, $sum, $oldBalans, $newBalans, $cardsProduct_id ,$products, $quantity, $post_email, $post_link, $id_provader, $result,  $mysql);
 
 ?>

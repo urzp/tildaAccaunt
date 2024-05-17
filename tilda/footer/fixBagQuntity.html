@@ -1,4 +1,4 @@
-<!-- Исправление проблемы с отправкой поля quntity  -->
+<!-- Новый скрип в замен остальных на страницах  -->
 
 <script>
     let card_data
@@ -30,6 +30,7 @@
         addFild('service')
         addFild('prodavec_id')
         addFild('type')
+        addFild('cardsProduct_id')
     }
 
     function addFild(name){
@@ -44,6 +45,7 @@
             $(this).attr("id", card.id_servis)
             $(this).attr("pr_id", card.id_provider)
             $(this).attr("type", card.type)
+            $(this).attr("cardsProduct_id", card.id)
         })
         $(".t1070__col a").each(function () {     
             this.onclick = () =>{   
@@ -53,6 +55,8 @@
                 document.querySelector('input[name="prodavec_id"]').setAttribute("value", pr_id) 
                 let type = event.target.closest(".t1070__col").getAttribute("type")
                 document.querySelector('input[name="type"]').setAttribute("value", type) 
+                let cardsProduct_id = event.target.closest(".t1070__col").getAttribute("cardsProduct_id")
+                document.querySelector('input[name="cardsProduct_id"]').setAttribute("value", cardsProduct_id) 
                 if(type=='comments'){
                     bindCommentsImput()
                     renderCommentTypeCard()
