@@ -3,6 +3,10 @@
 <script>
     let card_data
     let URL_UPDATE_PAGES = 'https://smmbackmy.ru/php/getCards.php'
+    const AJAX_OPTIONS = {
+        type: 'POST',
+        headers: { 'Content-Type': 'application/json;charset=utf-8' },
+    }
 
     $(document).ready(function(){
         fixQuntity()
@@ -14,6 +18,15 @@
         data = {id_page: $('#allrecords').attr('data-tilda-page-id') }
         card_data = await ajaxReq(URL_UPDATE_PAGES, AJAX_OPTIONS, data)
         bindCards()
+    }
+    
+    async function ajaxReq(url, options, content){
+        let response = await fetch(url,{
+            method: options.type,
+            headers: options.heders,
+            body: JSON.stringify(content)
+        })
+        return await response.json();
     }
 
     function awaitElement(jquery_selctor, callback){
@@ -49,6 +62,7 @@
         })
         $(".t1070__col a").each(function () {     
             this.onclick = () =>{   
+                setTimeout(bindFilds,500)
                 let id = event.target.closest(".t1070__col").getAttribute("id")
                 document.querySelector('input[name="service"]').setAttribute("value", id) 
                 let pr_id = event.target.closest(".t1070__col").getAttribute("pr_id")
