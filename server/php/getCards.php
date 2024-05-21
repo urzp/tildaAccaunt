@@ -6,7 +6,7 @@ $post = file_get_contents("php://input");
 $post = json_decode($post);
 $id_page = $post -> id_page;
 
-$sql = "SELECT * FROM `cardsProduct` WHERE `id_page` = '$id_page' ORDER BY `number_in_page`";
+$sql = "SELECT * FROM `cardsProduct` WHERE `id_page` = '$id_page' ORDER BY cast(`number_in_page` as unsigned)";
 $pages = $mysql -> query($sql);
 $data = [];
 $i=0;

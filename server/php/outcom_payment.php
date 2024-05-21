@@ -16,9 +16,9 @@ function CheckSumOrder($cardsProduct_id, $quantity, $sum){
     $sql = "SELECT * FROM `cardsProduct` WHERE `id`= '$cardsProduct_id' ";
     $cardData = $mysql -> query($sql);
     $cardData = $cardData -> fetch_assoc();
-    $priceData = $cardData['price'];
+    $priceData = round($cardData['price'], 2);
     $sumData = $priceData * $quantity;
-    if($sum != $sumData) return 'false: countSum='.$sumData.' orderSum='.$sum;
+    if( round($sum) != round($sumData) ) return 'false: countSum='.$sumData.' orderSum='.$sum.' priceBD='.$priceData;
     return 'true';
 }
 

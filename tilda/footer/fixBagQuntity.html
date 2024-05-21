@@ -17,7 +17,7 @@
         awaitElement(".t706__product-quantity", bindFilds)
         data = {id_page: $('#allrecords').attr('data-tilda-page-id') }
         card_data = await ajaxReq(URL_UPDATE_PAGES, AJAX_OPTIONS, data)
-        bindCards()
+        awaitElement(".t1070__col", bindCards, card_data.data.length -1 )
     }
     
     async function ajaxReq(url, options, content){
@@ -29,9 +29,9 @@
         return await response.json();
     }
 
-    function awaitElement(jquery_selctor, callback){
+    function awaitElement(jquery_selctor, callback, checkLength = 0){
         let id_timer = setInterval(()=>{
-            if($(jquery_selctor).length>0){
+            if($(jquery_selctor).length > checkLength){
                 clearInterval(id_timer)
                 callback()
             }
