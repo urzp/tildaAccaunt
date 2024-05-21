@@ -84,10 +84,10 @@ function pesePage($homeUrl, $page_url){
         $item = str_replace('[','',$item);
         $item = str_replace(']','',$item);
         $item = explode(', ', $item);
-        if($item[0]!= '1'){
+        //if($item[0]!= '1'){
             $arr_servis[$i] = $item;
             $i++;
-        }  
+        //}  
     }
 
     $result  = [];
