@@ -21,6 +21,7 @@
         data = {id_page: $('#allrecords').attr('data-tilda-page-id') } //{id_page:'21688812'} //
         card_data = await ajaxReq(URL_UPDATE_PAGES, AJAX_OPTIONS, data)
         if(!card_data.data) return false
+        
         awaitElement(".t1070__col", bindCards, card_data.data.length -1 )
     }
 
