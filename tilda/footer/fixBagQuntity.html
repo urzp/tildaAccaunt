@@ -3,10 +3,10 @@
 <script>
     let card_data
     let URL_UPDATE_PAGES = 'https://smmbackmy.ru/php/getCards.php'
-    // const AJAX_OPTIONS = {
-    //     type: 'POST',
-    //     headers: { 'Content-Type': 'application/json;charset=utf-8' },
-    // }
+    const AJAX_OPTIONS = {
+        type: 'POST',
+        headers: { 'Content-Type': 'application/json;charset=utf-8' },
+    }
 
     $(document).ready(function(){
         fixQuntity()
@@ -18,15 +18,17 @@
         awaitElement('.t706__close-button', ()=>{$('.t706__close-button').click()})
         awaitElement(".t706__orderform form", addAllFild)
         awaitElement(".t706__product-quantity", bindFilds)
-        data = {id_page: $('#allrecords').attr('data-tilda-page-id') }
+        data = {id_page: $('#allrecords').attr('data-tilda-page-id') } //{id_page:'21688812'} //
         card_data = await ajaxReq(URL_UPDATE_PAGES, AJAX_OPTIONS, data)
-        $('.t-card__btn').css({'opacity':'1.0'})
+        if(!card_data.data) return false
         awaitElement(".t1070__col", bindCards, card_data.data.length -1 )
     }
 
     function unableButtons(){
         $('.t-card__btn').on( "click", function( event ) {
-            if(!card_data) event.stopPropagation();
+            let id_card = event.target.closest(".t1070__col").getAttribute("cardsProduct_id")
+            console.log(id_card)
+            if(!id_card) event.stopPropagation();
         });
     }
     
@@ -65,32 +67,42 @@
     function bindCards(){
         $(".t1070__col").each(function (i) {
             let card = card_data.data[i]
-            $(this).attr("id", card.id_servis)
-            $(this).attr("pr_id", card.id_provider)
-            $(this).attr("type", card.type)
             $(this).attr("cardsProduct_id", card.id)
         })
-        $(".t1070__col a").each(function () {     
+        $(".t1070__col a").each(function () {      
             this.onclick = () =>{   
                 setTimeout(bindFilds,500)
-                let id = event.target.closest(".t1070__col").getAttribute("id")
-                document.querySelector('input[name="service"]').setAttribute("value", id) 
-                let pr_id = event.target.closest(".t1070__col").getAttribute("pr_id")
-                document.querySelector('input[name="prodavec_id"]').setAttribute("value", pr_id) 
-                let type = event.target.closest(".t1070__col").getAttribute("type")
-                document.querySelector('input[name="type"]').setAttribute("value", type) 
-                let cardsProduct_id = event.target.closest(".t1070__col").getAttribute("cardsProduct_id")
-                document.querySelector('input[name="cardsProduct_id"]').setAttribute("value", cardsProduct_id) 
-                if(type=='comments'){
+                let id_card = event.target.closest(".t1070__col").getAttribute("cardsProduct_id")
+                let card = card_data.data.find(item => item.id == id_card)
+                fillOrderVal(id_card)
+                additionalFelds(id_card)
+                if(card.type=='comments'){
                     bindCommentsImput()
                     renderCommentTypeCard()
                 }
             }   
         }); 
+        $('.t-card__btn').css({'opacity':'1.0'})
+    }
+
+    function fillOrderVal(id_card){
+        let card = card_data.data.find(item => item.id == id_card)
+        document.querySelector('input[name="cardsProduct_id"]').setAttribute("value", id_card) 
+        document.querySelector('input[name="service"]').setAttribute("value", card.id_servis) 
+        document.querySelector('input[name="prodavec_id"]').setAttribute("value", card.id_provider) 
+        document.querySelector('input[name="type"]').setAttribute("value", card.type) 
+    }
+
+    function additionalFelds(id_card){
+        let card = card_data.data.find(item => item.id == id_card)
+        let additional_params = card.additional_params
+        additional_params.forEach(element => {  
+            addFild(element.name)
+            $(`input[name="${element.name}"]`).val(element.value)
+        });
     }
 
     function bindFilds(){
-        //console.log('bind')
         $(`.t706__orderform form [name="quantity"]`).val($('.t706__product-quantity').text())
         $('.t706__product-quantity').on('DOMSubtreeModified', function(){
             $(`.t706__orderform form [name="quantity"]`).val($('.t706__product-quantity').text())
