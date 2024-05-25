@@ -15,20 +15,28 @@
 
     async function fixQuntity(){
         $('.t-card__btn').css({'opacity':'0.2'})
-        awaitElement('.t706__close-button', ()=>{$('.t706__close-button').click()})
+        checkEmpty_id_card()
         awaitElement(".t706__orderform form", addAllFild)
         awaitElement(".t706__product-quantity", bindFilds)
         data = {id_page: $('#allrecords').attr('data-tilda-page-id') } //{id_page:'21688812'} //
         card_data = await ajaxReq(URL_UPDATE_PAGES, AJAX_OPTIONS, data)
         if(!card_data.data) return false
-        
         awaitElement(".t1070__col", bindCards, card_data.data.length -1 )
+    }
+
+    function checkEmpty_id_card(){
+        setInterval(()=>{
+            if( $('.t706__cartwin').hasClass('t706__cartwin_showed') ){
+                setTimeout(()=>{
+                    if(!$('input[name="cardsProduct_id"]').val()) tcart__closeCart()
+                    },300)
+                }
+        }, 300)
     }
 
     function unableButtons(){
         $('.t-card__btn').on( "click", function( event ) {
             let id_card = event.target.closest(".t1070__col").getAttribute("cardsProduct_id")
-            console.log(id_card)
             if(!id_card) event.stopPropagation();
         });
     }
