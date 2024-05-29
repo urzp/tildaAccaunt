@@ -1,0 +1,120 @@
+<!-- Новый скрип в замен остальных на страницах  -->
+<script>
+
+$(document).ready(function(){
+    setTimeout(()=>{
+        if($('input[name="prodavec_id"]').length>0){
+            console.log('old')
+            oldScript()
+        }else{
+            console.log('new')
+            newScript()
+        }
+    }, 500)
+})
+
+//--------------- Old Script ------------------------------
+async function oldScript(){
+    awaitElement( ".t706__orderform form", fixQuntity )
+}
+
+async function fixQuntity(){
+    addFild('typeData', 'old')
+    addFild('quantity')
+    bindFilds()
+}
+
+//--------------- New Script -------------------------------
+async function newScript(){
+    add_card_numbers()
+    awaitElement( ".t706__orderform form", addAllFild )
+    awaitElement( ".t706__orderform form", bindFilds )
+    bindCardsNumbers()
+}
+
+function addAllFild(){
+    addFild('typeData', 'new')
+    addFild('quantity')
+    addFild('card_number')
+    //addFild('id_page', $('#allrecords').attr('data-tilda-page-id')) 21435507
+    addFild('id_page', '21435507')
+}
+
+function bindFilds(){
+    setInterval(()=>{
+        $(`.t706__orderform form [name="quantity"]`).val($('.t706__product-quantity').text())
+    }, 200)
+    setInterval(()=>{
+    if($("textarea[name='comments']").length>0){
+        bindCommentsImput()
+        renderCommentTypeCard()
+    }
+    }, 1500)
+}
+
+function bindCardsNumbers(){
+    $(".t1070__col").each(function () {      
+        $(this).click(()=>{
+            $(`.t706__orderform form [name="card_number"]`).val($(this).attr('card_index'))
+        })
+    })
+}
+
+function add_card_numbers(){
+    $('.t1070__col').each(function( index ){
+        index = index + 1
+        $(this).addClass("card_index_" + index )
+        $(this).attr({"card_index": index})
+    })
+}
+
+function awaitElement(jquery_selctor, callback, checkLength = 0){
+    let id_timer = setInterval(()=>{
+        if($(jquery_selctor).length > checkLength){
+            clearInterval(id_timer)
+            callback()
+        }
+    },300)      
+}
+
+function addFild(name, value=""){
+    if( $(`input[name="${name}"]`).length >0 ) return false
+    let html_fild = `<input type="hidden" name="${name}" value="${value}">`
+    $(".t706__orderform form").append(html_fild)
+}
+
+function bindCommentsImput(){
+        $("textarea[name='comments']").bind('input propertychange', function(){
+            let n_comments = $("textarea[name='comments']").val().split("\n").filter(item => item != '').length
+            if(n_comments==0) n_comments = 1
+            setProductQuantity(n_comments)
+        })
+    }
+
+    function setProductQuantity(quntity){
+        let prod_ref = tcart.products[0]
+        prod_ref.quantity = quntity
+        prod_ref.amount = quntity * prod_ref.price
+        $('.t706__product-quantity').text(quntity)
+        $('.quntity-title span').text(quntity)
+        $('.t706__cartwin-prodamount-price').text(prod_ref.amount)
+        tcart__updateTotalProductsinCartObj()
+        tcart__reDrawCartIcon()
+        tcart__reDrawTotal()
+        tcart__saveLocalObj()
+    }
+
+    function renderCommentTypeCard(){
+        let id_itv = setInterval(()=>{
+            clearInterval(id_itv)
+            $('.t706__product-plusminus').attr({'rended':true})
+            $('.t706__product-plusminus').css({'display':'none'})
+            $('.t706__product-amount').css({'display':'none'})
+            $('.t706__product-del-wrapper').css({'display':'none'})
+            if($('.quntity-title').length > 0 ) return false 
+            $('.t706__minimal').after( "<div class='t706__minimal quntity-title' >За <span>1</span> коментарий(ев)</div>" )
+        },100)
+
+    }
+
+</script>

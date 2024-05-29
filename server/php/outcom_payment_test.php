@@ -16,9 +16,9 @@ function CheckSumOrder($cardsProduct_id, $quantity, $sum){
     $sql = "SELECT * FROM `cardsProduct` WHERE `id`= '$cardsProduct_id' ";
     $cardData = $mysql -> query($sql);
     $cardData = $cardData -> fetch_assoc();
-    $priceData = $cardData['price'];
+    $priceData = round($cardData['price'], 2);
     $sumData = $priceData * $quantity;
-    if($sum != $sumData) return 'false: countSum='.$sumData.' orderSum='.$sum;
+    if( round($sum) != round($sumData) ) return 'false: countSum='.$sumData.' orderSum='.$sum.' priceBD='.$priceData;
     return 'true';
 }
 
@@ -76,8 +76,26 @@ $payment = json_decode(str_replace('\"', "",$payment), true);
 $transaction = $payment['orderid'];
 $sum = $payment['amount'];
 $products = $payment['products'][0];
+$typeData = $_POST['typeData'];
+
+if($typeData=="new"){
+    $id_page = $_POST['id_page'];
+    $card_number = $_POST['card_number'];
+    $sql = "SELECT * FROM `cardsProduct` WHERE `id_page`='$id_page' AND `number_in_page`='$card_number' ";
+    $cardData = $mysql -> query($sql);
+    $cardData = $cardData -> fetch_assoc();
+    $_POST['type'] = $cardData['type'];
+    $_POST['prodavec_id'] = $cardData['id_provider'];
+    $_POST["service"] = $cardData['id_servis'];
+    $cardsProduct_id = $cardData['id'];
+    $sql = "SELECT * FROM `cardProductParams` WHERE `id_card` = $cardsProduct_id ";
+    $cardPrams = $mysql -> query($sql);
+    foreach( $cardPrams as $item ){
+        $_POST[$item['name']]=$item['value'];
+    } 
+}
+
 $id_provader = $_POST['prodavec_id'];
-$cardsProduct_id = $_POST['cardsProduct_id'];
 
 $checkSum = CheckSumOrder($cardsProduct_id, $quantity, $sum);
 //push_log(json_encode($checkSum), basename(__FILE__), 'order_log');
