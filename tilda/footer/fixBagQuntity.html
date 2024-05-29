@@ -9,8 +9,16 @@
     // }
 
     $(document).ready(function(){
-        fixQuntity()
-        unableButtons()
+        setTimeout(()=>{
+            if($('input[name="prodavec_id"]').length>0){
+                console.log('old')
+            }else{
+                console.log('new')
+                fixQuntity()
+                unableButtons()
+            }
+        }, 500)
+
     })
 
 
