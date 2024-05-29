@@ -3,26 +3,36 @@
 <script>
     let card_data
     let URL_UPDATE_PAGES = 'https://smmbackmy.ru/php/getCards.php'
-    const AJAX_OPTIONS = {
-        type: 'POST',
-        headers: { 'Content-Type': 'application/json;charset=utf-8' },
-    }
+    // const AJAX_OPTIONS = {
+    //     type: 'POST',
+    //     headers: { 'Content-Type': 'application/json;charset=utf-8' },
+    // }
 
     $(document).ready(function(){
         fixQuntity()
         unableButtons()
     })
 
+
     async function fixQuntity(){
+        add_numbers()
         $('.t-card__btn').css({'opacity':'0.2'})
         checkEmpty_id_card()
         awaitElement(".t706__orderform form", addAllFild)
         awaitElement(".t706__product-quantity", bindFilds)
-        data = {id_page: $('#allrecords').attr('data-tilda-page-id') } //{id_page:'21688812'} //
+        data ={id_page:'21688812'}// {id_page: $('#allrecords').attr('data-tilda-page-id') } //{id_page:'21688812'} //
         card_data = await ajaxReq(URL_UPDATE_PAGES, AJAX_OPTIONS, data)
         if(!card_data.data) return false
         awaitElement(".t1070__col", bindCards, card_data.data.length -1 )
     }
+
+    function add_numbers(){
+        $('.t1070__col').each(function( index ){
+            $(this).addClass("card_index_"+index)
+            $(this).attr({"card_index":index})
+        })
+    }
+
 
     function checkEmpty_id_card(){
         setInterval(()=>{
