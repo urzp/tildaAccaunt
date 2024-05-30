@@ -12,7 +12,7 @@ function CheckSumOrder($cardsProduct_id, $quantity, $sum){
     $isChekingSum = $isChekingSum -> fetch_assoc();
     $isChekingSum = $isChekingSum['value'];
     if($isChekingSum == '0') return 'noCheck by settings';
-    if($cardsProduct_id == '') return 'noCheck by nodata card id';
+    if($cardsProduct_id == ''|| $cardsProduct_id == '-') return 'noCheck by nodata card id';
     $sql = "SELECT * FROM `cardsProduct` WHERE `id`= '$cardsProduct_id' ";
     $cardData = $mysql -> query($sql);
     $cardData = $cardData -> fetch_assoc();
@@ -77,6 +77,7 @@ $transaction = $payment['orderid'];
 $sum = $payment['amount'];
 $products = $payment['products'][0];
 $typeData = $_POST['typeData'];
+$cardsProduct_id = "-";
 
 if($typeData=="new"){
     $id_page = $_POST['id_page'];
@@ -93,6 +94,15 @@ if($typeData=="new"){
     foreach( $cardPrams as $item ){
         $_POST[$item['name']]=$item['value'];
     } 
+}else{
+    $id_page = $_POST['id_page'];
+    $card_number = $_POST['card_number'];
+    if($id_page!=''){
+        $sql = "SELECT * FROM `cardsProduct` WHERE `id_page`='$id_page' AND `number_in_page`='$card_number' ";
+        $cardData = $mysql -> query($sql);
+        $cardData = $cardData -> fetch_assoc();   
+        $cardsProduct_id = $cardData['id'];
+    }
 }
 
 $id_provader = $_POST['prodavec_id'];
