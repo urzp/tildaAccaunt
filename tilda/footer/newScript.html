@@ -64,10 +64,18 @@
     }
     
     function bindCardsNumbers(){
-        $(".t1070__col").each(function () {      
-            $(this).click(()=>{
-                $(`.t706__orderform form [name="card_number"]`).val($(this).attr('card_index'))
-            })
+        // $(".t1070__col").each(function () {      
+        //     $(this).click(()=>{
+        //         $(`.t706__orderform form [name="card_number"]`).val($(this).attr('card_index'))
+        //     })
+        // })
+        $(".t1070__col").click( ()=>{
+            if( tcart.length>0 && tcart.products > 0){
+                let productTitle = tcart.products[0].name
+                $($(`.t1070__col .t-card__title`).filter(function() {
+                    return $(this).text() === productTitle;
+                }).closest(".t1070__col"))
+            }
         })
     }
     
