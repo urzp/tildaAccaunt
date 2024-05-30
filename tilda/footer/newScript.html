@@ -69,14 +69,16 @@
         //         $(`.t706__orderform form [name="card_number"]`).val($(this).attr('card_index'))
         //     })
         // })
-        $(".t1070__col").click( ()=>{
-            if( tcart.length>0 && tcart.products > 0){
+        setInterval( ()=>{
+            if( !!tcart && tcart.products.length > 0){
                 let productTitle = tcart.products[0].name
-                $($(`.t1070__col .t-card__title`).filter(function() {
+                let index = $($(`.t1070__col .t-card__title`).filter(function() {
                     return $(this).text() === productTitle;
-                }).closest(".t1070__col"))
+                }).closest(".t1070__col")).attr('card_index')
+                $(`.t706__orderform form [name="card_number"]`).val(index)
             }
-        })
+        }, 300)
+        
     }
     
     function add_card_numbers(){
