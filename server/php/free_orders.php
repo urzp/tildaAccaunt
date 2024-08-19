@@ -8,16 +8,18 @@ include 'provader_functions.php';
 
 function noteOrder($data){
     global $mysql;
+    $page = $data['url_page'];
     $name_servis = $data['quantity-text'];
     $service = $data['service'];
     $link = $data['post-link'];
     $quantity = $data['quantity'];
+    $quantity_max = $data['quantity_max'];
     $id_provider = $data['id_provider'];
     $result = $data['result'] -> message;;
     $sql = "INSERT INTO `orders_free` 
-    (`name_servis`, `service`, `link`, `quantity`, `id_provider`, `provider_msg` )
+    (`page`, `name_servis`, `service`, `link`, `quantity`, `quantity_max`, `id_provider`, `provider_msg` )
     VALUES
-    ('$name_servis', '$service', '$link', '$quantity', '$id_provider', '$result')";
+    ('$page', '$name_servis', '$service', '$link', '$quantity', '$quantity_max', '$id_provider', '$result')";
     //push_log(json_encode($sql), basename(__FILE__), 'free_order_log');
     $mysql -> query($sql);
 }
@@ -51,7 +53,19 @@ if( isset($sameLink_id)){
     exit();
 }
 
-if($quantity > $quantity_max){ $quantity = $quantity_max;}
+if(isset($_POST['url_page'])){
+    $url = $_POST['url_page'];
+    $sql ="SELECT * from `pages_free` WHERE `page` = '$url'";
+    $result = $mysql -> query($sql);
+    $result = $result -> fetch_assoc();
+    if(isset($result['id_provider'])){
+        $quantity_max = $result['quantity_max'];
+        $id_provider = $result['id_provider'];
+    }
+    //push_log(json_encode($quantity_max), basename(__FILE__), 'free_order_log');
+}
+
+if((int)$quantity > (int)$quantity_max){ $quantity = $quantity_max;}
 
 $_POST['post-link'] = $link;
 $_POST['prodavec_id'] = $id_provider;
@@ -59,6 +73,7 @@ $data = getDataProv($_POST, $mysql);
 $result = sendOrderProvader($data);
 $_POST['id_provider'] = $id_provider;
 $_POST['result'] = $result;
+$_POST['quantity_max'] = $quantity_max;
 noteOrder($_POST);
 //push_log(json_encode($data), basename(__FILE__), 'free_order_log');
 ///push_log(json_encode($result), basename(__FILE__), 'free_order_log');
