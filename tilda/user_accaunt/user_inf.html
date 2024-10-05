@@ -97,7 +97,7 @@
 
     async function fillFormUser(user){
         fillUserData(user)
-        $(`.userInf [name="old_old_email"]` ).val(user.email)
+        $(`.userInf [name="old_email"]` ).val(user.email)
         $(`.userInf [name="name"]` ).val(user.name)
         $(`.userInf [name="user_id"]` ).val(user.id)
         if(!!user.phone){
@@ -117,6 +117,7 @@
     }
     //****** заполнение таплиц расходов приходов ***
     function fillIn_PaymentTb(data){
+        if(!data){ return false }
         //if(!data){ $('.uc-balance_lb').css({'opacity':'1.0'}); return false }
         //$('.uc-balance_lb').fadeOut()
         let cssTable = 'in_payment_table'

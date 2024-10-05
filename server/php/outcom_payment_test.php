@@ -1,5 +1,7 @@
 <?php
 
+echo "ok";
+
 include 'config.php';
 include 'balans_functions.php';
 include 'support_functions.php';
@@ -58,7 +60,7 @@ function notePatmentNotUser( $paymentsystem, $transaction, $sum, $checkSum , $ca
 //---------------------------------------------------- BEGIN -------------------------------------------------------------
 
 header('Access-Control-Allow-Origin: *');
-
+//push_log(json_encode('--------------------------------------'), basename(__FILE__), 'order_log');
 //push_log(json_encode($_POST), basename(__FILE__), 'order_log');
 
 if($_POST["api_k"]!=_APY_KEY_){ exit(); }
@@ -77,33 +79,41 @@ $transaction = $payment['orderid'];
 $sum = $payment['amount'];
 $products = $payment['products'][0];
 $typeData = $_POST['typeData'];
-$cardsProduct_id = "-";
 
-if($typeData=="new"){
-    $id_page = $_POST['id_page'];
-    $card_number = $_POST['card_number'];
+$cardsProduct_id = "-";
+$id_page = $_POST['id_page'];
+$card_number = $_POST['card_number'];
+if($id_page!=''&&$card_number!=''){
     $sql = "SELECT * FROM `cardsProduct` WHERE `id_page`='$id_page' AND `number_in_page`='$card_number' ";
     $cardData = $mysql -> query($sql);
-    $cardData = $cardData -> fetch_assoc();
+    $cardData = $cardData -> fetch_assoc();    
+    $cardsProduct_id = $cardData['id'];
+}
+
+if($cardsProduct_id=='-'||$cardsProduct_id==''){
+    $findProduct = $products; //'Просмотры поста Телеграм=1';
+    $pos = strpos($findProduct, '=');
+    $findProduct = substr($findProduct, 0, $pos);
+    $sql = "SELECT * FROM `cardsProduct` WHERE `title`='$findProduct' ";
+    $cardData = $mysql -> query($sql);
+    $cardData = $cardData -> fetch_assoc();    
+    $cardsProduct_id = $cardData['id'];
+}
+
+if($typeData=="new"){
     $_POST['type'] = $cardData['type'];
     $_POST['prodavec_id'] = $cardData['id_provider'];
     $_POST["service"] = $cardData['id_servis'];
-    $cardsProduct_id = $cardData['id'];
-    $sql = "SELECT * FROM `cardProductParams` WHERE `id_card` = $cardsProduct_id ";
-    $cardPrams = $mysql -> query($sql);
-    foreach( $cardPrams as $item ){
-        $_POST[$item['name']]=$item['value'];
-    } 
-}else{
-    $id_page = $_POST['id_page'];
-    $card_number = $_POST['card_number'];
-    if($id_page!=''){
-        $sql = "SELECT * FROM `cardsProduct` WHERE `id_page`='$id_page' AND `number_in_page`='$card_number' ";
-        $cardData = $mysql -> query($sql);
-        $cardData = $cardData -> fetch_assoc();   
-        $cardsProduct_id = $cardData['id'];
+    if($cardData['id']!=''){
+        $sql = "SELECT * FROM `cardProductParams` WHERE `id_card` = $cardsProduct_id ";
+        $cardPrams = $mysql -> query($sql);
+        foreach( $cardPrams as $item ){
+            $_POST[$item['name']]=$item['value'];
+        } 
     }
 }
+
+//push_log(json_encode('$cardsProduct_id='.$cardsProduct_id), basename(__FILE__), 'order_log');
 
 $id_provader = $_POST['prodavec_id'];
 

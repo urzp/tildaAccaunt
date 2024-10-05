@@ -12,23 +12,23 @@ function getDataProv($POST, $mysql){
     $url_prov = $sql_result['name'];
 
     if($_POST['type'] == "package"){
-        echo "package";
+        //echo "package";
         $data = ['key' => $api_key_prov, 'action' => 'add', 'service' => $_POST['service'], 'link' => $_POST['post-link']];
     } else if($_POST['type'] == "comments"){
-    echo "comments";
+    //echo "comments";
         $data = ['key' => $api_key_prov, 'action' => 'add', 'service' => $_POST['service'], 'link' => $_POST['post-link'], 'comments' => $_POST['comments']];
     } else if($_POST['type'] == "poll"){
-        echo "poll";
+        //echo "poll";
         $data = ['key' => $api_key_prov, 'action' => 'add', 'service' => $_POST['service'], 'link' => $_POST['post-link'],  'quantity' => $_POST['quantity'], 'answer_number' => $_POST['answer_number']];
     } else if($_POST['type'] == "posts"){
-        echo "posts";
+        //echo "posts";
         $expiry = new DateTime('now');
         $expiry->modify('+3 month');
         $expiry= $expiry->format('d/m/Y');
         $data = ['key' => $api_key_prov, 'action' => 'add', 'service' => $_POST['service'], 'link' => $_POST['post-link'], 'username' => $_POST['post-link'], 'quantity' => $_POST['quantity'], 'min' => $_POST['quantity'], 'max' => $_POST['quantity'], 'posts' => $_POST['new_posts'], 'old_posts' => $_POST['old_posts'], 'expiry' => $expiry ];
-        push_log( json_encode($data), basename(__FILE__), 'test_provader_post_log');
+        //push_log( json_encode($data), basename(__FILE__), 'test_provader_post_log');
     } else{
-        echo "default";
+        //echo "default";
         $data = ['key' => $api_key_prov, 'action' => 'add', 'service' => $_POST['service'], 'link' => $_POST['post-link'], 'quantity' => $_POST['quantity']];
     };
 
