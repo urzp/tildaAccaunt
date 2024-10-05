@@ -64,15 +64,6 @@
     }
     
     function bindCardsNumbers(){
-<<<<<<< HEAD
-        // $(".t1070__col").each(function () {      
-        //     $(this).click(()=>{
-        //         $(`.t706__orderform form [name="card_number"]`).val($(this).attr('card_index'))
-        //     })
-        // })
-        setInterval( ()=>{
-            if( !!tcart && tcart.products.length > 0){
-=======
         $(".t1070__col").each(function () {      
             $(this).click(()=>{
                 $(`.t706__orderform form [name="card_number"]`).val($(this).attr('card_index'))
@@ -81,23 +72,17 @@
         //correct
         setInterval( ()=>{
             if( !!tcart && tcart.products.length > 0 && $(`.t706__orderform form [name="card_number"]`).val()==''){
->>>>>>> f148ca2bd14958b534f9aeb2103934d9a43da4a6
                 let productTitle = tcart.products[0].name
                 let index = $($(`.t1070__col .t-card__title`).filter(function() {
                     return $(this).text() === productTitle;
                 }).closest(".t1070__col")).attr('card_index')
                 $(`.t706__orderform form [name="card_number"]`).val(index)
             }
-<<<<<<< HEAD
-        }, 300)
-        
-=======
             if( $(`.t706__orderform form [name="id_page"]`).val()=='' ){
                 let id_page = $('#allrecords').attr('data-tilda-page-id') //21435507
                 $(`.t706__orderform form [name="id_page"]`).val(id_page)
             }
         }, 300)
->>>>>>> f148ca2bd14958b534f9aeb2103934d9a43da4a6
     }
     
     function add_card_numbers(){
