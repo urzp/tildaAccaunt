@@ -1,0 +1,38 @@
+<script>
+let id_interval, sessionToken
+$(window).on( "load", function() {
+    sessionToken = setSession()
+    id_interval = setInterval(requestPermission, 3000)
+} );
+
+function requestPermission(){
+    sendCount(sessionToken)
+    //clearInterval(id_interval)
+}
+
+function setSession(){
+    let sessionToken = rand() + rand()
+    return sessionToken
+}
+
+rand = function() {
+    return Math.random().toString(36).substr(2); // remove `0.`
+};
+
+async function sendCount(sessionToken){
+    let url = 'https://smmbakparse.ru/php/countTimePermission.php'
+    content = {
+        sessionToken
+    }
+    let options = {
+        type: 'POST',
+        headers: { 'Content-Type': 'application/json;charset=utf-8' },
+    }
+    let response = await fetch(url,{
+        method: options.type,
+        headers: options.heders,
+        body: JSON.stringify(content)
+    })
+    return await response.json();
+}
+</script>
