@@ -1,13 +1,20 @@
 <script>
-let id_interval, sessionToken
+let id_interval, sessionToken, permissionKey 	
 $(window).on( "load", function() {
     sessionToken = setSession()
+    sendCount(sessionToken)
     id_interval = setInterval(requestPermission, 3000)
 } );
 
-function requestPermission(){
-    sendCount(sessionToken)
-    //clearInterval(id_interval)
+async function requestPermission(){
+    let responce  = await sendCount(sessionToken)
+    if(!!responce.data){
+        clearInterval(id_interval)
+        permissionKey = responce.data
+        $('input[name=sessionToken]').val(sessionToken)
+        $('input[name=permissionKey]').val(permissionKey)
+        console.log('response =', responce.data)
+    }
 }
 
 function setSession(){

@@ -16,10 +16,14 @@ function noteOrder($data){
     $quantity_max = $data['quantity_max'];
     $id_provider = $data['id_provider'];
     $result = $data['result'] -> message;;
+
+    $sessionToken = $data['sessionToken'];
+    $permissionKey = $data['permissionKey-test'];
+
     $sql = "INSERT INTO `orders_free` 
-    (`page`, `name_servis`, `service`, `link`, `quantity`, `quantity_max`, `id_provider`, `provider_msg` )
+    (`page`, `name_servis`, `service`, `link`, `quantity`, `quantity_max`, `id_provider`, `provider_msg`, `sessionToken`, `permissionKey` )
     VALUES
-    ('$page', '$name_servis', '$service', '$link', '$quantity', '$quantity_max', '$id_provider', '$result')";
+    ('$page', '$name_servis', '$service', '$link', '$quantity', '$quantity_max', '$id_provider', '$result', '$sessionToken', '$permissionKey')";
     //push_log(json_encode($sql), basename(__FILE__), 'free_order_log');
     $mysql -> query($sql);
 }
@@ -35,6 +39,7 @@ function findSameLink($pause, $link){
     return $result;
 }
 
+//push_log(json_encode($_POST), basename(__FILE__), 'free_order_log');
 
 $pauseServis_hours = (int)$configs['pause_free_orders_h'];
 $quantity_max = $configs['quantity_max_free_orderd'];
