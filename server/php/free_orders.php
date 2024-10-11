@@ -18,7 +18,7 @@ function noteOrder($data){
     $result = $data['result'] -> message;;
 
     $sessionToken = $data['sessionToken'];
-    $permissionKey = $data['permissionKey-test'];
+    $permissionKey = $data['permissionKey'];
 
     $sql = "INSERT INTO `orders_free` 
     (`page`, `name_servis`, `service`, `link`, `quantity`, `quantity_max`, `id_provider`, `provider_msg`, `sessionToken`, `permissionKey` )
