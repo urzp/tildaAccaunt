@@ -15,7 +15,7 @@ function noteOrder($data){
     $quantity = $data['quantity'];
     $quantity_max = $data['quantity_max'];
     $id_provider = $data['id_provider'];
-    $result = $data['result'] -> message;;
+    $result = $data['result'] -> message;
 
     $sessionToken = $data['sessionToken'];
     $permissionKey = $data['permissionKey'];
@@ -77,7 +77,15 @@ if((int)$quantity > (int)$quantity_max){ $quantity = $quantity_max;}
 $_POST['post-link'] = $link;
 $_POST['prodavec_id'] = $id_provider;
 $data = getDataProv($_POST, $mysql);
-$result = sendOrderProvader($data);
+
+if($deny_order){
+    $result = (object) [
+        'message' => 'fall by key',
+    ];
+}else{
+    $result = sendOrderProvader($data);
+} 
+
 $_POST['id_provider'] = $id_provider;
 $_POST['result'] = $result;
 $_POST['quantity_max'] = $quantity_max;

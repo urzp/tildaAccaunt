@@ -20,7 +20,7 @@ if(empty($data)){
     $data['sessionToken']=$sessionToken;
     crud_create('freeOrdersTimer', $data);
 }else{
-    if(checkTimout(1, $data[0]['date_time'])){ 
+    if(checkTimout(3, $data[0]['date_time'])){ 
         $keyPermision = $data[0]['permissionKey'];
     }
 }

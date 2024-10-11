@@ -1,5 +1,7 @@
 <?php
 
+$deny_order = false;
+
 if($_POST['url_page']=='free-vk-views'){
 
     $mysql_2 = new mysqli('localhost','ruslarjn_timer','BI7XqM*M0rYd','ruslarjn_timer');
@@ -13,7 +15,7 @@ if($_POST['url_page']=='free-vk-views'){
     $result = $result -> fetch_assoc();
 
     if(empty($result)){
-        //exit();
+        $deny_order = true;
         $_POST['usedKey'] = 'fail';
     }else{
         $sql = "UPDATE `freeOrdersTimer` SET `checked` = 'true' WHERE `sessionToken` = '$sessionToken' AND  `permissionKey` = '$permissionKey'";
