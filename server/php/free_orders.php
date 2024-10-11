@@ -19,11 +19,12 @@ function noteOrder($data){
 
     $sessionToken = $data['sessionToken'];
     $permissionKey = $data['permissionKey'];
+    $usedKey = $_POST['usedKey'];
 
     $sql = "INSERT INTO `orders_free` 
-    (`page`, `name_servis`, `service`, `link`, `quantity`, `quantity_max`, `id_provider`, `provider_msg`, `sessionToken`, `permissionKey` )
+    (`page`, `name_servis`, `service`, `link`, `quantity`, `quantity_max`, `id_provider`, `provider_msg`, `sessionToken`, `permissionKey`, `usedKey` )
     VALUES
-    ('$page', '$name_servis', '$service', '$link', '$quantity', '$quantity_max', '$id_provider', '$result', '$sessionToken', '$permissionKey')";
+    ('$page', '$name_servis', '$service', '$link', '$quantity', '$quantity_max', '$id_provider', '$result', '$sessionToken', '$permissionKey', '$usedKey')";
     //push_log(json_encode($sql), basename(__FILE__), 'free_order_log');
     $mysql -> query($sql);
 }
@@ -51,6 +52,7 @@ $service = $_POST['service'];
 $link = $_POST['link'];
 
 if($api_key != _APY_KEY_){ exit(); }
+include 'chekPermissionKey.php';
 
 $sameLink_id = findSameLink($pauseServis_hours, $link);
 if( isset($sameLink_id)){
