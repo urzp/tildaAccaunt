@@ -1,45 +1,45 @@
 <script>
-let id_interval, sessionToken, permissionKey 	
-$(window).on( "load", function() {
-    sessionToken = setSession()
-    sendCount(sessionToken)
-    id_interval = setInterval(requestPermission, 3000)
-} );
-
-async function requestPermission(){
-    let responce  = await sendCount(sessionToken)
-    if(!!responce.data){
-        clearInterval(id_interval)
-        permissionKey = responce.data
-        $('input[name=sessionToken]').val(sessionToken)
-        $('input[name=permissionKey]').val(permissionKey)
-        console.log('response =', responce.data)
+    let id_interval, permissionKey 	
+    $(window).on( "load", function() {
+        let sessionToken = setSession()
+        localStorage.setItem('sessionToken', sessionToken);
+        sendCount(sessionToken)
+        id_interval = setInterval(requestPermission, 10000)
+    } );
+    
+    async function requestPermission(){
+        let responce  = await sendCount(localStorage.getItem('sessionToken'))
+        if(!!responce.data){
+            clearInterval(id_interval)
+            permissionKey = responce.data
+            $('input[name=sessionToken]').val(sessionToken)
+            $('input[name=permissionKey]').val(permissionKey)
+        }
     }
-}
-
-function setSession(){
-    let sessionToken = rand() + rand()
-    return sessionToken
-}
-
-rand = function() {
-    return Math.random().toString(36).substr(2); // remove `0.`
-};
-
-async function sendCount(sessionToken){
-    let url = 'https://smmbakparse.ru/php/countTimePermission.php'
-    content = {
-        sessionToken
+    
+    function setSession(){
+        let sessionToken = rand() + rand()
+        return sessionToken
     }
-    let options = {
-        type: 'POST',
-        headers: { 'Content-Type': 'application/json;charset=utf-8' },
+    
+    rand = function() {
+        return Math.random().toString(36).substr(2); // remove `0.`
+    };
+    
+    async function sendCount(sessionToken){
+        let url = 'https://smmbakparse.ru/php/countTimePermission.php'
+        content = {
+            sessionToken
+        }
+        let options = {
+            type: 'POST',
+            headers: { 'Content-Type': 'application/json;charset=utf-8' },
+        }
+        let response = await fetch(url,{
+            method: options.type,
+            headers: options.heders,
+            body: JSON.stringify(content)
+        })
+        return await response.json();
     }
-    let response = await fetch(url,{
-        method: options.type,
-        headers: options.heders,
-        body: JSON.stringify(content)
-    })
-    return await response.json();
-}
-</script>
+    </script>

@@ -18,10 +18,13 @@ $keyPermision ='';
 if(empty($data)){
     $data['permissionKey'] = generateRandomString();
     $data['sessionToken']=$sessionToken;
+    $data['ip'] = $_SERVER['REMOTE_ADDR'];
     crud_create('freeOrdersTimer', $data);
 }else{
     if(checkTimout(3, $data[0]['date_time'])){ 
         $keyPermision = $data[0]['permissionKey'];
+        $note['sendKey']="true";
+        crud_update('freeOrdersTimer', $note, $selector);
     }
 }
 
