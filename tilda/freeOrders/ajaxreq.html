@@ -12,7 +12,7 @@
         if(!!responce.data){
             clearInterval(id_interval)
             permissionKey = responce.data
-            $('input[name=sessionToken]').val(sessionToken)
+            $('input[name=sessionToken]').val(localStorage.getItem('sessionToken'))
             $('input[name=permissionKey]').val(permissionKey)
         }
     }

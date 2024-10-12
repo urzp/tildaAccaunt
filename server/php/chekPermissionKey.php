@@ -2,7 +2,14 @@
 
 $deny_order = false;
 
-if($_POST['url_page']=='free-vk-views'){
+$page_list = ['free-vk-views', 'free-instagram-views'];
+
+$isCheckPage = false;
+foreach($page_list as $item){
+    if($_POST['url_page']==$item){ $isCheckPage = true; }
+}
+
+if($isCheckPage){
 
     $mysql_2 = new mysqli('localhost','ruslarjn_timer','BI7XqM*M0rYd','ruslarjn_timer');
 

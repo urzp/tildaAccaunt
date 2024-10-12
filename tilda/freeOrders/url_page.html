@@ -1,0 +1,8 @@
+<script>
+    let url_page = window.location.href.split('/')
+    url_page = url_page[3]
+    setInterval(()=>{
+        $('[name="url_page"]').val(url_page)
+    }, 500)
+    
+</script>
