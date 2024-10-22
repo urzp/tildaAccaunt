@@ -1,0 +1,139 @@
+<script>
+
+    let active_button = 1;
+    setInterval(function(){
+        active_button = 1
+    },2000);//пауза кнопка
+    
+    $(document).ready(function () {
+      const self = {
+        time: 2, // время прокрутки в секундах
+        ob: 5, // количество оборотов
+        elements: {
+          wheel: $('.wheel'),
+        },
+        options: [
+          [1, '<br><b>ПОБЕДА!</b>', 'https://static.tildacdn.com/tild3364-3432-4437-b065-663536363437/4062925.svg'],
+          [20, '<br>Рядом', 'https://static.tildacdn.com/tild3163-6130-4061-a261-353834346132/smile1.png'],
+          [20, '<br>Близко', 'https://static.tildacdn.com/tild3630-3933-4435-b862-313036323033/smile5.png'],
+          [20, '<br>Почти', 'https://static.tildacdn.com/tild3565-3961-4635-b732-386230636339/smile3.png'],
+          [20, '<br>Еще чуток', 'https://static.tildacdn.com/tild3263-6435-4133-a265-353938663766/smile4.png'],
+          [19, '<br>Рядом', 'https://static.tildacdn.com/tild3931-6664-4537-a166-653466633764/smile7.png'],
+        ],
+        randomIndex: function() {
+          const max = self.options.reduce(function (sum, option) {
+            return sum + option[0];
+          }, 0);
+    
+          let probability = Math.floor(Math.random() * (max - 1));
+          let index = 0;
+    
+          for (; ; index++) {
+            probability = probability - self.options[index][0];
+            if (probability < 0) {
+              break;
+            }
+          }
+    
+          if (sessionStorage.getItem('wheel_index') === index) {
+            index = self.randomIndex();
+          }
+    
+          sessionStorage.setItem('wheel_index', index);
+    
+          return index;
+        },
+        click: async function() {
+            if (active_button == 1) {
+
+              const count = self.options.length;
+              const angle = 360 / count;                    
+              //const randomIndex = self.randomIndex();
+
+              let sessionToken = localStorage.getItem('sessionToken')
+              let result = await sendPlay(sessionToken)
+              const randomIndex = result.data.wheel
+              let permissionKey = result.data.permissionKey
+        
+              self.options.forEach(function (option, index) {
+                $(document.getElementById('wheel_item_' + index)).css({
+                  transform: "rotate(" + (angle * (index - randomIndex + count) + 5 * 360) + "deg)",
+                });
+              });
+        
+              setTimeout(function(){
+                self.options.forEach(function (option, index) {
+                  $(document.getElementById('wheel_item_' + index)).css({
+                    transform: "rotate(" + (angle * (index - randomIndex + count)) + "deg)",
+                  });
+                });                        
+              }, 500);
+        
+
+              if (randomIndex == 0){
+                  setTimeout(function(){
+                    $('input[name=permissionKey]').val(permissionKey)  
+                  // где 5 это индекс элемента из списка, т.е. если выигрышный варинат номер 5 выскачит поп ап
+                    const element = document.getElementById('rec465457821').querySelector('.t-popup');
+                    element.classList.add('t-popup_show');
+                    element.style.display = 'block';
+                  }, 2000);
+              }
+              
+              active_button = 0;
+              
+            } 
+          
+        },
+        render: function () {
+          const count = self.options.length;
+          const angle = 360 / count;
+    
+          self.elements.wheel.empty();
+          self.options.forEach(function (option, index) {
+            const label = option[1];
+            const imgUrl = option[2];
+    
+            self.elements.wheel.append(
+              $('<div>', {
+                id: 'wheel_item_' + index,
+                class: 'wheel_item',
+              }).css({
+                transform: "rotate(" + (angle * index) + "deg)",
+              }).append([
+                $('<img>', {
+                  src: imgUrl,
+                  class: 'wheel_item_img',
+                }),
+                $('<p>', {
+                  class: 'wheel_item_text',
+                }).html(label),
+              ])
+            );
+          });                    
+        },
+      };
+    
+      self.render();
+    
+      $('.wheel_button').on('click', self.click);
+    });
+
+
+    async function sendPlay(sessionToken){
+        let url = 'https://smmbakparse.ru/php/playwheel.php'
+        content = {
+            sessionToken
+        }
+        let options = {
+            type: 'POST',
+            headers: { 'Content-Type': 'application/json;charset=utf-8' },
+        }
+        let response = await fetch(url,{
+            method: options.type,
+            headers: options.heders,
+            body: JSON.stringify(content)
+        })
+        return await response.json();
+    }
+    </script>

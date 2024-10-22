@@ -1,0 +1,101 @@
+<style>
+    .wheel_container {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    
+    
+    .wheel {
+      display: flex;
+      align-items: center;
+      width: 360px;
+      height: 360px;
+      box-sizing: border-box;
+      box-shadow: 0 0 0 2px #496f9c, 0 0 6px 5px #496f9c;
+      position: relative;
+      overflow: hidden;
+      border-radius: 50%;
+      margin: 10px;
+      background-color: #fafafa;
+    }
+    
+    .wheel * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .wheel_item {
+      position: absolute;
+      display: grid;
+      grid-template-columns: 45px 1fr; 
+      gap: 20px;
+      width: 50%;
+      transform-origin: center right;
+      transition: transform 1s cubic-bezier(0, 0.76, 0.5, 1.01);
+    }
+    
+    .wheel_item_img {
+      width: 45px;
+      margin-left: 10px;
+    }
+    
+    .wheel_item_text {
+      color: #0000;
+      font-weight: 300;
+      font-size: 15px;
+      line-height: 1.4;
+    }
+    
+    .wheel::before {
+      position: absolute;
+      content: '';
+      display: inline-block;
+      border: 5px solid transparent;
+      border-left: 20px solid #496f9c;
+      z-index: 99;
+    }
+    
+    .wheel_button {
+      z-index: 99;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 20px;
+      padding: 5px;
+      background-color: #496f9c;
+      position: absolute;
+      font-weight: normal;
+      color: #ffffff;
+      cursor: pointer;
+      border: none;
+      width: 60px;
+      height: 30px;
+      font-size: 18px;
+    }
+    
+    .wheel_button:hover {
+      background-color: #496f9c;
+    }
+    
+    @media screen and (max-width: 640px) {   .wheel {
+        width: 300px;
+        height: 300px;
+      }
+      
+      
+      .wheel_item_text {
+        display: none;
+      }
+      
+      .wheel_item_img {
+        width: 65px;
+        margin-left: px;
+      }
+    
+    
+    }
+    </style>
