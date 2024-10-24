@@ -1,6 +1,6 @@
 <?php
 
-$mysql = new mysqli('localhost','ruslarjn_lktilda','&DiXA3TM','ruslarjn_lktilda');
+$mysql = new mysqli('localhost','ruslarjn_lktilda','4idekl$dws','ruslarjn_lktilda');
 
 function apiRequesrProvider($id_provider, $request){
     global $mysql;
