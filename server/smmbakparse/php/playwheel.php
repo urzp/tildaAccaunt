@@ -11,7 +11,8 @@ $post = json_decode($post);
 
 $sessionToken = $post -> sessionToken;
 
-$data['wheel'] = rand(0,5);
+$data['wheel'] = rand(0,10);
+if($data['wheel'] > 5){$data['wheel'] = ceil($data['wheel']/2); }
 if($data['wheel']==0){$data['wheel'] = rand(0,5);}
 
 if($data['wheel']==0){
