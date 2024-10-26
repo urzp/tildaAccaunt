@@ -73,6 +73,7 @@
               if (randomIndex == 0){
                   setTimeout(function(){
                     $('input[name=permissionKey]').val(permissionKey)  
+                    $('input[name=sessionToken]').val(localStorage.getItem('sessionToken'))
                   // где 5 это индекс элемента из списка, т.е. если выигрышный варинат номер 5 выскачит поп ап
                     const element = document.getElementById('rec465457821').querySelector('.t-popup');
                     element.classList.add('t-popup_show');
