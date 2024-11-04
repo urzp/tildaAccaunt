@@ -48,6 +48,7 @@ function sendOrderProvader($data_prov){
         CURLOPT_POST => true,
         CURLOPT_POSTFIELDS => http_build_query($data_prov -> data)
     ));
+    //push_log( json_encode($data_prov), basename(__FILE__), 'provader_request_log');
     $res = curl_exec($curl);
     if(curl_error($curl)){
         $errMes = curl_error($curl);
