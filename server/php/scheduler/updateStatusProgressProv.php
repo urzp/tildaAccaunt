@@ -46,9 +46,9 @@ function apiRequesrProvider($id_provider, $request){
 
 function getOrders(){
     global $mysql;
-    $sql = "SELECT * FROM `orders` WHERE `progress_status`<>'Completed' AND `progress_status`<>'' AND `progress_status`<>'Canceled' AND `provader_status`='success'";
+    $yestoday =  date('Y.m.d',strtotime("-1 days"));
+    $sql = "SELECT * FROM `orders` WHERE `progress_status`<>'Completed' AND `progress_status`<>'' AND `progress_status`<>'Canceled' AND `provader_status`='success' AND `datetime`>'$yestoday' ORDER BY id DESC LIMIT 200";
     $sql_result = $mysql -> query($sql);
-    
     while ($row = $sql_result->fetch_assoc()) { 
         $row['id_order_prov'] = json_decode($row['provader_msg'],true)['order'];
         if(!isset($row['id_order_prov'])) continue;
@@ -73,6 +73,7 @@ function updateOrderNote($id, $status, $remains, $start_count){
 $orders = getOrders();
 
 foreach ($orders as $item) {
+    $sleep(2);
     $result = provReqStatus($item['id_provider'], $item['id_order_prov']);
     updateOrderNote($item['id'],$result['status'],$result['remains'], $result['start_count']);
     //echo "id ".$item['id']." status ".$result['status'].'<br>';
