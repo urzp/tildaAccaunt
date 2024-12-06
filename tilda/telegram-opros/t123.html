@@ -1,0 +1,27 @@
+<script>
+
+    $(window).on(load,()=>{
+        let interval = setInterval(()=>{
+           if( $('[name="answer_number"]').length > 0){
+                clearInterval(interval)
+                listenInput()
+           } 
+        },300)
+    })
+
+    function listenInput(){
+        let timer
+        $('[name="answer_number"]').bind('input', function() {
+            clearTimeout(timer)
+            timer = setTimeout( setNewValue, 800 )
+        });
+    }
+
+    function setNewValue(){
+        let value = Number($('[name="answer_number"]').val())
+        if(!value||value<1) return false
+        $('[name="answer_number"]').val( value - 1 )
+    }
+
+
+</script>
