@@ -1,19 +1,19 @@
 <script>
 
-    $(window).on(load,()=>{
+    $(window).on('load',()=>{
         let interval = setInterval(()=>{
            if( $('[name="answer_number"]').length > 0){
                 clearInterval(interval)
                 listenInput()
            } 
-        },300)
+        },500)
     })
 
     function listenInput(){
         let timer
         $('[name="answer_number"]').bind('input', function() {
             clearTimeout(timer)
-            timer = setTimeout( setNewValue, 800 )
+            timer = setTimeout( setNewValue, 500 )
         });
     }
 
