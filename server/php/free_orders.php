@@ -54,11 +54,6 @@ $link = $_POST['link'];
 if($api_key != _APY_KEY_){ exit(); }
 include 'chekPermissionKey.php';
 
-$sameLink_id = findSameLink($pauseServis_hours, $link);
-if( isset($sameLink_id)){
-    push_log(json_encode("deny by same link ".$link), basename(__FILE__), 'free_order_log');
-    exit();
-}
 
 if(isset($_POST['url_page'])){
     $url = $_POST['url_page'];
@@ -70,9 +65,17 @@ if(isset($_POST['url_page'])){
         $id_provider = $result['id_provider'];
     }
     //push_log(json_encode($quantity_max), basename(__FILE__), 'free_order_log');
+    if(isset($result['pause_h'])) $pauseServis_hours = (int)$result['pause_h'];
+    //push_log(json_encode($pauseServis_hours), basename(__FILE__), 'free_order_log');
 }
 
 if((int)$quantity > (int)$quantity_max){ $quantity = $quantity_max;}
+
+$sameLink_id = findSameLink($pauseServis_hours, $link);
+if( isset($sameLink_id)){
+    push_log(json_encode("deny by same link ".$link), basename(__FILE__), 'free_order_log');
+    exit();
+}
 
 $_POST['post-link'] = $link;
 $_POST['prodavec_id'] = $id_provider;
