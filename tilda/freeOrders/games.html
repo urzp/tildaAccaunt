@@ -1,0 +1,60 @@
+<iframe class="game_frame" onclick="window.focus()" width="660" height="780"></iframe>
+
+<style>
+    .uc-games .t-width{
+        text-align: center;
+    }
+
+    .game_frame{
+        border: none;
+        display: none;
+    }
+
+    .game_1, .game_2{
+        cursor: pointer;
+    }
+
+    @media screen and (max-width: 680px) {
+        .game_frame{
+            width: 480px;
+            height: 700px;
+        }
+    }
+
+    @media screen and (max-width: 480px) {
+        .game_frame{
+            width: 380px;
+            height: 600px;
+        }
+    }
+
+        @media screen and (max-width: 380px) {
+        .game_frame{
+            width: 320px;
+            height: 540px;
+        }
+    }
+
+
+</style>
+
+<script>
+    $(document).ready(function () {
+        $('.game_1').click(function(){
+            initGame('https://youtikinsback.su/games/pacman/')
+        })
+        $('.game_2').click(function(){
+            initGame('https://youtikinsback.su/games/tetris_94_v_1/')
+        })
+    })
+
+
+    function initGame(link){
+            $('.game_frame').attr({'src':link})
+            $('.game_frame').fadeIn()
+            $([document.documentElement, document.body]).animate({
+                scrollTop: ($(".game_frame").offset().top - 110)
+            }, 1000);
+    }
+    
+</script>
